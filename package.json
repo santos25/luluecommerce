@@ -11,7 +11,8 @@
     "react-scripts": "3.4.1",
     "react-slick": "^0.26.1",
     "slick-carousel": "^1.8.1",
-    "postcss-cli": "^7.1.1"
+    "postcss-cli": "^7.1.1",
+    "tailwindcss": "^1.4.5"
   },
   "scripts": {
     "start": "npm run watch:css && react-scripts start",
@@ -37,7 +38,6 @@
     ]
   },
   "devDependencies": {
-    "autoprefixer": "^9.7.6",
-    "tailwindcss": "^1.4.5"
+    "autoprefixer": "^9.7.6"
   }
 }
