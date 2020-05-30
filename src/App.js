@@ -1,54 +1,85 @@
 import React from 'react';
 import Nav from './components/Navegation/Nav';
 import HomePage from './pages/homepage/HomePage';
+import MujerPage from './pages/MujerPage/MujerPage';
+import HombrePage from './pages/HombrePage/HombrePage';
+import SignInAndUpPage from './pages/SignInAndUpPage/SignInAndUpPage';
+import CheckoutPage from './pages/CheckoutPage/checkout.component';
 import Footer from './components/Footer/Footer';
+import { auth, createDocumentUserDb } from './FireBase/FireBaseUtil';
+import { connect } from 'react-redux';
+import { setCurrentUser } from './Redux/user/user.actions';
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from 'react-router-dom';
 
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      imagesDescuento: []
-    }
-  }
 
 
   componentDidMount() {
-    fetch('https://pixabay.com/api/?key=16434003-adc3d5ed6b80ff05886e00162&category=fashion&min_height=100')
-      .then(data => data.json())
-      .then(result => this.setState({ imagesDescuento: result.hits }))
-      .catch(error => console.log(error));
+    console.log(this.props);
+    const { setCurrentUser } = this.props;
+
+    auth.onAuthStateChanged(async (user) => {
+      // console.log({user});
+
+      if (user) {
+        const userRef = createDocumentUserDb(user);
+        const currentUser = await userRef;
+        currentUser.onSnapshot(docSnapshot => {
+          // console.log(docSnapshot);
+
+          setCurrentUser({
+            id: docSnapshot.id,
+            ...docSnapshot.data()
+          })
+        });
+
+      } else {
+        setCurrentUser(user)
+      }
+    });
+
   }
 
   render() {
-    let { imagesDescuento } = this.state;
-    console.log(imagesDescuento);
-    
     return (
       <div className="bg-white font-serif">
-        <Nav/>
-        <HomePage imagesDescuento={imagesDescuento}/>
-        <Footer/>
-        
-        {/* <section className="suggestion">
-          <h1 className="">RECOMENDACIONES</h1>
-          <div className="container">
-            {
-              imagesDescuento.map((image, index) => {
-                if(index < 3) {
-                  return <Card id={index} webformatURL={image.webformatURL} tags={image.tags} user={image.tags} />
-                }
-              }
-              )
-            }
-          </div>
-        </section> */}
-
+        <Router>
+          <Nav />
+          <Switch>
+            <Route exact path="/">
+              <HomePage />
+            </Route>
+            <Route path="/mujer">
+              <MujerPage />
+            </Route>
+            <Route path="/hombre">
+              <HombrePage />
+            </Route>
+            <Route exact path="/signin" render={() => this.props.currentUser ? <Redirect to="/" /> : <SignInAndUpPage />}/>
+            <Route exact path="/checkout">
+              <CheckoutPage />
+            </Route>
+          </Switch>
+            <Footer />
+        </Router>
       </div>
-
-    );
+    )
   }
-
-
 }
 
-export default App;
+const mapSateToProps = ({user}) => ({
+          currentUser : user.currentUser
+})
+
+const mapDispatchToState = dispatch => ({
+          setCurrentUser: user => {
+          dispatch(setCurrentUser(user));
+  }
+})
+export default connect(mapSateToProps, mapDispatchToState)(App);

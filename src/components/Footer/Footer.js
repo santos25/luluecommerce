@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Footer = ({imagesDescuento}) => {
+const Footer = () => {
     return (
-        <footer> Desarrollado con amor</footer>
+        <footer> All with love</footer>
         );
 }
 

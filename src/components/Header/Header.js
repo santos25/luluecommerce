@@ -22,7 +22,7 @@ const Header = () => {
 
     return (
         <header>
-            <br/><br/>
+            {/* <br/><br/> */}
             <div className="slider-container">
                 <Slider {...settings}>
                     <div>
