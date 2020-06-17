@@ -12,3 +12,17 @@ export const addItemsToCart = (item) => {
             payload: item
         }
 }
+
+export const clearItem = (itemToClear) => {
+    return {
+        type : CartType.CLEAR_ITEM,
+        payload: itemToClear
+    }
+}
+
+export const removeItem = (itemToRemove) => {
+    return {
+        type : CartType.REMOVE_ITEM,
+        payload: itemToRemove
+    }
+}

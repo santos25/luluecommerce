@@ -1,5 +1,5 @@
 import React from 'react';
-import ShopCollection from '../../components/ShopCollectionsView/ShopCollection';
+import ShopCollections from '../../components/ShopCollectionsView/ShopCollections';
 import MUJERDATA from './MujerData';
 
 class MujerPage extends React.Component {
@@ -17,7 +17,7 @@ class MujerPage extends React.Component {
             <div>
                 {
                     dataMujeres.map(({ id, ...others }) => {
-                        return <ShopCollection key={id} {...others} />
+                        return <ShopCollections key={id} {...others} />
                     })
                 }
             </div>

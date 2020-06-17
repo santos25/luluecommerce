@@ -1,9 +1,10 @@
 import React from 'react';
 import Directory from '../../components/Directory/Directory';
 
-const HomePage = ({imagesDescuento}) => {
+const HomePage = (props) => {
+    
     return (
-       <Directory  imagesDescuento={imagesDescuento}/>
+       <Directory />
     );
 }
 

@@ -24,9 +24,9 @@ export const signInWithGoogle = () => auth.signInWithPopup(provider).then().catc
 });
 
 
-export const createDocumentUserDb = async (userAuth , otherProperties) => {
-    console.log({userAuth});
-    if(!userAuth) return;
+export const createDocumentUserDb = async (userAuth, otherProperties) => {
+    if (!userAuth) return;
+    console.log(userAuth.id);
     const userRef = firestore.doc(`users/${userAuth.uid}`);
     const snapshot = await userRef.get();
     // console.log({snapshot});
@@ -44,5 +44,35 @@ export const createDocumentUserDb = async (userAuth , otherProperties) => {
 
     return userRef;
 }
+export const createCollectionAndDocuments = async (collectionKey, documentsToAdd) => {
+    const collectionKeyRef = firestore.collection(collectionKey);
+    let batch = firestore.batch();
+    documentsToAdd.forEach(document => {
+        const newDocRef = collectionKeyRef.doc();
+        batch.set(newDocRef, document);
+    })
+
+    return await batch.commit();
+}
+
+export const convertCollectionsToObjects = (collection) => {
+    const convertedDataArray = collection.docs.map(document => {
+        const { title, items } = document.data();
+        return {
+            id: document.id,
+            title,
+            items,
+            routeName: encodeURI(title.toLowerCase())
+        }
+    });
+
+    const convertedDataObjects = convertedDataArray.reduce((acumulator, item) => {
+        acumulator[item.routeName] = item;
+        return acumulator;
+    }, {})
+
+    return convertedDataObjects;
+}
+
 // export default firebase;
 

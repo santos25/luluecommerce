@@ -5,12 +5,7 @@ import SignUp from '../../components/SignUpComponent/SignUp';
 const SignInAndUpPage = (props) => {
 
     return (
-            <div className="flex justify-center">
-                <SignInComponent/>
-                <SignUp/>
-            </div>
-               
-        
+        <SignInComponent />
     );
 }
 
