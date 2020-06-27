@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import FirmInput from '../FormInput/FormInput';
+import FirmInput from '../FormInput/InputField';
 import { Link as RouterLink } from 'react-router-dom';
 
 // import Button from '../Button/Button';
@@ -75,7 +75,7 @@ const SignUp = (props) => {
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Registro
-        </Typography>
+                </Typography>
                 <form className={classes.form} noValidate>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
@@ -147,7 +147,7 @@ const SignUp = (props) => {
           </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <Link component={RouterLink} to= "/signin" variant="body2">
+                            <Link component={RouterLink} to="/signin" variant="body2">
                                 Ya tienes una cuenta? Inicia sesion.
               </Link>
                         </Grid>

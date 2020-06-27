@@ -6,6 +6,7 @@ import { currentUserSelector } from './Redux/user/user-selectors';
 
 import AdminPage from './pages/adminPage/AdminPage';
 import Nav from './components/Navegation/Nav';
+import NavAdmin from './components/Admin-components/NavAdmin/NavAdmin.component';
 import HomePage from './pages/homepage/HomePage';
 // import MujerPage from './pages/MujerPage/MujerPage';
 import ShopPage from './pages/ShopPage/ShopPage';
@@ -50,23 +51,36 @@ const App = ({ setCurrentUser, currentUser }) => {
 
   return (
     <div>
-      <Router>
-        <Nav />
-        <Switch>
-          <Route exact path="/">
-            <HomePage />
-          </Route>
-          {/* <Route path="/mujer">
-            <MujerPage />
-          </Route> */}
-          <Route path="/shop" component={ShopPage} />
-          <Route exact path="/signin" render={() => currentUser ? <Redirect to="/" /> : <SignInComponent />} />
-          <Route exact path="/signup" render={() => currentUser ? <Redirect to="/" /> : <SignUp />} />
-          <Route exact path="/checkout">
-            <CheckoutPage />
-          </Route>
-        </Switch>
-      </Router>
+      {
+        currentUser && currentUser.isAdmin ?
+          (<Router>
+            <NavAdmin />
+            <Switch>
+              <Route exact path="/">
+                Bienvenidos Panel de administracion
+              </Route>
+              <Route  path="/producto">
+                <AdminPage />
+              </Route>
+            </Switch>
+          </Router>)
+          :
+          (<Router>
+            <Nav />
+            <Switch>
+              <Route exact path="/">
+                <HomePage />
+              </Route>
+              <Route path="/shop" />
+              <Route exact path="/signin" render={() => currentUser ? <Redirect to="/" /> : <SignInComponent />} />
+              <Route exact path="/signup" render={() => currentUser ? <Redirect to="/" /> : <SignUp />} />
+              <Route exact path="/checkout">
+                <CheckoutPage />
+              </Route>
+            </Switch>
+          </Router>)
+      }
+
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import 'firebase/storage';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDE4m7rjsqUnslU7o8_YMNuJuJ9E5vIEYQ",
@@ -17,8 +18,10 @@ firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
+export const storage = firebase.storage();
 
 const provider = new firebase.auth.GoogleAuthProvider();
+
 export const signInWithGoogle = () => auth.signInWithPopup(provider).then().catch(error => {
     console.log(error);
 });
@@ -44,6 +47,7 @@ export const createDocumentUserDb = async (userAuth, otherProperties) => {
 
     return userRef;
 }
+
 export const createCollectionAndDocuments = async (collectionKey, documentsToAdd) => {
     const collectionKeyRef = firestore.collection(collectionKey);
     let batch = firestore.batch();
@@ -74,5 +78,87 @@ export const convertCollectionsToObjects = (collection) => {
     return convertedDataObjects;
 }
 
-// export default firebase;
+// export const convertProductToObjects = async (document) => {
 
+
+//     // const convertedDataObject = convertedDataArray.map((doc) => {
+//     //     const objectProducts =  doc.product.reduce((acum, product) => {
+//     //         acum[product.category] = product;
+//     //         return acum;
+//     //     }, {});
+//     // })
+// }
+
+export const uploadProductDB = async (product, items) => {
+
+    const { brand, category, genre } = product;
+    let batch = firestore.batch();
+
+    const newDocRef = firestore.collection("collections").doc();
+    batch.set(newDocRef, { brand, genre });
+
+    // const result = await newDocRef.set({
+    //     brand,
+    //     genre
+    // });
+
+    const proDocRef = newDocRef.collection("productos").doc();
+    batch.set(proDocRef, { category, items });
+    // const resutlSubColl = await newDocRef.collection("productos").doc().set({
+    //     category,
+    //     items
+    // })
+    return await batch.commit();
+}
+
+export const uploadImages = async (items) => {
+    // console.log(product);
+    const promises = [];
+    items.forEach(item => {
+        const uploadImages = storage.ref().child('images-lulu/' + item.image.name).put(item.image);
+        promises.push(uploadImages)
+        uploadImages.on(firebase.storage.TaskEvent.STATE_CHANGED,
+            snapshot => {
+                let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+            },
+            error => console.log(error)
+        );
+    });
+
+    return Promise.all(promises).then(responses => {
+        return responses.map(snapshot => snapshot.ref.getDownloadURL());
+    }).then(responseImgs => {
+        return Promise.all(responseImgs).then(downloadURL => {
+            let itemsImgLoaded = items.map((item, index) => ({ ...item, image: downloadURL[index] }))
+            // let dt = uploadProductDB(product, itemsImgLoaded);
+            return itemsImgLoaded;
+        })
+    }).catch(err => console.log(err.code));
+}
+
+
+export const addNewItems = (productRef, items) => {
+
+    console.log(items);
+
+    productRef.update({
+        items: firebase.firestore.FieldValue.arrayUnion(...items)
+    });
+}
+
+export const removeItem = (productRef, items, itemtoDelete) => {
+
+    productRef.update({
+        items: items.filter(item => item.name !== itemtoDelete.name)
+    });
+}
+
+export const addCategoryDoc = (productRef, category, items) => {
+    console.log(items);
+
+    productRef.set({
+        category,
+        items
+    });
+}

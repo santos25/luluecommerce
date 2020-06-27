@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import FirmInput from '../FormInput/FormInput';
+// import InputField from '../FormInput/InputField';
 import { Link as RouterLink } from 'react-router-dom';
 
 // import Button from '../Button/Button';
-import { signInWithGoogle } from '../../FireBase/FireBaseUtil';
+import { signInWithGoogle  , auth} from '../../FireBase/FireBaseUtil';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import {
   makeStyles,
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 const SignInComponent = (props) => {
   const classes = useStyles();
 
-  const [user, setUser] = useState({ username: '', password: '' });
+  const [user, setUser] = useState({ email: '', password: '' });
 
   const handleInputs = (e) => {
     const { name, value } = e.target;
@@ -52,6 +52,7 @@ const SignInComponent = (props) => {
   const handleSignIn = (e) => {
     e.preventDefault();
 
+    auth.signInWithEmailAndPassword(user.email, user.password)
     setUser({ username: '', password: '' })
   }
 
@@ -128,25 +129,7 @@ const SignInComponent = (props) => {
       </div>
     </Container>
 
-    // <div className="flex justify-center">
-    //   <div className="w-full max-w-xs">
-    //     <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-    //       <div className="mb-4">
-    //         <FirmInput onChange={handleInputs} label="Usuario" id="username" name='username' type="text" placeholder="Usuario" />
-    //       </div>
-    //       <div className="mb-6">
-    //         <FirmInput label="Contraseña" onChange={handleInputs} id="password" name="password" type="password" placeholder="******************" />
-    //         <p className="text-red-500 text-xs italic">Please choose a password.</p>
-    //       </div>
-    //       <div className="flex items-center justify-between">
-    //         <Button type="submit" onClick={handleSignIn}>Iniciar Sesion</Button>
-
-    //         <Button type="button" onClick={signInWithGoogle}>Google</Button>
-
-    //       </div>
-    //     </form>
-    //   </div>
-    // </div>
+    
 
   );
 }

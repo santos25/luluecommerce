@@ -22,7 +22,7 @@ const Directory = ({ discountItems, loadItems }) => {
     // let { discountItems } = this.props;
     return (
         <div>
-            {/* <Header /> */}
+            <Header />
             <section className="suggestion">
                 <h1 className="">DESCUENTOS</h1>
                 <div className="container">

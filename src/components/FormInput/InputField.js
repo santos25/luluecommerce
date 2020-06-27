@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FormInput = ({id , label, ...otherProperties}) => {
+const InputField = ({id , label, ...otherProperties}) => {
 
     return (
         <div>
@@ -12,4 +12,4 @@ const FormInput = ({id , label, ...otherProperties}) => {
     )
 }
 
-export default FormInput;
+export default InputField;
