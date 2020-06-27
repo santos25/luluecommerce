@@ -5,7 +5,6 @@ import { PersistGate } from 'redux-persist/integration/react'
 import {store , persistor} from './Redux/store';
 import App from './App';
 
-import './assets/main.css'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./assets/custom.css";
