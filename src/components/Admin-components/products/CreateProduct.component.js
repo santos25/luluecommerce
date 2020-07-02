@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useHistory, useRouteMatch } from "react-router-dom";
+// import { useHistory, useRouteMatch } from "react-router-dom";
 import { connect } from 'react-redux';
-import { storage, uploadImages, uploadProductDB } from '../../../FireBase/FireBaseUtil';
+import {  uploadImages, uploadProductDB } from '../../../FireBase/FireBaseUtil';
 import { isUploadinSelector } from "../../../Redux/Admin/Products/product.selectors";
 import { addNewItemsAsync, addCategory, uploadProductsStart, uploadProductsSuccess } from '../../../Redux/Admin/Products/product.actions';
 

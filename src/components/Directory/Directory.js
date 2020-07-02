@@ -17,7 +17,7 @@ const Directory = ({ discountItems, loadItems }) => {
             .then(data => data.json())
             .then(result => loadItems(result.hits))
             .catch(error => console.log(error));
-    }, []);
+    }, [loadItems]);
 
     // let { discountItems } = this.props;
     return (

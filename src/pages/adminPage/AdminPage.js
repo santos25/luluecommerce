@@ -1,6 +1,6 @@
 import React from 'react';
 import ProductHomePage from '../../components/Admin-components/products/ProductHomePage.component';
-import CreateProduct from '../../components/Admin-components/products/CreateProduct.component';
+// import CreateProduct from '../../components/Admin-components/products/CreateProduct.component';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
 
@@ -12,9 +12,6 @@ const AdminPage = () => {
             <Route exact path={match.url}>
                 <ProductHomePage />
             </Route>
-            {/* <Route path={`${match.url}/create`} >
-                jasjsjsaj
-            </Route> */}
         </Switch>
     )
 }

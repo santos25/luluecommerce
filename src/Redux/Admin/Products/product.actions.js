@@ -1,6 +1,5 @@
 import PRODUCT_TYPE from './product.type';
 import { firestore, removeItem, addNewItems, uploadImages , addCategoryDoc } from '../../../FireBase/FireBaseUtil';
-import { data } from 'autoprefixer';
 
 const fetchingProductsStart = () => ({
     type: PRODUCT_TYPE.FETCHING_PRODUCTS_START

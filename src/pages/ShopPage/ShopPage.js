@@ -4,17 +4,17 @@ import { connect } from 'react-redux';
 import { fetchingCollectionsAsync } from '../../Redux/shop/shop.actions';
 import { isLoadingCollections } from '../../Redux/shop/shop.selectors';
 
-import ShopOverview from '../../components/ShopOverview/ShopOverview';
+// import ShopOverview from '../../components/ShopOverview/ShopOverview';
 import CollectionPage from '../collectionPage/collectionPage';
 import WithSpinner from '../../components/with-spinner/withSpinner';
 
-const ShopOverviewWitSpinner = WithSpinner(ShopOverview);
+// const ShopOverviewWitSpinner = WithSpinner(ShopOverview);
 const CollectionPageWitSpinner = WithSpinner(CollectionPage);
 
 const ShopPage = (props) => {
 
     useEffect(() => {
-        console.log("Fetching ShopPage");
+        console.log("Fetching ShopPa");
         
         props.fetchingCollectionsAsync();
     }, [fetchingCollectionsAsync]);
@@ -25,7 +25,7 @@ const ShopPage = (props) => {
     return (
         <Switch>
             <Route exact path={match.url}>
-                <ShopOverviewWitSpinner isLoading={isLoading} {...props} />
+                {/* <ShopOverviewWitSpinner isLoading={isLoading} {...props} /> */}
             </Route>
             <Route path={`${match.url}/:collectionId`}
                 render={(props) => <CollectionPageWitSpinner isLoading={isLoading} {...props} />}>

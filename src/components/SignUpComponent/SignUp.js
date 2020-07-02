@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import FirmInput from '../FormInput/InputField';
+import React, { useState } from 'react';
+// import FirmInput from '../FormInput/InputField';
 import { Link as RouterLink } from 'react-router-dom';
 
 // import Button from '../Button/Button';

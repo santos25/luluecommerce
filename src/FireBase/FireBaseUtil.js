@@ -61,33 +61,23 @@ export const createCollectionAndDocuments = async (collectionKey, documentsToAdd
 
 export const convertCollectionsToObjects = (collection) => {
     const convertedDataArray = collection.docs.map(document => {
-        const { title, items } = document.data();
+        const { category , items } = document.data();
         return {
             id: document.id,
-            title,
-            items,
-            routeName: encodeURI(title.toLowerCase())
+            category,
+            items
+            // routeName: encodeURI(title.toLowerCase())
         }
     });
 
     const convertedDataObjects = convertedDataArray.reduce((acumulator, item) => {
-        acumulator[item.routeName] = item;
+        acumulator[item.category] = item;
         return acumulator;
     }, {})
 
     return convertedDataObjects;
 }
 
-// export const convertProductToObjects = async (document) => {
-
-
-//     // const convertedDataObject = convertedDataArray.map((doc) => {
-//     //     const objectProducts =  doc.product.reduce((acum, product) => {
-//     //         acum[product.category] = product;
-//     //         return acum;
-//     //     }, {});
-//     // })
-// }
 
 export const uploadProductDB = async (product, items) => {
 
@@ -97,17 +87,9 @@ export const uploadProductDB = async (product, items) => {
     const newDocRef = firestore.collection("collections").doc();
     batch.set(newDocRef, { brand, genre });
 
-    // const result = await newDocRef.set({
-    //     brand,
-    //     genre
-    // });
-
     const proDocRef = newDocRef.collection("productos").doc();
     batch.set(proDocRef, { category, items });
-    // const resutlSubColl = await newDocRef.collection("productos").doc().set({
-    //     category,
-    //     items
-    // })
+ 
     return await batch.commit();
 }
 

@@ -1,5 +1,5 @@
 import shop_types from './shop.types';
-import {convertCollectionsToObjects , firestore} from '../../FireBase/FireBaseUtil';
+import { convertCollectionsToObjects, firestore } from '../../FireBase/FireBaseUtil';
 
 const fetchingCollectionSucces = (collections) => {
     return {
@@ -21,15 +21,22 @@ const fetchingCollectionFailed = (error) => {
     }
 }
 
-export const fetchingCollectionsAsync = () => {
+export const fetchingCollectionsAsync = (genre) => {
     return (dispatch) => {
-        const collectionRef = firestore.collection('collections');
+        const collectionRef = firestore.collection('collections').where('genre', '==', genre);
 
         dispatch(fetchingCollectionStart());
 
         collectionRef.get().then(snapShot => {
-            let dataShopCollections = convertCollectionsToObjects(snapShot);
-            dispatch(fetchingCollectionSucces(dataShopCollections));
-        }).catch(error => dispatch(fetchingCollectionFailed(error)));
+            snapShot.docs.forEach(docu => {
+                console.log(docu.data());
+                const productosRef = docu.ref.collection('productos');
+                productosRef.get().then(prodSnapshot => {
+                    const collectionConverted = convertCollectionsToObjects(prodSnapshot);
+                    // console.log(collectionConverted);
+                    dispatch(fetchingCollectionSucces(collectionConverted)) 
+                });
+            })
+        })
     }
 }

@@ -7,12 +7,12 @@ import {
     CssBaseline
 } from '@material-ui/core';
 
-const MujerPage = ({fetchCollections }) => {
+const HombrePage = ({fetchCollections }) => {
 
     useEffect(() => {
         console.log("Fetching Collection");
         
-        fetchCollections("mujer");
+        fetchCollections("hombre");
     }, [fetchCollections])
     return (
         <div>
@@ -29,4 +29,4 @@ const mapDispatchToState = (dispatch) => ({
 // const mapStateToProps = (state) => ({
 //     collections : 
 // })
-export default connect(null , mapDispatchToState)(MujerPage);
+export default connect(null , mapDispatchToState)(HombrePage);

@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter} from 'react-router-dom';
 
 import CardImages from '../CardImages/CardImages';
-import './collection-preview.styles.css';
 
 const ShopCollections = ({ items, title, match , history }) => {
    

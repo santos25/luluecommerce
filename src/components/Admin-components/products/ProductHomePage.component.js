@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useRouteMatch } from "react-router-dom";
+// import { useHistory, useRouteMatch } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchingProductsAsync, removeItemsAsync } from "../../../Redux/Admin/Products/product.actions";
 import { productSelector, isFetchSelector } from "../../../Redux/Admin/Products/product.selectors";
 
-import { storage, uploadProductAndImage } from '../../../FireBase/FireBaseUtil';
+// import { storage, uploadProductAndImage } from '../../../FireBase/FireBaseUtil';
 import CreateProduct from './CreateProduct.component';
 import WithSpinner from '../../with-spinner/withSpinner';
 
@@ -14,14 +14,12 @@ import {
     Container,
     Button,
     Typography,
-    CssBaseline,
     ListItem,
     Avatar,
     List,
     ListItemAvatar,
     ListItemText,
     ListItemSecondaryAction,
-    Grid,
     IconButton
 
 } from '@material-ui/core';
@@ -118,7 +116,7 @@ const ProductPage = ({ fetchProductsAsync, products, isFetchingProducts, removeI
     useEffect(() => {
         console.log("fetching Products");
         fetchProductsAsync();
-    }, []);
+    }, [fetchProductsAsync]);
 
 
     const handleCurrentPage = (product, pagetogo) => {

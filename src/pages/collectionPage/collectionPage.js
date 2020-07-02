@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { dataCollectionSelector } from '../../Redux/shop/shop.selectors';
 import CardImages from '../../components/CardImages/CardImages';
-import './collection.styles.css';
+// import './collection.styles.css';
 
 const CollectionPage = ({ collection }) => {
 

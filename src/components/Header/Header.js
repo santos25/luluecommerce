@@ -13,7 +13,7 @@ const Header = () => {
         slidesToScroll: 1,
         arrows: true,
         className: "slides",
-        autoplay: true,
+        // autoplay: true,
         autoplaySpeed: 2000,
         pauseOnHover: false
         // nextArrow: <NextArrow />,
