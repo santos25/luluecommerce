@@ -35,18 +35,8 @@ const CardImages = ({ item, addItemsToCart }) => {
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image={item.imageUrl}
-          // title="Contemplative Reptile"
+          image={item.image}
         />
-        {/* <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {item.name}
-        </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-            across all continents except Antarctica
-        </Typography>
-        </CardContent> */}
       </CardActionArea>
       <CardActions>
         <Button size="small" color="primary">
@@ -54,19 +44,8 @@ const CardImages = ({ item, addItemsToCart }) => {
       </Button>
       </CardActions>
     </Card>
-    // <div className="collection-item" >
-    //   <div
-    //     className='image'
-    //     style={{
-    //       backgroundImage: `url(${item.imageUrl})`
-    //     }}
-    //   />
-    //   <div className='collection-footer'>
-    //     <span className='name'>{item.name}</span>
-    //     <span className='price'>{item.price}</span>
-    //   </div>
+  
     //   <ButtonCustom onClick={() => { addItemsToCart(item) }} >Agregar al Carro</ButtonCustom>
-    // </div>
   );
 }
 

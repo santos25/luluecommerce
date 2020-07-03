@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 // import { useHistory, useRouteMatch } from "react-router-dom";
 import { connect } from 'react-redux';
-import {  uploadImages, uploadProductDB } from '../../../FireBase/FireBaseUtil';
+import { uploadImages, uploadProductDB } from '../../../FireBase/FireBaseUtil';
 import { isUploadinSelector } from "../../../Redux/Admin/Products/product.selectors";
 import { addNewItemsAsync, addCategory, uploadProductsStart, uploadProductsSuccess } from '../../../Redux/Admin/Products/product.actions';
 
+import { CloudUpload } from '@material-ui/icons';
 import {
     CircularProgress,
     makeStyles,
@@ -35,7 +36,10 @@ const useStyles = makeStyles((theme) => ({
         '& > * + *': {
             marginLeft: theme.spacing(2),
         },
-    }
+    },
+    input: {
+        display: 'none',
+    },
 }));
 
 const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, addNewCategory, uploadStart, uploadSuccess, isUploading }) => {
@@ -100,6 +104,7 @@ const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, 
     // console.log({ productEdit });
 
     return (
+
         <div>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -194,13 +199,29 @@ const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, 
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    <TextField
+                                    {/* <TextField
                                         type="file"
                                         required
                                         id={`image_${index}`}
                                         onChange={(e) => handleItems(e, index)}
                                         name="image"
+                                    /> */}
+                                    <input
+                                        accept="image/*"
+                                        // className={classes.input}
+                                        // id="contained-button-file"
+                                        id={`contained-button-file_${index}`}
+                                        onChange={(e) => handleItems(e, index)}
+                                        name="image"
+                                        type="file"
                                     />
+                                    <label htmlFor={`contained-button-file_${index}`}>
+                                        <Button variant="contained" size="small" color="primary"
+                                            startIcon={<CloudUpload />}
+                                            component="span">
+                                            Subir Imagen
+        </Button>
+                                    </label>
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
                                     <TextField
@@ -272,7 +293,7 @@ const mapDispatchToState = (dispatch) => ({
 })
 
 const mapStateToProps = (state) => ({
-    isUploading : isUploadinSelector(state)
+    isUploading: isUploadinSelector(state)
 })
 
 export default connect(mapStateToProps, mapDispatchToState)(CreateProduct);

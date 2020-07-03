@@ -4,19 +4,29 @@ import { dataCollectionSelector } from '../../Redux/shop/shop.selectors';
 import CardImages from '../../components/CardImages/CardImages';
 // import './collection.styles.css';
 
+import {
+    Grid
+} from '@material-ui/core';
+
 const CollectionPage = ({ collection }) => {
 
-    const { title, items } = collection;
-    
+    const { items } = collection;
+    // console.log(collection);
+
     return (
-        <div className='collection-page'>
-            <h2 className='title'>{title}</h2>
-            <div className='items'>
-                {
-                    items.map(item => <CardImages key={item.id} item={item} />)
-                }
-            </div>
-        </div>
+            <Grid
+                container
+                direction="row"
+            >
+                    {
+                        items.map(item => (
+                            <Grid key={item.id} item xs={12} sm={4}>
+                                <CardImages item={item} />
+                            </Grid>
+                        )
+                        )
+                    }
+            </Grid>
     )
 }
 

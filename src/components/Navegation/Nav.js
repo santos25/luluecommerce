@@ -124,7 +124,7 @@ const Nav = ({ currentUser, hidden }) => {
                         </IconButton>
                         {
                             currentUser ? (
-                                <Button variant="contained" color="primary" onClick={() => auth.signOut()}>
+                                <Button variant="outlined" size="small" color="primary" onClick={() => auth.signOut()}>
                                     Cerrar Sesion
                                 </Button>
                             )

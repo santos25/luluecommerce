@@ -9,7 +9,7 @@ export const dataShopSelector = createSelector(
 
 export const dataCollectionSelector = collectionId => createSelector(
     [data],
-    item => item.dataShop[collectionId.toLowerCase()]
+    item => item.dataShop[collectionId]
 )
 
 export const isLoadingCollections = createSelector(

@@ -1,78 +1,75 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { useHistory, useRouteMatch } from 'react-router-dom';
+
 import { dataShopSelector } from '../../Redux/shop/shop.selectors';
 
-import {Info } from '@material-ui/icons';
 import {
-    Container,
+    // Paper,
     Grid,
     Typography,
     makeStyles,
-    GridListTile,
-    GridList,
-    GridListTileBar,
-    IconButton
+    CardActionArea,
+    CardMedia,
+    CardContent,
+    Card,
+    // Button,
+    // CardActions
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        overflow: 'hidden',
-        backgroundColor: theme.palette.background.paper,
+        maxWidth: 345
     },
-    gridList: {
-        width: 700,
-        height: 700
-    },
-    icon: {
-        color: 'rgba(255, 255, 255, 0.54)',
+    media: {
+        height: 340,
     },
 }));
 
 const CollectionOverview = ({ collections }) => {
-    console.log(collections);
+    let history = useHistory();
+    let match = useRouteMatch();
+
     const classes = useStyles();
     return (
-        <Container maxWidth="lg">
+        <div>
             <Grid
                 container
-                direction="column"
+                direction="row"
                 justify="center"
-                alignItems="center"
             >
-                <Typography variant="h4" >
+                <Typography variant="h5" >
                     COLECCIONES
-                </Typography>
-
-
-                <div className={classes.root}>
-                    <GridList cellHeight={380} className={classes.gridList}>
-                        {collections.map((collection) => (
-
-                            <GridListTile key={collection.id}>
-
-                                <img src={collection.items[0].image} alt={collection.items[0].name} />
-                                <GridListTileBar
-                                    title={collection.category}
-                                    // subtitle={<span>by: {tile.author}</span>}
-                                    actionIcon={
-                                        <IconButton aria-label={`info about ${collection.category}`}
-                                            className={classes.icon}>
-                                            <Info />
-                                        </IconButton>
-                                    }
-                                />
-                            </GridListTile>
-                        ))}
-                    </GridList>
-                </div>
+            </Typography>
             </Grid>
+            <Grid
+                container
+                direction="row"
+            >
+                {collections.map((collection) => (
+                    <Grid key={collection.id} item xs={12} sm={4}>
 
+                        <Card className={classes.root}>
+                            <CardActionArea onClick={() => history.push(`${match.url}/${collection.category}`)}>
+                                <CardMedia
+                                    className={classes.media}
+                                    alt={collection.items[0].name}
+                                    image={collection.items[0].image}
+                                />
 
-        </Container>
+                            </CardActionArea>
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="h2">
+                                    {collection.category}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
+        </div>
+
     );
 }
 

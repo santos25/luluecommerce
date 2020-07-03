@@ -30,7 +30,7 @@ const NavAdmin = ({ currentUser }) => {
                 <Link className={classes.link} component={RouterLink} to="/producto"> Productos</Link>
                 {
                     currentUser ? (
-                        <Button variant="contained" color="primary" onClick={() => auth.signOut()}>
+                        <Button variant="outlined" size="small" color="primary" onClick={() => auth.signOut()}>
                             Cerrar Sesion
                         </Button>
                     )

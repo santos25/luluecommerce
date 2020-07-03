@@ -8,9 +8,9 @@ import AdminPage from './pages/adminPage/AdminPage';
 import Nav from './components/Navegation/Nav';
 import NavAdmin from './components/Admin-components/NavAdmin/NavAdmin.component';
 import HomePage from './pages/homepage/HomePage';
-import MujerPage from './pages/MujerPage/MujerPage';
-import HombrePage from './pages/HombrePage/HombrePage';
-// import ShopPage from './pages/ShopPage/ShopPage';
+// import MujerPage from './pages/MujerPage/MujerPage';
+// import HombrePage from './pages/Page/HombrePage';
+import ShopPage from './pages/ShopPage/ShopPage';
 import CheckoutPage from './pages/CheckoutPage/checkout.component';
 
 import SignInComponent from './components/SignInComponent/SignInComponent';
@@ -72,12 +72,12 @@ const App = ({ setCurrentUser, currentUser }) => {
               <Route exact path="/">
                 <HomePage />
               </Route>
-              <Route path="/mujer">
-                <MujerPage />
+              <Route path="/:tagid">
+                <ShopPage />
               </Route>
-              <Route path="/hombre">
+              {/* <Route path="/hombre">
                 <HombrePage />
-              </Route>
+              </Route> */}
               <Route exact path="/signin" render={() => currentUser ? <Redirect to="/" /> : <SignInComponent />} />
               <Route exact path="/signup" render={() => currentUser ? <Redirect to="/" /> : <SignUp />} />
               <Route exact path="/checkout">
