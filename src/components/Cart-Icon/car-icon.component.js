@@ -6,12 +6,19 @@ import { itemCountSelector } from '../../Redux/Cart/cart-selectors';
 import { toggleCart } from '../../Redux/Cart/cart.action';
 // import { ReactComponent as ShopIcon } from '../../assets/images/shopping-bag.svg';
 
+import {ShoppingCart} from '@material-ui/icons'
+import {
+    IconButton,
+    Badge
+} from '@material-ui/core';
+
 const CartIconComponent = ({ toggleCart, itemCount }) => {
     return (
-        <div className="cart-icon" onClick={toggleCart}>
-            {/* <ShopIcon className="shopping-icon" /> */}
-            <span className="item-count">{itemCount}</span>
-        </div>
+        <IconButton onClick={toggleCart} aria-label="show 17 new notifications" color="inherit">
+            <Badge badgeContent={itemCount} color="secondary">
+                <ShoppingCart />
+            </Badge>
+        </IconButton>
     )
 }
 

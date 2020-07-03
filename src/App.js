@@ -72,17 +72,18 @@ const App = ({ setCurrentUser, currentUser }) => {
               <Route exact path="/">
                 <HomePage />
               </Route>
+              <Route exact path="/signin" render={() => currentUser ? <Redirect to="/" /> : <SignInComponent />} />
+              <Route exact path="/signup" render={() => currentUser ? <Redirect to="/" /> : <SignUp />} />
+              <Route exact path="/checkout">
+                <CheckoutPage />
+              </Route>
               <Route path="/:tagid">
                 <ShopPage />
               </Route>
               {/* <Route path="/hombre">
                 <HombrePage />
               </Route> */}
-              <Route exact path="/signin" render={() => currentUser ? <Redirect to="/" /> : <SignInComponent />} />
-              <Route exact path="/signup" render={() => currentUser ? <Redirect to="/" /> : <SignUp />} />
-              <Route exact path="/checkout">
-                <CheckoutPage />
-              </Route>
+
             </Switch>
           </Router>)
       }

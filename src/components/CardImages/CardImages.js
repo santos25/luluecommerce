@@ -39,7 +39,7 @@ const CardImages = ({ item, addItemsToCart }) => {
         />
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button onClick={() => { addItemsToCart(item) }} size="small" color="primary">
           Agregar al Carrito
       </Button>
       </CardActions>

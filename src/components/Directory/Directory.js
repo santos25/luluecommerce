@@ -24,11 +24,11 @@ const Directory = ({ discountItems, loadItems }) => {
         <div>
             {/* <Header /> */}
             <section className="suggestion">
-                <h1 className="">DESCUENTOS</h1>
+                <h1 className="">Los Mas Nuevo</h1>
                 <div className="container">
                     {
                         discountItems.filter((data, i) => i < 5)
-                            .map((image, index) => (<CardImages key={index} item={{ imageUrl: image.webformatURL }} />))
+                            .map((image, index) => (<CardImages key={index} item={{ image: image.webformatURL }} />))
                     }
                 </div>
             </section>

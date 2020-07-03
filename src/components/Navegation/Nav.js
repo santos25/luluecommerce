@@ -117,11 +117,8 @@ const Nav = ({ currentUser, hidden }) => {
                         />
                     </div>
                     <div className={classes.sectionDesktop}>
-                        <IconButton aria-label="show 17 new notifications" color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <ShoppingCart />
-                            </Badge>
-                        </IconButton>
+                            <CartIconComponent />
+                            {hidden ? <CartDropdown /> : null}
                         {
                             currentUser ? (
                                 <Button variant="outlined" size="small" color="primary" onClick={() => auth.signOut()}>

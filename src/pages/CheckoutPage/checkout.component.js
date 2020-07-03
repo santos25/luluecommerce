@@ -7,7 +7,7 @@ import CheckOutItems from '../../components/checkoutitems/checkOutItems'
 import './checkout.styles.css'
 
 const CheckOutPage = ({cartitems , totalprice}) => {
-    // console.log(cartitems);
+    console.log(cartitems);
     
     return (
         <div className='checkout-page'>
