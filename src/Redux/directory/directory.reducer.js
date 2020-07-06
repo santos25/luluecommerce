@@ -1,6 +1,7 @@
 import directoryTypes from './directory.types';
+import TEMPDATA from './tempdata';
 const INITIAL_STATE = {
-    discountItems: []
+    discountItems: TEMPDATA
 }
 
 const directoryReducer = (state = INITIAL_STATE , action) => {

@@ -4,18 +4,16 @@ import { connect } from 'react-redux';
 import { setCurrentUser } from './Redux/user/user.actions';
 import { currentUserSelector } from './Redux/user/user-selectors';
 
+//components
 import AdminPage from './pages/adminPage/AdminPage';
 import Nav from './components/Navegation/Nav';
 import NavAdmin from './components/Admin-components/NavAdmin/NavAdmin.component';
 import HomePage from './pages/homepage/HomePage';
-// import MujerPage from './pages/MujerPage/MujerPage';
-// import HombrePage from './pages/Page/HombrePage';
 import ShopPage from './pages/ShopPage/ShopPage';
 import CheckoutPage from './pages/CheckoutPage/checkout.component';
-
 import SignInComponent from './components/SignInComponent/SignInComponent';
 import SignUp from './components/SignUpComponent/SignUp';
-// import Footer from './components/Footer/Footer';
+import Footer from './components/Footer/Footer';
 
 
 import {
@@ -80,11 +78,8 @@ const App = ({ setCurrentUser, currentUser }) => {
               <Route path="/:tagid">
                 <ShopPage />
               </Route>
-              {/* <Route path="/hombre">
-                <HombrePage />
-              </Route> */}
-
             </Switch>
+            <Footer />
           </Router>)
       }
 

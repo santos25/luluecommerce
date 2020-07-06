@@ -91,7 +91,7 @@ const Nav = ({ currentUser, hidden }) => {
     const classes = useStyle();
     return (
         <div >
-            <AppBar position="static" color="default">
+            <AppBar position="fixed" color="inherit">
                 <Toolbar>
                     <Link component={RouterLink} to="/">
                         <Typography className={classes.title} variant="inherit" noWrap>

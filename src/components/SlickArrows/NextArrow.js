@@ -5,7 +5,7 @@ const NextArrow = (props) => {
     return (
         <div
             className={className}
-            style={{ ...style, display: "block", background: "black" }}
+            style={{ ...style, display: "block", color: "black" , marginRight:25 , zIndex: 5 }}
             onClick={onClick}
         />
     );

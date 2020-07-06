@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 
 const CardImages = ({ item, addItemsToCart }) => {
   const classes = useStyles();
-  console.log(item);
+  // console.log(item);
   
   return (
     <Card className={classes.root}>
@@ -37,12 +37,17 @@ const CardImages = ({ item, addItemsToCart }) => {
           className={classes.media}
           image={item.image}
         />
+        <CardContent>
+          <Typography  component="h2">
+            {item.name}
+          </Typography>
+        </CardContent>
       </CardActionArea>
-      <CardActions>
+      {/* <CardActions>
         <Button onClick={() => { addItemsToCart(item) }} size="small" color="primary">
           Agregar al Carrito
       </Button>
-      </CardActions>
+      </CardActions> */}
     </Card>
   
     //   <ButtonCustom onClick={() => { addItemsToCart(item) }} >Agregar al Carro</ButtonCustom>

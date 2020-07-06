@@ -1,8 +1,10 @@
 import SHOPTYPES from './shop.types';
+import TEMPDATA from './tempdata';
+
 
 const INITIAL_STATE = {
-    dataShop: [],
-    isFetching: true,
+    dataShop: TEMPDATA,
+    isFetching: false,
     errorMessage: ''
 
 }

@@ -21,7 +21,7 @@ const ShopPage = ({ fetchCollections, isLoading }) => {
 
         console.log("Fetching ShopPage");
 
-        fetchCollections(tagid);
+        // fetchCollections(tagid);
     }, [tagid, fetchCollections]);
 
     console.log({ isLoading });

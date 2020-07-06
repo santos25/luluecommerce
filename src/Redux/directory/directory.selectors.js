@@ -2,8 +2,8 @@ import {createSelector} from 'reselect';
 
 const discountClothes = state => state.directory;
 
-export const discountItemsSelector = createSelector(
+export const newCollectionsHomeSelector = createSelector(
     [discountClothes],
-    discount => discount.discountItems
+    discount => Object.keys( discount.discountItems).map( collec => discount.discountItems[collec])
 )
 
