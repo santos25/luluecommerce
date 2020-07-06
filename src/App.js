@@ -52,7 +52,7 @@ const App = ({ setCurrentUser, currentUser }) => {
     <div>
       {
         currentUser && currentUser.isAdmin ?
-          (<Router>
+          (<Router basename="/luluecommerce">
             <NavAdmin />
             <Switch>
               <Route exact path="/">
@@ -64,7 +64,7 @@ const App = ({ setCurrentUser, currentUser }) => {
             </Switch>
           </Router>)
           :
-          (<Router>
+          (<Router basename="/luluecommerce">
             <Nav />
             <Switch>
               <Route exact path="/">
