@@ -6,16 +6,18 @@ import { isLoadingCollections } from '../../Redux/shop/shop.selectors';
 
 import CollectionOverview from '../../components/CollectionOverview/CollectionOverview';
 import CollectionPage from '../CollectionPage/CollectionPage';
+import ProductDetail from '../../components/productDetail/ProductDetail';
 
 import WithSpinner from '../../components/with-spinner/withSpinner';
 
 const CollectionOverviewWitSpinner = WithSpinner(CollectionOverview);
 const CollectionPageWitSpinner = WithSpinner(CollectionPage);
+const ProductDetailWitSpinner = WithSpinner(ProductDetail);
 
 const ShopPage = ({ fetchCollections, isLoading }) => {
 
     let match = useRouteMatch();
-    let {tagid} = match.params;
+    let { tagid } = match.params;
 
     useEffect(() => {
 
@@ -30,10 +32,13 @@ const ShopPage = ({ fetchCollections, isLoading }) => {
     return (
         <Switch>
             <Route exact path={match.url}>
-                <CollectionOverviewWitSpinner isLoading={isLoading}  />
+                <CollectionOverviewWitSpinner isLoading={isLoading} />
             </Route>
-            <Route path={`${match.url}/:collectionId`}
+            <Route exact path={`${match.url}/:collectionId`}
                 render={(props) => <CollectionPageWitSpinner isLoading={isLoading} {...props} />}>
+            </Route>
+            <Route path={`${match.url}/:collectionId/:productId`}
+                render={(props) => <ProductDetailWitSpinner isLoading={isLoading} {...props} />}>
             </Route>
         </Switch>
     )

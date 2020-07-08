@@ -6,12 +6,16 @@ const dataTemp = {
       "items": [
         {
           "price": "45.000",
-          "image": "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2FsueterMujer1.png?alt=media&token=69d90daf-f18e-4c62-b2f7-6f46841b9492",
+          "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727",
+          "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727",
+          "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727"],
           "id": 0,
           "name": "Sueter Jean Gold"
         },
         {
-          "image": "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2FsueterMujer2.png?alt=media&token=d8155716-3631-446f-8051-10da6043fe4e",
+          "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727",
+          "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727",
+          "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727"],
           "price": "35.000",
           "name": "Sueter colorfull",
           "id": 1
@@ -20,17 +24,23 @@ const dataTemp = {
           "price": "30.000",
           "name": "Sueter Lana Azul",
           "id": 2,
-          "image": "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2FsueterMujer3.png?alt=media&token=a1b6c062-838c-4a75-bd9f-14d20226ba12"
+          "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727",
+          "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727",
+          "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727"],
         },
         {
           "price": "33.000",
           "name": "Sueter Jean Light",
-          "image": "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fsuetermujer4.png?alt=media&token=4ab64c0a-0013-4930-a4e9-a90e82e3f0d0",
+          "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727",
+          "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727",
+          "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727"],
           "id": 3
         },
         {
           "price": "40.000",
-          "image": "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2FsueterMujer5.png?alt=media&token=74d3732a-836c-49b7-a241-7d84010fca11",
+          "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727",
+          "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727",
+          "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727"],
           "id": 4,
           "name": "Top Verde xxx"
         }

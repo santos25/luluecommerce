@@ -12,6 +12,11 @@ export const dataCollectionSelector = collectionId => createSelector(
     item => item.dataShop[collectionId]
 )
 
+export const dataProductDetailSelector = (collectionId, productId) => createSelector(
+    [data],
+    item => item.dataShop[collectionId].items.find(item => item.name.toLowerCase() === productId.toLowerCase())
+)
+
 export const isLoadingCollections = createSelector(
     [data],
     data => data.isFetching

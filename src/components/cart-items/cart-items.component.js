@@ -1,7 +1,7 @@
 import React from 'react';
 import './cart-item.styles.css';
 
-import { ListItemAvatar, makeStyles, Avatar, ListItemText , ListItem} from '@material-ui/core';
+import { makeStyles, Avatar, Box, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     large: {
@@ -15,32 +15,20 @@ const CardItems = ({ image, name, price, quantity }) => {
     const classes = useStyles();
 
     return (
-        <ListItem >
-            <ListItemAvatar>
-                <Avatar alt={name} src={image} className={classes.large} />
-            </ListItemAvatar>
-            <ListItemText primary={name} />
-            <ListItemText primary={price} />
-            <ListItemText primary={quantity } />
+        <Box display="flex" justifyContent="space-between">
 
-            {/* <ListItemSecondaryAction>
-                <IconButton aria-label="delete" onClick={() => handleRemoveItems(
-                    {
-                        idcollection: data.id,
-                        productoid: product.id,
-                    }, product.items[i])}>
-                    <DeleteIcon />
-                </IconButton>
-            </ListItemSecondaryAction> */}
-        </ListItem>
-        // <Grid container direction="row">
-        //     <Grid item xs={3}>
-        //     </Grid>
-        //     <Grid item xs={3}><Typography component="h2"> {name}</Typography> </Grid>
-        //     <Grid item xs={3}><Typography component="h2"> </Typography> </Grid>
-        //     <Grid item xs={3}>{quantity} </Grid>
+            <Avatar alt={name} src={image} className={classes.large} />
 
-        // </Grid>
+            <Typography component="h6">
+                {name}
+            </Typography>
+            <Typography component="h6">
+                {`$${price}`}
+            </Typography>
+            <Typography component="h6">
+                {quantity}
+            </Typography>
+        </Box>
     )
 }
 

@@ -14,7 +14,6 @@ import {
     Typography, GridList,
     GridListTile,
     GridListTileBar,
-    ListSubheader,
     IconButton,
     Grid
 } from '@material-ui/core';
@@ -33,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     //     // width: 500,
     //     // height: 450,
     // },
+    gridListTile : {
+        cursor: "pointer"
+    },
     icon: {
         color: 'rgba(255, 255, 255, 0.54)',
     },
@@ -50,7 +52,7 @@ const CollectionOverview = ({ collections }) => {
     
     return (
         <Box>
-            <Header/>
+            {/* <Header/> */}
             <Grid container direction="column" alignItems="center" m>
                 <Grid xs={12} item className={classes.title}>
                     <Typography variant="h5" > COLECCIONES  </Typography>
@@ -60,7 +62,9 @@ const CollectionOverview = ({ collections }) => {
                         <div className={classes.root}>
                             <GridList cols={3} cellHeight={400}>
                                 {collections.map((collection, i) => (
-                                    <GridListTile key={i}>
+                                    <GridListTile key={i} 
+                                            className={classes.gridListTile}
+                                            onClick={() => history.push(`${match.url}/${collection.category}`)}>
                                         <img src={collection.items[0].image} alt={collection.items[0].name} />
                                         <GridListTileBar
                                             title={collection.category.toUpperCase()}

@@ -10,7 +10,6 @@ import CartDropdown from '../Card-Dropdown/card-dropdown';
 
 import {
     Search,
-    ShoppingCart,
     AccountCircle
 } from '@material-ui/icons';
 import { fade } from '@material-ui/core/styles';

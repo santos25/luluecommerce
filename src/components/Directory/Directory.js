@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { newCollectionsHomeSelector } from '../../Redux/directory/directory.selectors';
@@ -58,7 +58,7 @@ const Directory = ({ newCollections, loadItems }) => {
     // let { discountItems } = this.props;
     return (
         <Box>
-            <Header />
+            {/* <Header /> */}
             <Box m={4} display="flex" justifyContent="center">
                 <Typography variant="h5">
                     COLECCIONES
@@ -92,18 +92,9 @@ const Directory = ({ newCollections, loadItems }) => {
                     </Typography>
             </Box>
             <Box>
-                <SlickCollection collections={newCollections[0].items} />
+                {/* <SlickCollection collections={newCollections[0].items} /> */}
             </Box>
         </Box>
-        // <section className="suggestion">
-        //     <h1 className="">Los Mas Nuevo</h1>
-        //     <div className="container">
-        //         {
-        //             discountItems.filter((data, i) => i < 5)
-        //                 .map((image, index) => (<CardImages key={index} item={{ image: image.webformatURL }} />))
-        //         }
-        //     </div>
-        // </section>
     );
 }
 

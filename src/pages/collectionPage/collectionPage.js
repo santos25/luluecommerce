@@ -11,16 +11,14 @@ import {
 const CollectionPage = ({ collection }) => {
 
     const { items } = collection;
-    // console.log(collection);
 
     return (
-            <Grid
-                container
+            <Grid container
                 direction="row"
             >
                     {
-                        items.map(item => (
-                            <Grid key={item.id} item xs={12} sm={4}>
+                        items.map((item, i) => (
+                            <Grid key={i} item xs={12} sm={3}>
                                 <CardImages item={item} />
                             </Grid>
                         )

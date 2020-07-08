@@ -6,16 +6,19 @@ const dataTemp = {
       {
         "id": 0,
         "name": "New York",
+        "descripcion" : "Gorra Nike Featherlight Running-Negro Corre cómodamente y con estilo con la gorra Featherlight Running. Está hecha de tela suave con secciones perforadas para una mejor transpiración y la tecnología Dri-FIT que proporciona una sensación cómoda y fresca. Visera curva. La tecnología Dri-FIT te mantiene seco y cómodo. Cierre trasero ajustable. Secciones perforadas ayudan a mejorar el flujo de aire. Logotipo de Nike. Garantía de 1 mes por defectos de fábrica.",
         "price": "20.000",
-        "image": "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727"
+        "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727",
+          "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727",
+          "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727"]
       },
       {
-        "image": "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra1.jpg?alt=media&token=16039f6a-75e5-4bde-88ab-dfdec68b65bf",
+        "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra1.jpg?alt=media&token=16039f6a-75e5-4bde-88ab-dfdec68b65bf"],
         "name": "Dark Hat",
         "price": "15.000"
       },
       {
-        "image": "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra2.jpg?alt=media&token=4c32c824-4d22-4920-a755-464b18a5e9d5",
+        "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra2.jpg?alt=media&token=4c32c824-4d22-4920-a755-464b18a5e9d5"],
         "name": "Beach Day",
         "price": "15.000",
         "id": 0
@@ -23,14 +26,37 @@ const dataTemp = {
       {
         "name": "Nobody Want it",
         "price": "25.000",
-        "image": "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra3.jpg?alt=media&token=681edb72-2b82-41d4-9d47-dc863e581714",
+        "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra3.jpg?alt=media&token=681edb72-2b82-41d4-9d47-dc863e581714"],
         "id": 1
       },
       {
         "id": 2,
         "name": "Collection",
         "price": "20.000",
-        "image": "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra4.jpg?alt=media&token=7a7af459-fd90-4f4b-be68-9483d9d8b647"
+        "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra4.jpg?alt=media&token=7a7af459-fd90-4f4b-be68-9483d9d8b647"]
+      },
+      {
+        "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra1.jpg?alt=media&token=16039f6a-75e5-4bde-88ab-dfdec68b65bf"],
+        "name": "Dark Hat",
+        "price": "15.000"
+      },
+      {
+        "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra2.jpg?alt=media&token=4c32c824-4d22-4920-a755-464b18a5e9d5"],
+        "name": "Beach Day",
+        "price": "15.000",
+        "id": 0
+      },
+      {
+        "name": "Nobody Want it",
+        "price": "25.000",
+        "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra3.jpg?alt=media&token=681edb72-2b82-41d4-9d47-dc863e581714"],
+        "id": 1
+      },
+      {
+        "id": 2,
+        "name": "Collection",
+        "price": "20.000",
+        "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra4.jpg?alt=media&token=7a7af459-fd90-4f4b-be68-9483d9d8b647"]
       }
     ]
   },
@@ -39,7 +65,7 @@ const dataTemp = {
     "category": "Pantalones",
     "items": [
       {
-        "image": "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fpant1.jpg?alt=media&token=fa9ca890-da45-436b-b126-a6b7fdfe341c",
+        "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fpant1.jpg?alt=media&token=fa9ca890-da45-436b-b126-a6b7fdfe341c"],
         "id": 0,
         "name": "Forest Pant",
         "price": "15.000"
@@ -48,7 +74,7 @@ const dataTemp = {
         "id": 1,
         "price": "45.000",
         "name": "Back Pant",
-        "image": "https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fpant2.jpg?alt=media&token=73eda141-6b96-4354-ad88-4a0960d7085b"
+        "image": ["https://firebasestorage.googleapis.com/v0/b/lulustore-ed754.appspot.com/o/images-lulu%2Fgorra.jpg?alt=media&token=7cbc9ab2-035c-46fb-83d7-6c9312695727"]
       },
       {
         "price": "25.000",
@@ -107,7 +133,7 @@ const dataTemp = {
     ]
   }
 }
-    
+
 
 
 
