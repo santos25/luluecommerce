@@ -10,7 +10,9 @@ import ProductList from './ProductList';
 import WithSpinner from '../../with-spinner/withSpinner';
 
 import {
-    Button
+    Container,
+    Button,
+    Box
 } from '@material-ui/core';
 
 
@@ -40,27 +42,32 @@ const ProductPage = ({ fetchProductsAsync, products, isFetchingProducts, removeI
     return (
         <div>
             {currentPage === 'home' ? (
-                <div>
-                    <Button
-                        onClick={() => handleCurrentPage("", "create")}
-                        variant="outlined"
-                        size="small"
-                        color="primary"
-                    >
-                        Registrar Marca o genero
+                <Box>
+                    <Container maxWidth="sm">
+                        <Button
+                            onClick={() => handleCurrentPage("", "create")}
+                            variant="outlined"
+                            size="small"
+                            color="primary"
+                        >
+                            Registrar Marca o genero
                   </Button>
-                    <ProductListWithSpinner isLoading={isFetchingProducts} datas={products}
-                        handleCurrentPage={handleCurrentPage}
-                        handleRemoveItems={handleRemoveItems}
-                    />
-                </div>
+
+                    </Container>
+                    <Box>
+                        <ProductListWithSpinner isLoading={isFetchingProducts} datas={products}
+                            handleCurrentPage={handleCurrentPage}
+                            handleRemoveItems={handleRemoveItems}
+                        />
+                    </Box>
+                </Box>
             ) :
                 <CreateProduct productEdit={product}
                     handleCurrentPage={handleCurrentPage}
                     backStep={() => setCurrentPage("home")} />
 
             }
-        </div>
+        </div >
     )
 }
 

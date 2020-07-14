@@ -61,7 +61,7 @@ export const createCollectionAndDocuments = async (collectionKey, documentsToAdd
 
 export const convertCollectionsToObjects = (collection) => {
     const convertedDataArray = collection.docs.map(document => {
-        const { category , items } = document.data();
+        const { category, items } = document.data();
         return {
             id: document.id,
             category,
@@ -89,34 +89,65 @@ export const uploadProductDB = async (product, items) => {
 
     const proDocRef = newDocRef.collection("productos").doc();
     batch.set(proDocRef, { category, items });
- 
+
     return await batch.commit();
 }
 
-export const uploadImages = async (items) => {
+export const uploadImages = async (items, category) => {
     // console.log(product);
-    const promises = [];
-    items.forEach(item => {
-        const uploadImages = storage.ref().child('images-lulu/' + item.image.name).put(item.image);
-        promises.push(uploadImages)
-        uploadImages.on(firebase.storage.TaskEvent.STATE_CHANGED,
-            snapshot => {
-                let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
-            },
-            error => console.log(error)
-        );
-    });
 
-    return Promise.all(promises).then(responses => {
-        return responses.map(snapshot => snapshot.ref.getDownloadURL());
-    }).then(responseImgs => {
-        return Promise.all(responseImgs).then(downloadURL => {
-            let itemsImgLoaded = items.map((item, index) => ({ ...item, image: downloadURL[index] }))
-            // let dt = uploadProductDB(product, itemsImgLoaded);
-            return itemsImgLoaded;
-        })
-    }).catch(err => console.log(err.code));
+    try {
+        const promisesItem = items.map(item => (
+            item.image.map(image => {
+                const uploadImage = storage.ref(`images-lulu/${category}/${item.name}`).child(image.name).put(image);
+                uploadImage.on(firebase.storage.TaskEvent.STATE_CHANGED,
+                    snapshot => {
+                        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        console.log('Upload is ' + progress + '% done');
+                    },
+                    error => console.log(error)
+                );
+                return uploadImage;
+            })
+        ))
+        console.log(promisesItem);
+        for (let index = 0; index < promisesItem.length; index++) {
+            console.log("loop", promisesItem[index]);
+            const resultImages = await Promise.all(promisesItem[index])
+            const resultUrlImages = await Promise.all(resultImages.map(snapshot => snapshot.ref.getDownloadURL()))
+            console.log(resultUrlImages);
+            items[index].image = resultUrlImages;
+            console.log("ciclo");
+        }
+        return [...items]
+
+    } catch (error) {
+        console.log("Error Uploading Images ", error);
+    }
+
+    // items.forEach(item => {
+    //     item.image.forEach(image => {
+    //         const uploadImages = storage.ref(`images-lulu/${category}/${item.name}`).child(image.name).put(image);
+    //         promises.push(uploadImages)
+    //         uploadImages.on(firebase.storage.TaskEvent.STATE_CHANGED,
+    //             snapshot => {
+    //                 let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    //                 console.log('Upload is ' + progress + '% done');
+    //             },
+    //             error => console.log(error)
+    //         );
+    //     })
+    // });
+
+    // return Promise.all(promises).then(responses => {
+    //     return responses.map(snapshot => snapshot.ref.getDownloadURL());
+    // }).then(responseImgs => {
+    //     return Promise.all(responseImgs).then(downloadURL => {
+    //         let itemsImgLoaded = items.map((item, index) => ({ ...item, image: downloadURL[index] }))
+    //         // let dt = uploadProductDB(product, itemsImgLoaded);
+    //         return itemsImgLoaded;
+    //     })
+    // }).catch(err => console.log(err.code));
 }
 
 

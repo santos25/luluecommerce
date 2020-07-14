@@ -24,10 +24,12 @@ const NavAdmin = ({ currentUser }) => {
     // console.log({ currentUser, hidden });
     const classes = useStyle();
     return (
-        <AppBar position="static" color="transparent">
+        <AppBar position="fixed" color="default">
             <Toolbar>
                 <Link className={classes.link} component={RouterLink} to="/"> LULU STORE Administrador</Link>
                 <Link className={classes.link} component={RouterLink} to="/producto"> Productos</Link>
+                <Link className={classes.link} component={RouterLink} to="/prendas"> Prendas</Link>
+
                 {
                     currentUser ? (
                         <Button variant="outlined" size="small" color="primary" onClick={() => auth.signOut()}>

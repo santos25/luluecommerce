@@ -5,7 +5,10 @@ import { setCurrentUser } from './Redux/user/user.actions';
 import { currentUserSelector } from './Redux/user/user-selectors';
 
 //components
-import AdminPage from './pages/adminPage/AdminPage';
+// import AdminPage from './pages/adminPage/AdminPage';
+import ProductHome from './components/Admin-components/products/ProductHomePage.component'
+import ListPrendas from './components/Admin-components/prendas/ListPrendas'
+
 import Nav from './components/Navegation/Nav';
 import NavAdmin from './components/Admin-components/NavAdmin/NavAdmin.component';
 import HomePage from './pages/homepage/HomePage';
@@ -51,7 +54,7 @@ const App = ({ setCurrentUser, currentUser }) => {
   return (
     <div>
       {
-        currentUser && currentUser.isAdmin ?
+        // currentUser && currentUser.isAdmin ?
           (<Router basename="/luluecommerce">
             <NavAdmin />
             <Switch>
@@ -59,28 +62,31 @@ const App = ({ setCurrentUser, currentUser }) => {
                 Bienvenidos Panel de administracion
               </Route>
               <Route path="/producto">
-                <AdminPage />
+                <ProductHome />
+              </Route>
+              <Route path="/prendas">
+                <ListPrendas  />
               </Route>
             </Switch>
           </Router>)
-          :
-          (<Router basename="/luluecommerce">
-            <Nav />
-            <Switch>
-              <Route exact path="/">
-                <HomePage />
-              </Route>
-              <Route exact path="/signin" render={() => currentUser ? <Redirect to="/" /> : <SignInComponent />} />
-              <Route exact path="/signup" render={() => currentUser ? <Redirect to="/" /> : <SignUp />} />
-              <Route exact path="/checkout">
-                <CheckoutPage />
-              </Route>
-              <Route path="/:tagid">
-                <ShopPage />
-              </Route>
-            </Switch>
-            <Footer />
-          </Router>)
+          // :
+          // (<Router basename="/luluecommerce">
+          //   <Nav />
+          //   <Switch>
+          //     <Route exact path="/">
+          //       <HomePage />
+          //     </Route>
+          //     <Route exact path="/signin" render={() => currentUser ? <Redirect to="/" /> : <SignInComponent />} />
+          //     <Route exact path="/signup" render={() => currentUser ? <Redirect to="/" /> : <SignUp />} />
+          //     <Route exact path="/checkout">
+          //       <CheckoutPage />
+          //     </Route>
+          //     <Route path="/:tagid">
+          //       <ShopPage />
+          //     </Route>
+          //   </Switch>
+          //   <Footer />
+          // </Router>)
       }
 
     </div>
