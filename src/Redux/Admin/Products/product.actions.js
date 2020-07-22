@@ -1,5 +1,5 @@
 import PRODUCT_TYPE from './product.type';
-import { firestore, removeItem, addNewItems, uploadImages , addCategoryDoc } from '../../../FireBase/FireBaseUtil';
+import { firestore, removeItem, addNewItems, uploadImages, addCategoryDoc } from '../../../FireBase/FireBaseUtil';
 
 const fetchingProductsStart = () => ({
     type: PRODUCT_TYPE.FETCHING_PRODUCTS_START
@@ -27,21 +27,24 @@ export const fetchingProductsAsync = () => {
         const collectionsRef = firestore.collection('collections');
         collectionsRef.get().then((snapshot) => {
 
-            const valueArray = snapshot.docs.map(async (document) => {
-                let   collection = { id: document.id, ...document.data() }
-                console.log(collection);
-                
-                const productos = await document.ref.collection('productos').get()
-                collection.productos = productos.docs.map(producto => ({ id: producto.id, ...producto.data() }))
-                return collection;
-            })
-            return valueArray;
-        }).then(response => {
-            
-            Promise.all(response).then(res => {
-                dispatch(fetchingProductsSuccess([...res]));
-            })
+            const productValues = snapshot.docs.map(document => ({ id: document.id, ...document.data() }))
+            dispatch(fetchingProductsSuccess(productValues));
+
+            // const valueArray = snapshot.docs.map(async (document) => {
+            //     let   collection = { id: document.id, ...document.data() }
+            //     console.log(collection);
+
+            //     const productos = await document.ref.collection('productos').get()
+            //     collection.productos = productos.docs.map(producto => ({ id: producto.id, ...producto.data() }))
+            //     return collection;
+            // })
         })
+        // .then(response => {
+
+        //     Promise.all(response).then(res => {
+        //         dispatch(fetchingProductsSuccess([...res]));
+        //     })
+        // })
     }
 }
 
@@ -69,22 +72,22 @@ export const addNewItemsAsync = ({ idcollection, productoid, items }) => {
     }
 }
 
-export const addCategory = ({ idcollection,  category,  items }) => {
+export const addCategory = ({ idcollection, category, items }) => {
     return (dispatch) => {
         dispatch(uploadProductsStart());
 
         const productRef = firestore.collection('collections').doc(idcollection).collection('productos').doc();
         console.log(items);
-        
+
         productRef.get().then(async (snapshot) => {
             console.log(snapshot.exists);
 
             if (snapshot.exists) {
                 console.log("Existe");
             } else {
-                const itemsImgLoaded = await uploadImages(items)   
-                console.log(itemsImgLoaded);             
-                addCategoryDoc(productRef,category, itemsImgLoaded)
+                const itemsImgLoaded = await uploadImages(items)
+                console.log(itemsImgLoaded);
+                addCategoryDoc(productRef, category, itemsImgLoaded)
                 dispatch(uploadProductsSuccess());
 
             }

@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import {useHistory} from 'react-router-dom'
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { newCollectionsHomeSelector } from '../../Redux/directory/directory.selectors';
-import { loadDiscountClothes } from '../../Redux/directory/directory.action';
 
+//selectors
+import { categorySelector, newCollectionSelector } from '../../Redux/directory/directory.selectors';
+//actions
+import { loadDirectory, loadNewCollection } from '../../Redux/directory/directory.action';
+//firebase
+import { firestore } from '../../FireBase/FireBaseUtil';
 //components
 import Header from '../../components/Header/Header';
-// import CardImages from '../CardImages/CardImages';
 import SlickCollection from '../SlickCollection/SlickCollection'
 
-import {StarBorderTwoTone} from '@material-ui/icons'
+import { StarBorderTwoTone } from '@material-ui/icons'
+
 import {
     Box, Typography, makeStyles,
     GridListTileBar,
@@ -32,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
         // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
         transform: 'translateZ(0)',
     },
+    gridListTitle : {
+        cursor : 'Pointer'
+    },
     titleBar: {
         background:
             'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
@@ -42,42 +50,49 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Directory = ({ newCollections, loadItems }) => {
-    console.log(newCollections);
+const Directory = ({ categoryCollection, loadDirectory, loadNewCollection, newCollection }) => {
+    console.log(categoryCollection);
     const classes = useStyles();
+    const history = useHistory()
 
-    // useEffect(() => {
-    //     console.log("Fetching Discount");
+    useEffect(() => {
+        console.log("Fetching Directory Data");
+        const docRef = firestore.collection('genre').doc('mujer')
+        docRef.get().then(document => {
+            // const docuResult = document.data();
+            console.log(document.data());
+            loadDirectory(document.data());
+        })
 
-    //     fetch('https://pixabay.com/api/?key=16434003-adc3d5ed6b80ff05886e00162&category=fashion&min_height=100')
-    //         .then(data => data.json())
-    //         .then(result => loadItems(result.hits))
-    //         .catch(error => console.log(error));
-    // }, [loadItems]);
+    }, [loadDirectory , loadNewCollection]);
 
-    // let { discountItems } = this.props;
+    const handleCategory = (collection) => {
+        console.log(collection);
+        history.push(`${collection.id}/${collection.name.toLowerCase()}`)
+    }
+
     return (
         <Box>
             {/* <Header /> */}
-            <Box m={4} display="flex" justifyContent="center">
+            <Box mt={6} mb={2} display="flex" justifyContent="center">
                 <Typography variant="h5">
                     COLECCIONES
                     </Typography>
             </Box>
             <Box>
                 <div className={classes.root}>
-                    <GridList cellHeight={200} spacing={4} cols={4} className={classes.gridList}>
-                        {newCollections.map((collection, i) => (
-                            <GridListTile key={i} cols={collection.featured ? 2 : 1} rows={collection.featured ? 2 : 1}>
-                                <img src={collection.items[0].image} alt="" />
+                    <GridList cellHeight={200} spacing={4} cols={4} className={classes.gridList} >
+                        {categoryCollection && categoryCollection.map((collection, i) => (
+                            <GridListTile className={classes.gridListTitle} key={i} cols={2} rows={2} onClick={() => handleCategory(collection)} >
+                                <img src={collection.image} alt="" />
                                 <GridListTileBar
-                                    title={collection.items[0].name}
+                                    title={collection.name.toUpperCase()}
                                     titlePosition="top"
-                                    actionIcon={
-                                        <IconButton aria-label={`star ${collection.items[0].name}`} className={classes.icon}>
-                                            <StarBorderTwoTone />
-                                        </IconButton>
-                                    }
+                                    // actionIcon={
+                                    //     <IconButton aria-label={`star ${collection.items[0].name}`} className={classes.icon}>
+                                    //         <StarBorderTwoTone />
+                                    //     </IconButton>
+                                    // }
                                     actionPosition="left"
                                     className={classes.titleBar}
                                 />
@@ -86,24 +101,26 @@ const Directory = ({ newCollections, loadItems }) => {
                     </GridList>
                 </div>
             </Box>
-            <Box m={3} display="flex" justifyContent="flex-start">
+            <Box  mt={4} mb={2} ml={2} display="flex" justifyContent="flex-start">
                 <Typography variant="h5">
                     New Colecciones
                     </Typography>
             </Box>
             <Box>
-                {/* <SlickCollection collections={newCollections[0].items} /> */}
+                {/* <SlickCollection collections={newCollection} /> */}
             </Box>
         </Box>
     );
 }
 
 const mapStateToProps = createStructuredSelector({
-    newCollections: newCollectionsHomeSelector
+    categoryCollection: categorySelector,
+    newCollection: newCollectionSelector
 })
 
 const mapDispatchToState = (dispatch) => ({
-    loadItems: (data) => dispatch(loadDiscountClothes(data))
+    loadDirectory: (items) => dispatch(loadDirectory(items)),
+    loadNewCollection: (items) => dispatch(loadNewCollection(items))
 })
 
 export default connect(mapStateToProps, mapDispatchToState)(Directory);

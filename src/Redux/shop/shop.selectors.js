@@ -4,17 +4,30 @@ const data = state => state.shop;
 
 export const dataShopSelector = createSelector(
     [data],
-    data => Object.keys(data.dataShop).map(key => data.dataShop[key])
+    data => Object.keys(data.dataShop.categories).map(key => {
+
+        const imageByCategory = Object.keys(data.dataShop.categories[key]).filter((item, i) => i < 1)
+            .map(item => data.dataShop.categories[key][item].image[0])
+        return {
+            name: key,
+            image: imageByCategory[0]
+        }
+
+    })
 )
 
 export const dataCollectionSelector = collectionId => createSelector(
     [data],
-    item => item.dataShop[collectionId]
+    data => Object.keys(data.dataShop.categories[collectionId.toLowerCase()])
+        .map(itemKey => data.dataShop.categories[collectionId.toLowerCase()][itemKey])
 )
 
 export const dataProductDetailSelector = (collectionId, productId) => createSelector(
     [data],
-    item => item.dataShop[collectionId].items.find(item => item.name.toLowerCase() === productId.toLowerCase())
+    data => Object.keys(data.dataShop.categories[collectionId]).map(itemKey =>
+                    data.dataShop.categories[collectionId][itemKey]
+                 ).find( item => item.name === productId)
+    //    [collectionId].items.find(item => item.name.toLowerCase() === productId.toLowerCase())
 )
 
 export const isLoadingCollections = createSelector(

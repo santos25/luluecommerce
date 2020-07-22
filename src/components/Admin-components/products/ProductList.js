@@ -27,29 +27,28 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ProductList = ({ datas, handleCurrentPage, handleRemoveItems }) => {
+const ProductList = ({ products, handleCurrentPage, handleRemoveItems }) => {
     const classes = useStyles();
-
 
     return (
         <div>
             {
-                datas.map((data, i) => {
+                products.map((product, i) => {
                     return (
                         <Grid key={i} container>
                             <Grid item xs={12}>
                                 <Box display="flex" justifyContent="center">
                                     <Box>
-                                        <Typography component="h4"> TIENDA : {data.brand}</Typography>
+                                        <Typography component="h4"> TIENDA : {product.brand}</Typography>
 
-                                        <Typography component="h4"> GENERO : {data.genre}</Typography>
+                                        <Typography component="h4"> GENERO : {product.genre}</Typography>
                                     </Box>
                                     <Box >
                                         <Button
                                             onClick={() => handleCurrentPage({
-                                                idcollection: data.id,
-                                                brand: data.brand,
-                                                genre: data.genre
+                                                idcollection: product.id,
+                                                brand: product.brand,
+                                                genre: product.genre
                                             }, 'create')}
                                             variant="outlined"
                                             color="primary"
@@ -60,67 +59,66 @@ const ProductList = ({ datas, handleCurrentPage, handleRemoveItems }) => {
                                     </Box>
                                 </Box>
                             </Grid>
+                            {
+                                Object.keys(product.categories).map((category, index) => {
 
-                                {
-                                    data.productos.map((product, index) => {
-                                        return (
-                                            <Box key={index} >
-                                                <Box display="flex" >
-                                                    <Typography component="h4"> CATEGORIA :  {product.category}</Typography>
-                                                    <Box ml={2}>
-                                                        <Button
-                                                            onClick={() => handleCurrentPage({
-                                                                idcollection: data.id,
-                                                                brand: data.brand,
-                                                                genre: data.genre,
-                                                                productoid: product.id,
-                                                                category: product.category
-                                                            }, 'create')}
-                                                            variant="outlined"
-                                                            color="primary"
-                                                            size="small"
-                                                        >
-                                                            Agregar Items
+                                    return (
+                                        <Box key={index} >
+                                            <Box display="flex" >
+                                                <Typography component="h4"> {`Categoria : ${category}`}</Typography>
+                                                <Box ml={2}>
+                                                    <Button
+                                                        onClick={() => handleCurrentPage({
+                                                            idcollection: product.id,
+                                                            brand: product.brand,
+                                                            genre: product.genre,
+                                                            category
+                                                        }, 'create')}
+                                                        variant="outlined"
+                                                        color="primary"
+                                                        size="small"
+                                                    >
+                                                        Agregar Items
                                                 </Button>
-                                                    </Box>
-                                                </Box>
-                                                <Box>
-                                                    <List dense >
-                                                        {
-                                                            product.items.map((item, i) => {
-                                                                // const labelId = `checkbox-list-secondary-label-${item.name}`;
-                                                                return (
-                                                                    <ListItem key={i} button>
-                                                                        <ListItemAvatar>
-                                                                            <Avatar
-                                                                                className={classes.large}
-                                                                                alt={item.name}
-                                                                                src={item.image}
-                                                                            />
-                                                                        </ListItemAvatar>
-                                                                        <ListItemText primary={item.name} secondary={item.price} />
-
-                                                                        <ListItemSecondaryAction>
-                                                                            <IconButton aria-label="delete" onClick={() => handleRemoveItems(
-                                                                                {
-                                                                                    idcollection: data.id,
-                                                                                    productoid: product.id,
-                                                                                }, product.items[i])}>
-                                                                                <DeleteIcon />
-                                                                            </IconButton>
-                                                                        </ListItemSecondaryAction>
-                                                                    </ListItem>
-                                                                );
-                                                            })
-                                                        }
-                                                    </List>
                                                 </Box>
                                             </Box>
-                                        )
-                                    })
-                                }
+                                            <Box>
+                                                <List dense >
+                                                    {
+                                                        Object.keys(product.categories[category]).map((itemKey, i) => {
+
+                                                            const item = product.categories[category][itemKey];
+                                                            return (
+                                                                <ListItem key={i} button>
+                                                                    <ListItemAvatar>
+                                                                        <Avatar
+                                                                            className={classes.large}
+                                                                            alt={item.name}
+                                                                            src={item.image[0]}
+                                                                        />
+                                                                    </ListItemAvatar>
+                                                                    <ListItemText primary={item.name} secondary={item.price} />
+
+                                                                    <ListItemSecondaryAction>
+                                                                        <IconButton aria-label="delete" onClick={() => handleRemoveItems(
+                                                                            {
+                                                                                idcollection: product.id,
+                                                                            }, product.items[i])}>
+                                                                            <DeleteIcon />
+                                                                        </IconButton>
+                                                                    </ListItemSecondaryAction>
+                                                                </ListItem>
+                                                            );
+                                                        })
+                                                    }
+                                                </List>
+                                            </Box>
+                                        </Box>
+                                    )
+                                })
+                            }
                         </Grid>
-                        )
+                    )
                 })
             }
         </div>)

@@ -53,7 +53,7 @@ const CollectionOverview = ({ collections }) => {
     return (
         <Box>
             {/* <Header/> */}
-            <Grid container direction="column" alignItems="center" m>
+            <Grid container direction="column" alignItems="center" >
                 <Grid xs={12} item className={classes.title}>
                     <Typography variant="h5" > COLECCIONES  </Typography>
                 </Grid>
@@ -64,10 +64,10 @@ const CollectionOverview = ({ collections }) => {
                                 {collections.map((collection, i) => (
                                     <GridListTile key={i} 
                                             className={classes.gridListTile}
-                                            onClick={() => history.push(`${match.url}/${collection.category}`)}>
-                                        <img src={collection.items[0].image} alt={collection.items[0].name} />
+                                            onClick={() => history.push(`${match.url}/${collection.name}`)}>
+                                        <img src={collection.image} alt={collection.name} />
                                         <GridListTileBar
-                                            title={collection.category.toUpperCase()}
+                                            title={collection.name.toUpperCase()}
                                             // subtitle={<span>by: {tile.author}</span>}
                                             actionIcon={
                                                 <IconButton aria-label={`info about ${collection.category}`} className={classes.icon}>
@@ -82,11 +82,11 @@ const CollectionOverview = ({ collections }) => {
                     </Grid>
                 </Box>
 
-                <Grid xs={12} item >
+                <Grid xs={12} item>
                     <Typography variant="h5" > NUEVAS PRENDAS  </Typography>
                 </Grid>
                 <Grid xs={12} item className={classes.title}>
-                    <SlickCollection collections={collections[0].items} />
+                     {/* <SlickCollection collections={collections[0].items} />  */}
                 </Grid>
             </Grid>
         </Box>

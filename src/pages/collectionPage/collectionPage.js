@@ -8,16 +8,15 @@ import {
     Grid
 } from '@material-ui/core';
 
-const CollectionPage = ({ collection }) => {
+const CollectionPage = ({ itemscollection }) => {
 
-    const { items } = collection;
-
+    // console.log(itemscollection);
     return (
             <Grid container
                 direction="row"
             >
                     {
-                        items.map((item, i) => (
+                        itemscollection.map((item, i) => (
                             <Grid key={i} item xs={12} sm={3}>
                                 <CardImages item={item} />
                             </Grid>
@@ -29,7 +28,7 @@ const CollectionPage = ({ collection }) => {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    collection: dataCollectionSelector(ownProps.match.params.collectionId)(state)
+    itemscollection: dataCollectionSelector(ownProps.match.params.collectionId)(state)
 })
 
 

@@ -43,11 +43,11 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ProductDetail = ({ product, addItemsToCart, newCollections }) => {
+const ProductDetail = ({ product, addItemsToCart }) => {
     const classes = useStyles();
 
     const [talla, setTalla] = useState('')
-    console.log(newCollections);
+    // console.log(newCollections);
 
     const handleTalla = (event) => {
         console.log(event.target);
@@ -93,9 +93,9 @@ const ProductDetail = ({ product, addItemsToCart, newCollections }) => {
                                 name="talla"
                                 onChange={handleTalla}
                             >
-                                <MenuItem value={38}>38</MenuItem>
-                                <MenuItem value={39}>39</MenuItem>
-                                <MenuItem value={40}>40</MenuItem>
+                                {
+                                    product.tallas.map(talla => <MenuItem value={talla}>{talla}</MenuItem>)
+                                }
                             </Select>
                         </FormControl>
                     </Box>
@@ -118,7 +118,7 @@ const ProductDetail = ({ product, addItemsToCart, newCollections }) => {
                         Detalles del Producto
                     </Typography>
                     <Typography variant="body2" component="p">
-                        {product.descripcion}
+                        {product.detail}
                     </Typography>
                 </Box>
 
@@ -128,7 +128,7 @@ const ProductDetail = ({ product, addItemsToCart, newCollections }) => {
                     <Typography variant="body1" component="h5" >
                         RECOMENDACIONES
                     </Typography>
-                    <SlickCollection collections={newCollections[0].items} />
+                    {/* <SlickCollection collections={newCollections[0].items} /> */}
                 </Box>
             </Grid>
 
@@ -141,8 +141,8 @@ const mapDispatchToState = (dispatch) => ({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-    product: dataProductDetailSelector(ownProps.match.params.collectionId, ownProps.match.params.productId)(state),
-    newCollections: newCollectionsHomeSelector(state)
+    product: dataProductDetailSelector(ownProps.match.params.collectionId, ownProps.match.params.productId)(state)
+    // newCollections: newCollectionsHomeSelector(state)
 
 })
 export default connect(mapStateToProps, mapDispatchToState)(ProductDetail)

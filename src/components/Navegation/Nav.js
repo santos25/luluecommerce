@@ -22,7 +22,8 @@ import {
     InputBase,
     Typography,
     IconButton,
-    Badge
+    Badge,
+    Box
 } from '@material-ui/core';
 
 // import logo from "./lulu.png";
@@ -35,6 +36,7 @@ const useStyle = makeStyles((theme) => ({
         display: 'none',
         [theme.breakpoints.up('sm')]: {
             display: 'block',
+            color: theme.palette.common.black
         },
     },
     search: {
@@ -80,8 +82,9 @@ const useStyle = makeStyles((theme) => ({
             display: "flex"
         }
     },
-    link:{
-        marginLeft: theme.spacing(3)
+    link: {
+        marginLeft: theme.spacing(3),
+        color: theme.palette.common.black
     }
 }));
 
@@ -93,8 +96,8 @@ const Nav = ({ currentUser, hidden }) => {
             <AppBar position="fixed" color="inherit">
                 <Toolbar>
                     <Link component={RouterLink} to="/">
-                        <Typography className={classes.title} variant="inherit" noWrap>
-                            LULU STORE
+                        <Typography className={classes.title} variant="h4" noWrap>
+                            LULU
                      </Typography>
                     </Link>
                     <div className={classes.grow}>
@@ -116,8 +119,9 @@ const Nav = ({ currentUser, hidden }) => {
                         />
                     </div>
                     <div className={classes.sectionDesktop}>
-                            <CartIconComponent />
-                            {hidden ? <CartDropdown /> : null}
+                        <CartIconComponent />
+                        {hidden ? <CartDropdown /> : null}
+
                         {
                             currentUser ? (
                                 <Button variant="outlined" size="small" color="primary" onClick={() => auth.signOut()}>
@@ -126,6 +130,7 @@ const Nav = ({ currentUser, hidden }) => {
                             )
                                 : (
                                     <Link component={RouterLink} to="/signin">
+                                        {/* <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"> */}
                                         <IconButton
                                             edge="end"
                                             aria-label="account of current user"
@@ -135,17 +140,21 @@ const Nav = ({ currentUser, hidden }) => {
                                             color="inherit"
                                         >
                                             <AccountCircle />
+
                                         </IconButton>
+                                        {/* <Typography variant="caption" component="p">
+                                                Iniciar Sesion
+                                                         </Typography> */}
+                                        {/* </Box> */}
                                     </Link>
                                 )
                         }
-
                     </div>
                 </Toolbar>
             </AppBar>
             {/* {renderMobileMenu} */}
             {/* {renderMenu} */}
-        </div>
+        </div >
     );
 }
 

@@ -49,11 +49,17 @@ export const createDocumentUserDb = async (userAuth, otherProperties) => {
 }
 
 export const createCollectionAndDocuments = async (collectionKey, documentsToAdd) => {
-    const collectionKeyRef = firestore.collection(collectionKey);
     let batch = firestore.batch();
-    documentsToAdd.forEach(document => {
-        const newDocRef = collectionKeyRef.doc();
-        batch.set(newDocRef, document);
+
+    documentsToAdd.forEach(doc => {
+        const collectionKeyRef = firestore.collection('collections').doc('AMZYPUVf4xfQdP239Z1s')
+            .collection('productos').doc(doc.id).collection('items');
+
+        doc.items.forEach(item => {
+            const newDocRef = collectionKeyRef.doc();
+            batch.set(newDocRef, item);
+        })
+
     })
 
     return await batch.commit();
@@ -61,11 +67,11 @@ export const createCollectionAndDocuments = async (collectionKey, documentsToAdd
 
 export const convertCollectionsToObjects = (collection) => {
     const convertedDataArray = collection.docs.map(document => {
-        const { category, items } = document.data();
+        const { category } = document.data();
+
         return {
             id: document.id,
-            category,
-            items
+            category
             // routeName: encodeURI(title.toLowerCase())
         }
     });
@@ -83,12 +89,31 @@ export const uploadProductDB = async (product, items) => {
 
     const { brand, category, genre } = product;
     let batch = firestore.batch();
-
+    const date = new Date()
     const newDocRef = firestore.collection("collections").doc();
-    batch.set(newDocRef, { brand, genre });
 
-    const proDocRef = newDocRef.collection("productos").doc();
-    batch.set(proDocRef, { category, items });
+    let objItems= {};
+
+    console.log(items);
+    items.forEach((item, i) => {
+        objItems[`item_${i}`] = {...item , createdt : date};
+    })
+
+
+    let objProduct = {
+        brand,
+        genre,
+        categories: {
+            [category.toLowerCase()]: objItems,
+            name : category
+        }
+    }
+
+    console.log(objProduct);
+    batch.set(newDocRef, objProduct);
+
+    // const proDocRef = newDocRef.collection("productos").doc();
+    // batch.set(proDocRef, { category, items });
 
     return await batch.commit();
 }
@@ -112,42 +137,18 @@ export const uploadImages = async (items, category) => {
         ))
         console.log(promisesItem);
         for (let index = 0; index < promisesItem.length; index++) {
-            console.log("loop", promisesItem[index]);
+            // console.log("loop", promisesItem[index]);
             const resultImages = await Promise.all(promisesItem[index])
             const resultUrlImages = await Promise.all(resultImages.map(snapshot => snapshot.ref.getDownloadURL()))
-            console.log(resultUrlImages);
+            // console.log(resultUrlImages);
             items[index].image = resultUrlImages;
-            console.log("ciclo");
+            // console.log("ciclo");
         }
         return [...items]
 
     } catch (error) {
         console.log("Error Uploading Images ", error);
     }
-
-    // items.forEach(item => {
-    //     item.image.forEach(image => {
-    //         const uploadImages = storage.ref(`images-lulu/${category}/${item.name}`).child(image.name).put(image);
-    //         promises.push(uploadImages)
-    //         uploadImages.on(firebase.storage.TaskEvent.STATE_CHANGED,
-    //             snapshot => {
-    //                 let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    //                 console.log('Upload is ' + progress + '% done');
-    //             },
-    //             error => console.log(error)
-    //         );
-    //     })
-    // });
-
-    // return Promise.all(promises).then(responses => {
-    //     return responses.map(snapshot => snapshot.ref.getDownloadURL());
-    // }).then(responseImgs => {
-    //     return Promise.all(responseImgs).then(downloadURL => {
-    //         let itemsImgLoaded = items.map((item, index) => ({ ...item, image: downloadURL[index] }))
-    //         // let dt = uploadProductDB(product, itemsImgLoaded);
-    //         return itemsImgLoaded;
-    //     })
-    // }).catch(err => console.log(err.code));
 }
 
 

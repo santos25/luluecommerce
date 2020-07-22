@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { connect } from 'react-redux';
+
+//redux
 import { fetchingCollectionsAsync } from '../../Redux/shop/shop.actions';
 import { isLoadingCollections } from '../../Redux/shop/shop.selectors';
 
+//components
 import CollectionOverview from '../../components/CollectionOverview/CollectionOverview';
 import CollectionPage from '../CollectionPage/CollectionPage';
 import ProductDetail from '../../components/productDetail/ProductDetail';
-
+//HOC
 import WithSpinner from '../../components/with-spinner/withSpinner';
 
 const CollectionOverviewWitSpinner = WithSpinner(CollectionOverview);
@@ -23,7 +26,7 @@ const ShopPage = ({ fetchCollections, isLoading }) => {
 
         console.log("Fetching ShopPage");
 
-        // fetchCollections(tagid);
+        fetchCollections(tagid);
     }, [tagid, fetchCollections]);
 
     console.log({ isLoading });

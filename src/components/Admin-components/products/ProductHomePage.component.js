@@ -55,7 +55,7 @@ const ProductPage = ({ fetchProductsAsync, products, isFetchingProducts, removeI
 
                     </Container>
                     <Box>
-                        <ProductListWithSpinner isLoading={isFetchingProducts} datas={products}
+                        <ProductListWithSpinner isLoading={isFetchingProducts} products={products}
                             handleCurrentPage={handleCurrentPage}
                             handleRemoveItems={handleRemoveItems}
                         />

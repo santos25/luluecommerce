@@ -1,5 +1,7 @@
 import shop_types from './shop.types';
-import { convertCollectionsToObjects, firestore } from '../../FireBase/FireBaseUtil';
+// import TEMPDATA from './tempdata';
+
+import { convertCollectionsToObjects, firestore, createCollectionAndDocuments } from '../../FireBase/FireBaseUtil';
 
 const fetchingCollectionSucces = (collections) => {
     return {
@@ -26,17 +28,13 @@ export const fetchingCollectionsAsync = (genre) => {
         const collectionRef = firestore.collection('collections').where('genre', '==', genre);
 
         dispatch(fetchingCollectionStart());
-
+        
         collectionRef.get().then(snapShot => {
-            snapShot.docs.forEach(docu => {
-                console.log(docu.data());
-                const productosRef = docu.ref.collection('productos');
-                productosRef.get().then(prodSnapshot => {
-                    const collectionConverted = convertCollectionsToObjects(prodSnapshot);
-                    // console.log(collectionConverted);
-                    dispatch(fetchingCollectionSucces(collectionConverted)) 
-                });
+            snapShot.docs.forEach(document => {
+                dispatch(fetchingCollectionSucces({ id: document.id , ...document.data()}))
             })
         })
+        // createCollectionAndDocuments('items' , TEMPDATA)
+
     }
 }

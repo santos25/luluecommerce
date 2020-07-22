@@ -1,15 +1,21 @@
 import directoryTypes from './directory.types';
-import TEMPDATA from './tempdata';
+
 const INITIAL_STATE = {
-    discountItems: TEMPDATA
+    DirectoryData: '',
+    newCollection: []
 }
 
-const directoryReducer = (state = INITIAL_STATE , action) => {
+const directoryReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case directoryTypes.LOAD_DISCOUNT_CLOTHES:
+        case directoryTypes.LOAD_CATEGORY_CLOTHES:
             return {
                 ...state,
-                discountItems : action.payload
+                DirectoryData: action.payload
+            }
+        case directoryTypes.LOAD_NEW_COLLECTION:
+            return {
+                ...state,
+                newCollection: action.payload
             }
         default:
             return state

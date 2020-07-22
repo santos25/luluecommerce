@@ -2,24 +2,11 @@ import React, { useState, useEffect } from 'react'
 //redux
 import { connect } from 'react-redux'
 //actions
-import { fetchingTallasAsync } from '../../../Redux/Admin/prendas/prendas.actions'
 
 //components
 import HandleRegisterPrenda from './HandleRegisterPrenda'
 
 import { firestore } from '../../../FireBase/FireBaseUtil'
-import {
-    Grid,
-    Box,
-    Button,
-    Typography,
-    Container,
-    InputLabel,
-    FormControl,
-    Select,
-    MenuItem,
-    TextField
-} from '@material-ui/core';
 
 // const HandleGenrePrenda = ({ setStep, setGenre, genre }) => {
 

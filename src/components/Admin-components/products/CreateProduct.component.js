@@ -91,16 +91,16 @@ const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, 
     const [product, setProduct] = useState({ brand: '', category: '', genre: '', itemsQuantity: 1 })
     let [items, setItems] = useState([{ image: [], name: '', price: 0, detail: '', tallas: [] }])
     let [itemschips, setItemsChip] = useState([{ chips: [] }])
-    const [geners, setGeners] = useState([]);
+    // const [geners, setGeners] = useState([]);
     const [categories, setCategories] = useState([]);
     const [tallas, setTallas] = useState([]);
 
     useEffect(() => {
-        const genreRef = firestore.collection('genre');
-        genreRef.get().then(snapshot => {
-            const values = snapshot.docs.map(doc => ({ id: doc.id, value: doc.data().name }))
-            setGeners(values)
-        })
+        // const genreRef = firestore.collection('genre');
+        // genreRef.get().then(snapshot => {
+        //     const values = snapshot.docs.map(doc => ({ id: doc.id, value: doc.data().name }))
+        //     setGeners(values)
+        // })
     }, [])
 
     const handleInputs = (e) => {
@@ -110,7 +110,7 @@ const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, 
             items = []
             itemschips = []
             for (let index = 0; index < value; index++) {
-                items.push({ id: index, image: [], name: '', price: 0, detail: '' , tallas: [] })
+                items.push({ id: index, image: [], name: '', price: 0, detail: '', tallas: [] })
                 itemschips.push({ chips: [] })
             }
             setItems([...items])
@@ -123,10 +123,16 @@ const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, 
     const handleSelectGenre = (e) => {
         const { name, value } = e.target;
 
-        const prendasRef = firestore.collection('genre').doc(value).collection('prendas')
-        prendasRef.get().then(snapshot => {
-            const valuePrendas = snapshot.docs.map(prenda => ({ id: prenda.id, ...prenda.data() }))
-            setCategories(valuePrendas)
+        const prendasRef = firestore.collection('genre').doc(value)
+        prendasRef.get().then(doc => {
+            const { prendas } = doc.data();
+            const valuesPrendas = Object.keys(prendas).map(prenda =>
+                ({ name: prendas[prenda].name, talla: prendas[prenda].talla })
+            )
+
+            console.log(valuesPrendas);
+
+            setCategories(valuesPrendas)
             setProduct({ ...product, [name]: value });
 
         })
@@ -134,33 +140,11 @@ const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, 
 
     const handleSelectCategory = (e) => {
         const { name, value } = e.target;
-        let tallavalues;
-        const categorySelected = categories.find(category => category.name === value);
-        const tallasRef = firestore.collection('tallas').doc(categorySelected.typetalla)
-        tallasRef.get().then(snapshot => {
-            if (snapshot.data().valores) {
-                 tallavalues = snapshot.data().valores
-            }
-            else {
-                 tallavalues = [snapshot.data().name]
+        const categoryObjectSelected = categories.find(category => category.name === value)
+        setTallas(categoryObjectSelected.talla)
+        setProduct({ ...product, [name]: value });
 
-            }
-            setTallas(tallavalues)
-            setProduct({ ...product, [name]: value });
-
-        })
     }
-
-    const handleChangeMultiple = (event, index) => {
-        const item = { ...items[index] }
-        const {  name , value } = event.target;
-        console.log(value);
-
-        item[name] = value;
-        items[index] = item;
-        setItems([...items])
-    };
-
 
     const handleItems = (e, indexChange) => {
         const { name, value } = e.target;
@@ -169,13 +153,17 @@ const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, 
         let objectItemChip = { ...itemschips[indexChange] };
 
         if (name === 'image') {
-            console.log(e.target.files[0].name);
-            objectChanged['image'].push(e.target.files[0]); //[...objectChanged.image , e.target.files[0]] ;
-            items[indexChange] = objectChanged;
-            objectItemChip['chips'].push(e.target.files[0].name);
-            itemschips[indexChange] = objectItemChip;
-            setItems([...items])
-            setItemsChip([...itemschips]);
+            console.log(e.target.files);
+            if (e.target.files.length > 0) {
+                for (let index = 0; index < e.target.files.length; index++) {
+                    objectChanged['image'].push(e.target.files[index]); //[...objectChanged.image , e.target.files[0]] ;
+                    objectItemChip['chips'].push(e.target.files[index].name);
+                }
+                items[indexChange] = objectChanged;
+                itemschips[indexChange] = objectItemChip;
+                setItems([...items])
+                setItemsChip([...itemschips]);
+            }
         } else {
             objectChanged[name] = value;
             items[indexChange] = objectChanged;
@@ -189,7 +177,7 @@ const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, 
         console.log({ product });
         console.log({ items });
         uploadStart()
-        const uploadedItemsImages = await uploadImages(items , product.category);
+        const uploadedItemsImages = await uploadImages(items, product.category);
         console.log(uploadedItemsImages);
         const result = await uploadProductDB(product, uploadedItemsImages);
         uploadSuccess()
@@ -235,9 +223,13 @@ const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, 
                                         onChange={handleSelectGenre}
                                     // defaultValue={productEdit ? productEdit.genre : null}
                                     >
-                                        {geners.map((genre, i) => (
+
+                                        <MenuItem value="hombre">Hombre</MenuItem>
+                                        <MenuItem value="mujer">Mujer</MenuItem>
+
+                                        {/* {geners.map((genre, i) => (
                                             <MenuItem key={i} value={genre.id}>{genre.value}</MenuItem>
-                                        ))}
+                                        ))} */}
                                     </Select>
                                 </FormControl>
                             </Grid>
@@ -252,8 +244,8 @@ const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, 
                                         onChange={handleSelectCategory}
                                     // defaultValue={productEdit ? productEdit.genre : null}
                                     >
-                                        {categories.map((cate, i) => (
-                                            <MenuItem key={i} value={cate.name}>{cate.name}</MenuItem>
+                                        {categories.map((category, i) => (
+                                            <MenuItem key={i} value={category.name}>{category.name}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
