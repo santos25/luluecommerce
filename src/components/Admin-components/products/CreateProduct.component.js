@@ -84,23 +84,39 @@ function getStyles(name, personName, theme) {
 }
 
 
-const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, addNewCategory, uploadStart, uploadSuccess, isUploading }) => {
+const CreateProduct = ({ backStep, productEdit, addNewItems,
+    handleCurrentPage, addNewCategory, uploadStart,
+    uploadSuccess, isUploading }) => {
+
     const classes = useStyles();
     const theme = useTheme();
 
     const [product, setProduct] = useState({ brand: '', category: '', genre: '', itemsQuantity: 1 })
     let [items, setItems] = useState([{ image: [], name: '', price: 0, detail: '', tallas: [] }])
     let [itemschips, setItemsChip] = useState([{ chips: [] }])
-    // const [geners, setGeners] = useState([]);
     const [categories, setCategories] = useState([]);
     const [tallas, setTallas] = useState([]);
 
     useEffect(() => {
-        // const genreRef = firestore.collection('genre');
-        // genreRef.get().then(snapshot => {
-        //     const values = snapshot.docs.map(doc => ({ id: doc.id, value: doc.data().name }))
-        //     setGeners(values)
-        // })
+
+        if (productEdit.category) {
+            console.log("enter" , productEdit.category);
+            const prendasRef = firestore.collection('genre').doc(productEdit.genre)
+            prendasRef.get().then(doc => {
+                const { prendas } = doc.data();
+                const valuesPrendas = Object.keys(prendas).map(prenda =>
+                    ({ name: prendas[prenda].name.toLowerCase(), talla: prendas[prenda].talla })
+                )
+                // console.log(valuesPrendas);
+                setCategories(valuesPrendas)
+                const categoryObjectSelected = valuesPrendas.find(category => category.name === productEdit.category)
+                setTallas(categoryObjectSelected.talla)
+            })
+
+        } else
+            fetchCategoriesByGenre(productEdit.genre)
+
+
     }, [])
 
     const handleInputs = (e) => {
@@ -120,10 +136,8 @@ const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, 
             setProduct({ ...product, [name]: value });
     }
 
-    const handleSelectGenre = (e) => {
-        const { name, value } = e.target;
-
-        const prendasRef = firestore.collection('genre').doc(value)
+    const fetchCategoriesByGenre = (genre) => {
+        const prendasRef = firestore.collection('genre').doc(genre)
         prendasRef.get().then(doc => {
             const { prendas } = doc.data();
             const valuesPrendas = Object.keys(prendas).map(prenda =>
@@ -133,9 +147,14 @@ const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, 
             console.log(valuesPrendas);
 
             setCategories(valuesPrendas)
-            setProduct({ ...product, [name]: value });
 
         })
+    }
+
+    const handleSelectGenre = (e) => {
+        const { name, value } = e.target;
+        fetchCategoriesByGenre(value)
+        setProduct({ ...product, [name]: value });
     }
 
     const handleSelectCategory = (e) => {
@@ -218,7 +237,7 @@ const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, 
                                     <Select
                                         labelId={`select-genre`}
                                         id={`genre`}
-                                        value={product.genre}
+                                        value={productEdit !== "" ? productEdit.genre : product.genre}
                                         name="genre"
                                         onChange={handleSelectGenre}
                                     // defaultValue={productEdit ? productEdit.genre : null}
@@ -239,13 +258,13 @@ const CreateProduct = ({ backStep, productEdit, addNewItems, handleCurrentPage, 
                                     <Select
                                         labelId={`select-category`}
                                         id={`category`}
-                                        value={product.category}
+                                        // value={product.category}
+                                        value={productEdit !== "" ? productEdit.category : product.category}
                                         name="category"
                                         onChange={handleSelectCategory}
-                                    // defaultValue={productEdit ? productEdit.genre : null}
                                     >
                                         {categories.map((category, i) => (
-                                            <MenuItem key={i} value={category.name}>{category.name}</MenuItem>
+                                            <MenuItem key={i} value={category.name.toLowerCase()}>{category.name.toLowerCase()}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>

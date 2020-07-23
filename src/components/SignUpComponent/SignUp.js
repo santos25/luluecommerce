@@ -59,7 +59,7 @@ const SignUp = (props) => {
         if (userRegister.password === userRegister.repassword) {
             const { email, password, displayName } = userRegister;
             const { user } = await auth.createUserWithEmailAndPassword(email, password);
-            createDocumentUserDb(user, { displayName })
+            createDocumentUserDb(user, { displayName ,  isAdmin : true , tienda: 'Lulu' })
         } else {
             alert("Contraseñas no Coinciden");
         }

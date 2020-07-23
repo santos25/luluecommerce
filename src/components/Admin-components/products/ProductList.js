@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ProductList = ({ products, handleCurrentPage, handleRemoveItems }) => {
     const classes = useStyles();
-
+    console.log(products);
     return (
         <div>
             {

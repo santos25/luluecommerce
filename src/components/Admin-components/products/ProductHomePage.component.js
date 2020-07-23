@@ -30,6 +30,7 @@ const ProductPage = ({ fetchProductsAsync, products, isFetchingProducts, removeI
 
 
     const handleCurrentPage = (product, pagetogo) => {
+        console.log(product);
         setProduct(product)
         setCurrentPage(pagetogo)
     }

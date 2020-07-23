@@ -48,19 +48,20 @@ export const fetchingProductsAsync = () => {
     }
 }
 
-export const addNewItemsAsync = ({ idcollection, productoid, items }) => {
+export const addNewItemsAsync = ({ idcollection, category, items }) => {
     return (dispatch) => {
         dispatch(uploadProductsStart());
         // console.log(product);
 
-        const productRef = firestore.collection('collections').doc(idcollection).collection('productos').doc(productoid)
+        // const productRef = firestore.collection('collections').doc(idcollection).collection('productos').doc(productoid)
+        const productRef = firestore.collection('collections').doc(idcollection)
 
-        productRef.get().then(async (snapshot) => {
-            console.log(snapshot.exists);
+        productRef.get().then(async (document) => {
+            console.log(document.exists);
 
-            if (snapshot.exists) {
+            if (document.exists) {
                 const itemsImgLoaded = await uploadImages(items)
-                addNewItems(productRef, itemsImgLoaded)
+                addNewItems(productRef, document,  category ,  itemsImgLoaded)
                 dispatch(uploadProductsSuccess());
 
             } else
@@ -76,22 +77,20 @@ export const addCategory = ({ idcollection, category, items }) => {
     return (dispatch) => {
         dispatch(uploadProductsStart());
 
-        const productRef = firestore.collection('collections').doc(idcollection).collection('productos').doc();
-        console.log(items);
+        const productRef = firestore.collection('collections').doc(idcollection)
+        // console.log(items);
 
         productRef.get().then(async (snapshot) => {
             console.log(snapshot.exists);
 
             if (snapshot.exists) {
                 console.log("Existe");
-            } else {
                 const itemsImgLoaded = await uploadImages(items)
                 console.log(itemsImgLoaded);
                 addCategoryDoc(productRef, category, itemsImgLoaded)
                 dispatch(uploadProductsSuccess());
 
             }
-
         })
 
     }

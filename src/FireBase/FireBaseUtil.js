@@ -99,13 +99,11 @@ export const uploadProductDB = async (product, items) => {
         objItems[`item_${i}`] = {...item , createdt : date};
     })
 
-
     let objProduct = {
         brand,
         genre,
         categories: {
-            [category.toLowerCase()]: objItems,
-            name : category
+            [category.toLowerCase()]: objItems
         }
     }
 
@@ -152,12 +150,23 @@ export const uploadImages = async (items, category) => {
 }
 
 
-export const addNewItems = (productRef, items) => {
+export const addNewItems = (productRef,document , category , items) => {
+
+    const itemsSavedObjetc = document.data().categories[category];
+    let itemTotal = Object.keys(document.data().categories[category]).length;
 
     console.log(items);
 
+    let objItems= {};
+
+    console.log(items);
+    items.forEach( item => {
+        objItems[`item_${itemTotal}`] = {...item , createdt : new Date()};
+        itemTotal++
+    })
+
     productRef.update({
-        items: firebase.firestore.FieldValue.arrayUnion(...items)
+        [`categories.${category}`] : {...itemsSavedObjetc , ...objItems}
     });
 }
 
@@ -170,9 +179,19 @@ export const removeItem = (productRef, items, itemtoDelete) => {
 
 export const addCategoryDoc = (productRef, category, items) => {
     console.log(items);
+    const date = new Date()
+
+    let objItems= {};
+
+    console.log(items);
+    items.forEach((item, i) => {
+        objItems[`item_${i}`] = {...item , createdt : date};
+    })
 
     productRef.set({
-        category,
-        items
-    });
+        categories : {
+            [category.toLowerCase()]: objItems
+        }
+    }, {merge : true});
+
 }
