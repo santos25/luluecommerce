@@ -5,12 +5,11 @@ import { setCurrentUser } from './Redux/user/user.actions';
 import { currentUserSelector } from './Redux/user/user-selectors';
 
 //components
-// import AdminPage from './pages/adminPage/AdminPage';
+import MiniDrawer from './components/Admin-components/mini-drawer/MiniDrawer';
 import ProductHome from './components/Admin-components/products/ProductHomePage.component'
 import ListPrendas from './components/Admin-components/prendas/ListPrendas'
-
 import Nav from './components/Navegation/Nav';
-import NavAdmin from './components/Admin-components/NavAdmin/NavAdmin.component';
+// import NavAdmin from './components/Admin-components/NavAdmin/NavAdmin.component';
 import HomePage from './pages/homepage/HomePage';
 import ShopPage from './pages/ShopPage/ShopPage';
 import CheckoutPage from './pages/CheckoutPage/checkout.component';
@@ -55,22 +54,10 @@ const App = ({ setCurrentUser, currentUser }) => {
     <div>
       {
         currentUser && currentUser.isAdmin ?
-          (<Router basename="/luluecommerce">
-            <NavAdmin />
-            <Switch>
-              <Route exact path="/">
-                Bienvenidos Panel de administracion
-              </Route>
-              <Route path="/producto">
-                <ProductHome />
-              </Route>
-              <Route path="/prendas">
-                <ListPrendas  />
-              </Route>
-            </Switch>
-          </Router>)
+          <MiniDrawer />
           :
           (<Router basename="/luluecommerce">
+
             <Nav />
             <Switch>
               <Route exact path="/">
