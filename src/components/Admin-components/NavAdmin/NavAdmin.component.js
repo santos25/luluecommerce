@@ -15,7 +15,7 @@ import {
     IconButton
 } from '@material-ui/core';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 // import logo from "./lulu.png";
 const useStyle = makeStyles( (theme) => ({
@@ -69,7 +69,7 @@ const NavAdmin = ({ currentUser , open , handleDrawerOpen }) => {
                     <MenuIcon />
                 </IconButton>
 
-                <Link className={classes.link} component={RouterLink} to="/"> LULU STORE Administrador</Link>
+                <Link className={classes.link} component={RouterLink} to="/"> LULU</Link>
                 <Link className={classes.link} component={RouterLink} to="/producto"> Productos</Link>
                 <Link className={classes.link} component={RouterLink} to="/prendas"> Prendas</Link>
 

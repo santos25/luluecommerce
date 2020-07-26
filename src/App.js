@@ -53,27 +53,28 @@ const App = ({ setCurrentUser, currentUser }) => {
   return (
     <div>
       {
-        currentUser && currentUser.isAdmin ?
-          <MiniDrawer />
-          :
-          (<Router basename="/luluecommerce">
+         <MiniDrawer />
+        // currentUser && currentUser.isAdmin ?
+        //   <MiniDrawer />
+        //   :
+        //   (<Router basename="/luluecommerce">
 
-            <Nav />
-            <Switch>
-              <Route exact path="/">
-                <HomePage />
-              </Route>
-              <Route exact path="/signin" render={() => currentUser ? <Redirect to="/" /> : <SignInComponent />} />
-              <Route exact path="/signup" render={() => currentUser ? <Redirect to="/" /> : <SignUp />} />
-              <Route exact path="/checkout">
-                <CheckoutPage />
-              </Route>
-              <Route path="/:tagid">
-                <ShopPage />
-              </Route>
-            </Switch>
-            <Footer />
-          </Router>)
+        //     <Nav />
+        //     <Switch>
+        //       <Route exact path="/">
+        //         <HomePage />
+        //       </Route>
+        //       <Route exact path="/signin" render={() => currentUser ? <Redirect to="/" /> : <SignInComponent />} />
+        //       <Route exact path="/signup" render={() => currentUser ? <Redirect to="/" /> : <SignUp />} />
+        //       <Route exact path="/checkout">
+        //         <CheckoutPage />
+        //       </Route>
+        //       <Route path="/:tagid">
+        //         <ShopPage />
+        //       </Route>
+        //     </Switch>
+        //     <Footer />
+        //   </Router>)
       }
 
     </div>

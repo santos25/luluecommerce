@@ -3,6 +3,7 @@ import clsx from 'clsx'
 
 //components
 import NavAdmin from '../NavAdmin/NavAdmin.component'
+import ProductHomePage from '../products/ProductHomePage.component'
 import {
     makeStyles,
     useTheme,
@@ -14,7 +15,7 @@ import {
     Divider,
     ListItemIcon,
     List,
-
+    Link
 } from '@material-ui/core'
 
 import {
@@ -26,11 +27,12 @@ import {
 
 import {
     BrowserRouter as Router,
+    Link as RouterLink,
     Switch,
     Route
 } from 'react-router-dom';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 
 const useStyles = makeStyles((theme) => ({
@@ -105,6 +107,7 @@ const MiniDrawer = () => {
                         }),
                     }}
                 >
+
                     <div className={classes.toolbar}>
                         <IconButton onClick={handleDrawerClose}>
                             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
@@ -112,22 +115,22 @@ const MiniDrawer = () => {
                     </div>
                     <Divider />
                     <List>
-                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
+                        <Link component={RouterLink} to="/producto">
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <MailIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Productos" />
                             </ListItem>
-                        ))}
+                        </Link>
+                        <ListItem button>
+                            <ListItemIcon>
+                                <MailIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Prendas" />
+                        </ListItem>
                     </List>
-                    <Divider />
-                    <List>
-                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
-                    </List>
+
                 </Drawer>
 
                 <main className={classes.content}>
@@ -136,10 +139,10 @@ const MiniDrawer = () => {
                         <Route exact path="/">
                             Bienvenidos Panel de administracion
                     </Route>
-                        {/* <Route path="/producto">
-                            <ProductHome />
+                        <Route path="/producto">
+                            <ProductHomePage />
                         </Route>
-                        <Route path="/prendas">
+                        {/* <Route path="/prendas">
                             <ListPrendas />
                         </Route> */}
                     </Switch>

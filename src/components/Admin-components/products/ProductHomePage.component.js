@@ -44,7 +44,7 @@ const ProductPage = ({ fetchProductsAsync, products, isFetchingProducts, removeI
         <div>
             {currentPage === 'home' ? (
                 <Box>
-                    <Container maxWidth="sm">
+                    {/* <Container maxWidth="sm">
                         <Button
                             onClick={() => handleCurrentPage("", "create")}
                             variant="outlined"
@@ -53,14 +53,13 @@ const ProductPage = ({ fetchProductsAsync, products, isFetchingProducts, removeI
                         >
                             Registrar Marca o genero
                   </Button>
-
-                    </Container>
-                    <Box>
+                    </Container> */}
+                    {/* <Box> */}
                         <ProductListWithSpinner isLoading={isFetchingProducts} products={products}
                             handleCurrentPage={handleCurrentPage}
                             handleRemoveItems={handleRemoveItems}
                         />
-                    </Box>
+                    {/* </Box> */}
                 </Box>
             ) :
                 <CreateProduct productEdit={product}

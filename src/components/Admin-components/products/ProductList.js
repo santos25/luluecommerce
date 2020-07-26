@@ -13,7 +13,13 @@ import {
     ListItemSecondaryAction,
     IconButton,
     Grid,
-    Box
+    Box,
+    Table,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody
 
 } from '@material-ui/core';
 
@@ -25,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(8),
         height: theme.spacing(8),
     },
+    table: {
+        minWidth: 650,
+    },
 }));
 
 const ProductList = ({ products, handleCurrentPage, handleRemoveItems }) => {
@@ -32,7 +41,39 @@ const ProductList = ({ products, handleCurrentPage, handleRemoveItems }) => {
     console.log(products);
     return (
         <div>
-            {
+            <Box display="flex" justifyContent="center">
+                <Typography component="h4"> Listado de Productos en Stock</Typography>
+            </Box>
+
+            <Grid container>
+                <Grid xs={12} item>
+                    <TableContainer >
+                        <Table className={classes.table} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Imagen</TableCell>
+                                    <TableCell align="right">Nombre</TableCell>
+                                    <TableCell align="right">Precio</TableCell>
+                                    <TableCell align="right">Fecha de Creación</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {/* {rows.map((row) => (
+                                    <TableRow key={row.name}>
+                                        <TableCell component="th" scope="row">
+                                            {row.name}
+                                        </TableCell>
+                                        <TableCell align="right">{row.calories}</TableCell>
+                                        <TableCell align="right">{row.fat}</TableCell>
+                                        <TableCell align="right">{row.carbs}</TableCell>
+                                    </TableRow>
+                                ))} */}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+            </Grid>
+            {/* {
                 products.map((product, i) => {
                     return (
                         <Grid key={i} container>
@@ -120,7 +161,7 @@ const ProductList = ({ products, handleCurrentPage, handleRemoveItems }) => {
                         </Grid>
                     )
                 })
-            }
+            } */}
         </div>)
 }
 
