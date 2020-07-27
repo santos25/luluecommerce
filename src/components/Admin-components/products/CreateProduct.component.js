@@ -84,9 +84,7 @@ function getStyles(name, personName, theme) {
 }
 
 
-const CreateProduct = ({ backStep, productEdit, addNewItems,
-    handleCurrentPage, addNewCategory, uploadStart,
-    uploadSuccess, isUploading }) => {
+const CreateProduct = ({ uploadStart, uploadSuccess, isUploading, handleClose }) => {
 
     const classes = useStyles();
     const theme = useTheme();
@@ -99,22 +97,22 @@ const CreateProduct = ({ backStep, productEdit, addNewItems,
 
     useEffect(() => {
 
-        if (productEdit.category) {
-            console.log("enter" , productEdit.category);
-            const prendasRef = firestore.collection('genre').doc(productEdit.genre)
-            prendasRef.get().then(doc => {
-                const { prendas } = doc.data();
-                const valuesPrendas = Object.keys(prendas).map(prenda =>
-                    ({ name: prendas[prenda].name.toLowerCase(), talla: prendas[prenda].talla })
-                )
-                // console.log(valuesPrendas);
-                setCategories(valuesPrendas)
-                const categoryObjectSelected = valuesPrendas.find(category => category.name === productEdit.category)
-                setTallas(categoryObjectSelected.talla)
-            })
+        // if (productEdit.category) {
+        //     console.log("enter" , productEdit.category);
+        //     const prendasRef = firestore.collection('genre').doc(productEdit.genre)
+        //     prendasRef.get().then(doc => {
+        //         const { prendas } = doc.data();
+        //         const valuesPrendas = Object.keys(prendas).map(prenda =>
+        //             ({ name: prendas[prenda].name.toLowerCase(), talla: prendas[prenda].talla })
+        //         )
+        //         // console.log(valuesPrendas);
+        //         setCategories(valuesPrendas)
+        //         const categoryObjectSelected = valuesPrendas.find(category => category.name === productEdit.category)
+        //         setTallas(categoryObjectSelected.talla)
+        //     })
 
-        } else
-            fetchCategoriesByGenre(productEdit.genre)
+        // } else
+        //     fetchCategoriesByGenre(productEdit.genre)
 
 
     }, [])
@@ -136,8 +134,10 @@ const CreateProduct = ({ backStep, productEdit, addNewItems,
             setProduct({ ...product, [name]: value });
     }
 
-    const fetchCategoriesByGenre = (genre) => {
-        const prendasRef = firestore.collection('genre').doc(genre)
+    const handleSelectGenre = (e) => {
+        const { name, value } = e.target;
+        // fetchCategoriesByGenre(value)
+        const prendasRef = firestore.collection('genre').doc(value)
         prendasRef.get().then(doc => {
             const { prendas } = doc.data();
             const valuesPrendas = Object.keys(prendas).map(prenda =>
@@ -149,17 +149,13 @@ const CreateProduct = ({ backStep, productEdit, addNewItems,
             setCategories(valuesPrendas)
 
         })
-    }
-
-    const handleSelectGenre = (e) => {
-        const { name, value } = e.target;
-        fetchCategoriesByGenre(value)
         setProduct({ ...product, [name]: value });
     }
 
     const handleSelectCategory = (e) => {
         const { name, value } = e.target;
-        const categoryObjectSelected = categories.find(category => category.name === value)
+        const categoryObjectSelected = categories.find(category => category.name.toLowerCase() === value)
+        console.log(categoryObjectSelected);
         setTallas(categoryObjectSelected.talla)
         setProduct({ ...product, [name]: value });
 
@@ -195,25 +191,39 @@ const CreateProduct = ({ backStep, productEdit, addNewItems,
         e.preventDefault();
         console.log({ product });
         console.log({ items });
-        uploadStart()
-        const uploadedItemsImages = await uploadImages(items, product.category);
-        console.log(uploadedItemsImages);
-        const result = await uploadProductDB(product, uploadedItemsImages);
-        uploadSuccess()
+        const docRef = firestore.collection('collections').where('genre', '==', product.genre)
+            .where('brand', '==', product.brand)
+
+        docRef.get().then((snapshot) => {
+            snapshot.docs.forEach(async document => {
+                if (document.exists) {
+                    // const DocData = { id: document.id, ...document.data() }
+                    uploadStart()
+                    const uploadedItemsImages = await uploadImages(items, product.category);
+                    console.log(uploadedItemsImages);
+                    const result = await uploadProductDB(document, product, uploadedItemsImages);
+                    console.log(result);
+                    uploadSuccess()
+                    handleClose()
+                } else {
+                    console.log("No Brand || No Genre");
+                }
+            })
+        })
     }
 
-    const handleAddNewItems = async (e) => {
-        e.preventDefault();
-        if (productEdit.category) {
-            addNewItems({ ...productEdit, items })
-            handleCurrentPage("home")
-        } else {
-            // const uploadedItemsImages = await uploadImages(items);
-            addNewCategory({ idcollection: productEdit.idcollection, category: product.category, items })
-        }
+    // const handleAddNewItems = async (e) => {
+    //     e.preventDefault();
+    //     if (productEdit.category) {
+    //         addNewItems({ ...productEdit, items })
+    //         handleCurrentPage("home")
+    //     } else {
+    //         // const uploadedItemsImages = await uploadImages(items);
+    //         addNewCategory({ idcollection: productEdit.idcollection, category: product.category, items })
+    //     }
 
 
-    }
+    // }
 
     const handleDeleteChipsImages = (e, indexKey) => {
         console.log("deleting");
@@ -237,7 +247,7 @@ const CreateProduct = ({ backStep, productEdit, addNewItems,
                                     <Select
                                         labelId={`select-genre`}
                                         id={`genre`}
-                                        value={productEdit !== "" ? productEdit.genre : product.genre}
+                                        value={product.genre}
                                         name="genre"
                                         onChange={handleSelectGenre}
                                     // defaultValue={productEdit ? productEdit.genre : null}
@@ -259,19 +269,17 @@ const CreateProduct = ({ backStep, productEdit, addNewItems,
                                         labelId={`select-category`}
                                         id={`category`}
                                         // value={product.category}
-                                        value={productEdit !== "" ? productEdit.category : product.category}
+                                        value={product.category}
                                         name="category"
                                         onChange={handleSelectCategory}
                                     >
                                         {categories.map((category, i) => (
-                                            <MenuItem key={i} value={category.name.toLowerCase()}>{category.name.toLowerCase()}</MenuItem>
+                                            <MenuItem key={i} value={category.name.toLowerCase()}>{category.name}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12} sm={4}>
-
-
                                 <TextField
                                     onChange={handleInputs}
                                     // autoComplete="fname"
@@ -281,7 +289,8 @@ const CreateProduct = ({ backStep, productEdit, addNewItems,
                                     fullWidth
                                     id="brand"
                                     label="Tienda"
-                                    defaultValue={productEdit ? productEdit.brand : null}
+                                    value={product.brand}
+                                // defaultValue={productEdit ? productEdit.brand : null}
 
                                 // autoFocus
                                 />
@@ -349,15 +358,17 @@ const CreateProduct = ({ backStep, productEdit, addNewItems,
                                             multiple
                                         />
                                         <label htmlFor={`contained-button-file_${index}`}>
-                                            <Button variant="contained" size="small" color="primary"
+                                            <Button variant="outlined" size="small" color="primary"
                                                 startIcon={<CloudUpload />}
                                                 component="span">
-                                                Subir Imagen
+                                                Imagenes
                                              </Button>
                                         </label>
-                                        <Box display="flex">
+                                        <Box display="flex" flexWrap="wrap">
                                             {itemschips[index]['chips'].map((name, i) => (
-                                                <Chip key={i}
+                                                <Chip
+                                                    size="small"
+                                                    key={i}
                                                     label={name}
                                                     onDelete={(e) => handleDeleteChipsImages(e, index)}
                                                 />
@@ -381,7 +392,7 @@ const CreateProduct = ({ backStep, productEdit, addNewItems,
                                             renderValue={(selected) => (
                                                 <div className={classes.chips}>
                                                     {selected.map((value) => (
-                                                        <Chip key={value} label={value} className={classes.chip} />
+                                                        <Chip size="small" key={value} label={value} className={classes.chip} />
                                                     ))}
                                                 </div>
                                             )}
@@ -416,7 +427,16 @@ const CreateProduct = ({ backStep, productEdit, addNewItems,
                     )
                         : null
                     }
-                    {productEdit ? (
+                    <Button
+                        onClick={handleRegister}
+                        // fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                    >
+                        Registrar Productos
+                            </Button>
+                    {/* {productEdit ? (
                         <Button
                             onClick={handleAddNewItems}
                             fullWidth
@@ -438,8 +458,8 @@ const CreateProduct = ({ backStep, productEdit, addNewItems,
                             </Button>
                         )
 
-                    }
-                    <Button
+                    } */}
+                    {/* <Button
                         onClick={backStep}
                         // fullWidth
                         variant="contained"
@@ -447,7 +467,7 @@ const CreateProduct = ({ backStep, productEdit, addNewItems,
                         className={classes.submit}
                     >
                         Regresar
-                     </Button>
+                     </Button> */}
                 </div>
             </Container>
         </div>
@@ -457,8 +477,8 @@ const CreateProduct = ({ backStep, productEdit, addNewItems,
 }
 
 const mapDispatchToState = (dispatch) => ({
-    addNewItems: (product) => dispatch(addNewItemsAsync(product)),
-    addNewCategory: (product) => dispatch(addCategory(product)),
+    // addNewItems: (product) => dispatch(addNewItemsAsync(product)),
+    // addNewCategory: (product) => dispatch(addCategory(product)),
     uploadStart: () => dispatch(uploadProductsStart()),
     uploadSuccess: () => dispatch(uploadProductsSuccess())
 

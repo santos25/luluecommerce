@@ -1,16 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+//components
+import ModalDialogAdd from './ModalDialogAdd'
 
 import {
-
     makeStyles,
     Button,
     Typography,
-    ListItem,
     Avatar,
-    List,
-    ListItemAvatar,
-    ListItemText,
-    ListItemSecondaryAction,
     IconButton,
     Grid,
     Box,
@@ -19,11 +16,16 @@ import {
     TableHead,
     TableRow,
     TableCell,
-    TableBody
+    TableBody,
+    TableFooter,
 
 } from '@material-ui/core';
 
-import DeleteIcon from '@material-ui/icons/Delete';
+import {
+    Delete as DeleteIcon,
+    Edit as EditIcon,
+    AddCircle as AddCircleIcon,
+} from '@material-ui/icons'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,130 +41,100 @@ const useStyles = makeStyles((theme) => ({
 const ProductList = ({ products, handleCurrentPage, handleRemoveItems }) => {
     const classes = useStyles();
     console.log(products);
+    const [openModal, setOpenModal] = useState(false)
+
+    const handleModal = () => {
+        setOpenModal(!openModal);
+
+    }
     return (
         <div>
+            {openModal && <ModalDialogAdd open={openModal} handleClose={handleModal}/>}
+
             <Box display="flex" justifyContent="center">
                 <Typography component="h4"> Listado de Productos en Stock</Typography>
             </Box>
-
             <Grid container>
+                <Grid xs={12} item>
+                    <Button
+                        onClick={handleModal}
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        endIcon={<AddCircleIcon />}
+                    >
+                        Agregar
+                    </Button>
+                </Grid>
+            </Grid>
+            <Grid container>
+
                 <Grid xs={12} item>
                     <TableContainer >
                         <Table className={classes.table} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Imagen</TableCell>
-                                    <TableCell align="right">Nombre</TableCell>
-                                    <TableCell align="right">Precio</TableCell>
-                                    <TableCell align="right">Fecha de Creación</TableCell>
+                                    <TableCell>IMAGEN</TableCell>
+                                    <TableCell align="right">NOMBRE</TableCell>
+                                    <TableCell align="right">PRECIO</TableCell>
+                                    <TableCell align="right">CATEGORIA</TableCell>
+                                    <TableCell align="right">FECHA CREACION</TableCell>
+                                    <TableCell align="right">ACCIONES</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {/* {rows.map((row) => (
-                                    <TableRow key={row.name}>
+                                {products.map((product) => (
+                                    <TableRow key={product.name}>
+                                        {/* {console.log(product.createdt.toDate())} */}
                                         <TableCell component="th" scope="row">
-                                            {row.name}
+                                            <Avatar
+                                                className={classes.large}
+                                                alt={product.name}
+                                                src={product.image[0]}
+                                            />
                                         </TableCell>
-                                        <TableCell align="right">{row.calories}</TableCell>
-                                        <TableCell align="right">{row.fat}</TableCell>
-                                        <TableCell align="right">{row.carbs}</TableCell>
+                                        <TableCell align="right">{product.name}</TableCell>
+                                        <TableCell align="right">{`$${product.price}`}</TableCell>
+                                        <TableCell align="right">{product.category}</TableCell>
+                                        <TableCell align="right">Working on this cell</TableCell>
+                                        <TableCell >
+                                            <Box display="flex" justifyContent="flex-end">
+                                                <IconButton aria-label="delete">
+                                                    <EditIcon />
+                                                </IconButton>
+                                                <IconButton aria-label="edit">
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </Box>
+                                        </TableCell>
                                     </TableRow>
-                                ))} */}
+                                ))}
                             </TableBody>
+                            {/* <TableFooter>
+                                <TableRow>
+                                    <TablePagination
+                                        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                        colSpan={3}
+                                        count={rows.length}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        SelectProps={{
+                                            inputProps: { 'aria-label': 'rows per page' },
+                                            native: true,
+                                        }}
+                                        onChangePage={handleChangePage}
+                                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                                        ActionsComponent={TablePaginationActions}
+                                    />
+                                </TableRow>
+                            </TableFooter> */}
                         </Table>
                     </TableContainer>
                 </Grid>
             </Grid>
-            {/* {
-                products.map((product, i) => {
-                    return (
-                        <Grid key={i} container>
-                            <Grid item xs={12}>
-                                <Box display="flex" justifyContent="center">
-                                    <Box>
-                                        <Typography component="h4"> TIENDA : {product.brand}</Typography>
 
-                                        <Typography component="h4"> GENERO : {product.genre}</Typography>
-                                    </Box>
-                                    <Box >
-                                        <Button
-                                            onClick={() => handleCurrentPage({
-                                                idcollection: product.id,
-                                                brand: product.brand,
-                                                genre: product.genre
-                                            }, 'create')}
-                                            variant="outlined"
-                                            color="primary"
-                                            size="small"
-                                        >
-                                            Agregar Categoria
-                                            </Button>
-                                    </Box>
-                                </Box>
-                            </Grid>
-                            {
-                                Object.keys(product.categories).map((category, index) => {
-
-                                    return (
-                                        <Box key={index} >
-                                            <Box display="flex" >
-                                                <Typography component="h4"> {`Categoria : ${category}`}</Typography>
-                                                <Box ml={2}>
-                                                    <Button
-                                                        onClick={() => handleCurrentPage({
-                                                            idcollection: product.id,
-                                                            brand: product.brand,
-                                                            genre: product.genre,
-                                                            category
-                                                        }, 'create')}
-                                                        variant="outlined"
-                                                        color="primary"
-                                                        size="small"
-                                                    >
-                                                        Agregar Items
-                                                </Button>
-                                                </Box>
-                                            </Box>
-                                            <Box>
-                                                <List dense >
-                                                    {
-                                                        Object.keys(product.categories[category]).map((itemKey, i) => {
-
-                                                            const item = product.categories[category][itemKey];
-                                                            return (
-                                                                <ListItem key={i} button>
-                                                                    <ListItemAvatar>
-                                                                        <Avatar
-                                                                            className={classes.large}
-                                                                            alt={item.name}
-                                                                            src={item.image[0]}
-                                                                        />
-                                                                    </ListItemAvatar>
-                                                                    <ListItemText primary={item.name} secondary={item.price} />
-
-                                                                    <ListItemSecondaryAction>
-                                                                        <IconButton aria-label="delete" onClick={() => handleRemoveItems(
-                                                                            {
-                                                                                idcollection: product.id,
-                                                                            }, product.items[i])}>
-                                                                            <DeleteIcon />
-                                                                        </IconButton>
-                                                                    </ListItemSecondaryAction>
-                                                                </ListItem>
-                                                            );
-                                                        })
-                                                    }
-                                                </List>
-                                            </Box>
-                                        </Box>
-                                    )
-                                })
-                            }
-                        </Grid>
-                    )
-                })
-            } */}
-        </div>)
+        </div >)
 }
 
 export default ProductList

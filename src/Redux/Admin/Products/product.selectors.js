@@ -7,16 +7,19 @@ export const productSelector = createSelector(
     [adminData],
     adminData => {
         console.log(adminData.products);
-        const itemsResult = adminData.products.map((collection, index) => {
-            const allItems = Object.keys(collection.categories)
-                .map(category => Object.keys(collection.categories[category])
-                    .map(item => ({ ...collection.categories[category][item], id: collection.id, genre: collection.genre }))
-                )
+        const dataItems = [];
+        adminData.products.forEach((collection, index) => {
+            Object.keys(collection.categories).forEach(category => {
+                Object.keys(collection.categories[category]).forEach(item => {
 
-            return allItems;
+                    dataItems.push({ ...collection.categories[category][item], 
+                                    id: collection.id, 
+                                    genre: collection.genre,
+                                    category })
+                })
+            })
         })
-
-        return itemsResult;
+        return dataItems;
     }
 
 )

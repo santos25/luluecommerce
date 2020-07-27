@@ -85,35 +85,30 @@ export const convertCollectionsToObjects = (collection) => {
 }
 
 
-export const uploadProductDB = async (product, items) => {
+export const uploadProductDB = async (document, product, items) => {
 
-    const { brand, category, genre } = product;
-    let batch = firestore.batch();
+    let itemTotal = 0
+    if(document.data().categories.hasOwnProperty(product.category))
+        itemTotal = Object.keys(document.data().categories[product.category]).length;
+
+
     const date = new Date()
-    const newDocRef = firestore.collection("collections").doc();
 
     let objItems= {};
 
     console.log(items);
     items.forEach((item, i) => {
-        objItems[`item_${i}`] = {...item , createdt : date};
+        objItems[`item_${itemTotal}`] = {...item , createdt : date};
+        itemTotal++
     })
 
-    let objProduct = {
-        brand,
-        genre,
-        categories: {
-            [category.toLowerCase()]: objItems
+    const result = await document.ref.set({
+        categories : {
+            [product.category.toLowerCase()]: objItems
         }
-    }
+    }, {merge : true});
 
-    console.log(objProduct);
-    batch.set(newDocRef, objProduct);
-
-    // const proDocRef = newDocRef.collection("productos").doc();
-    // batch.set(proDocRef, { category, items });
-
-    return await batch.commit();
+    return result;
 }
 
 export const uploadImages = async (items, category) => {
@@ -150,48 +145,29 @@ export const uploadImages = async (items, category) => {
 }
 
 
-export const addNewItems = (productRef,document , category , items) => {
+// export const addNewItems = (productRef, document , category , items) => {
 
-    const itemsSavedObjetc = document.data().categories[category];
-    let itemTotal = Object.keys(document.data().categories[category]).length;
+//     const itemsSavedObjetc = document.data().categories[category];
+//     let itemTotal = Object.keys(document.data().categories[category]).length;
 
-    console.log(items);
+//     console.log(items);
 
-    let objItems= {};
+//     let objItems= {};
 
-    console.log(items);
-    items.forEach( item => {
-        objItems[`item_${itemTotal}`] = {...item , createdt : new Date()};
-        itemTotal++
-    })
+//     console.log(items);
+//     items.forEach( item => {
+//         objItems[`item_${itemTotal}`] = {...item , createdt : new Date()};
+//         itemTotal++
+//     })
 
-    productRef.update({
-        [`categories.${category}`] : {...itemsSavedObjetc , ...objItems}
-    });
-}
+//     productRef.update({
+//         [`categories.${category}`] : {...itemsSavedObjetc , ...objItems}
+//     });
+// }
 
 export const removeItem = (productRef, items, itemtoDelete) => {
 
     productRef.update({
         items: items.filter(item => item.name !== itemtoDelete.name)
     });
-}
-
-export const addCategoryDoc = (productRef, category, items) => {
-    console.log(items);
-    const date = new Date()
-
-    let objItems= {};
-
-    console.log(items);
-    items.forEach((item, i) => {
-        objItems[`item_${i}`] = {...item , createdt : date};
-    })
-
-    productRef.set({
-        categories : {
-            [category.toLowerCase()]: objItems
-        }
-    }, {merge : true});
-
 }
