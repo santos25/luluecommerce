@@ -9,13 +9,14 @@ export const productSelector = createSelector(
         console.log(adminData.products);
         const dataItems = [];
         adminData.products.forEach((collection, index) => {
-            Object.keys(collection.categories).forEach(category => {
-                Object.keys(collection.categories[category]).forEach(item => {
+            Object.keys(collection.categories).forEach(categoryKey => {
+                Object.keys(collection.categories[categoryKey]).forEach(itemKey => {
 
-                    dataItems.push({ ...collection.categories[category][item], 
+                    dataItems.push({ ...collection.categories[categoryKey][itemKey], 
                                     id: collection.id, 
                                     genre: collection.genre,
-                                    category })
+                                    itemkey: itemKey,
+                                    category : categoryKey })
                 })
             })
         })

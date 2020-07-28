@@ -88,25 +88,22 @@ export const convertCollectionsToObjects = (collection) => {
 export const uploadProductDB = async (document, product, items) => {
 
     let itemTotal = 0
-    if(document.data().categories.hasOwnProperty(product.category))
+    if (document.data().categories.hasOwnProperty(product.category))
         itemTotal = Object.keys(document.data().categories[product.category]).length;
 
-
-    const date = new Date()
-
-    let objItems= {};
+    let objItems = {};
 
     console.log(items);
     items.forEach((item, i) => {
-        objItems[`item_${itemTotal}`] = {...item , createdt : date};
+        objItems[`item_${itemTotal}`] = { ...item, createdt: new Date() };
         itemTotal++
     })
 
     const result = await document.ref.set({
-        categories : {
+        categories: {
             [product.category.toLowerCase()]: objItems
         }
-    }, {merge : true});
+    }, { merge: true });
 
     return result;
 }
@@ -165,9 +162,16 @@ export const uploadImages = async (items, category) => {
 //     });
 // }
 
-export const removeItem = (productRef, items, itemtoDelete) => {
+export const updateItem = (docRef, category, itemKey , editedItem) => {
 
-    productRef.update({
-        items: items.filter(item => item.name !== itemtoDelete.name)
+    docRef.update({
+        [`categories.${category}.${itemKey}`]: editedItem
+    });
+}
+
+export const removeItem = (docRef, category, itemKey) => {
+
+    docRef.update({
+        [`categories.${category}.${itemKey}`]: firebase.firestore.FieldValue.delete()
     });
 }

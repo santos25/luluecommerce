@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 
+//firestore
+import { removeItem } from '../../../FireBase/FireBaseUtil'
 //components
 import ModalDialogAdd from './ModalDialogAdd'
+import ModalDialogEdit from './ModalDialogEdit'
 
 import {
     makeStyles,
@@ -26,6 +29,7 @@ import {
     Edit as EditIcon,
     AddCircle as AddCircleIcon,
 } from '@material-ui/icons'
+import { firestore } from '../../../FireBase/FireBaseUtil';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,18 +42,38 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ProductList = ({ products, handleCurrentPage, handleRemoveItems }) => {
+const ProductList = ({ products }) => {
     const classes = useStyles();
     console.log(products);
-    const [openModal, setOpenModal] = useState(false)
+    const [openModalAdd, setOpenModal] = useState(false)
+    const [openModalEdit, setOpenModalEdit] = useState({ open: false, item: {} })
 
-    const handleModal = () => {
-        setOpenModal(!openModal);
-
+    const handleModalAdd = () => {
+        setOpenModal(!openModalAdd);
     }
+
+    const handleDeleteItem = (item) => {
+        console.log(item);
+        const docRef = firestore.collection('collections').doc(item.id)
+        removeItem(docRef, item.category, item.itemkey);
+    }
+
+    const handleEditItem = (selectedItem) => {
+        console.log(selectedItem);
+
+        setOpenModalEdit({ open: true, item: selectedItem });
+    }
+
+    const handleModalEdit = () => {
+        setOpenModalEdit({ open: false, item: {} })
+    }
+
     return (
         <div>
-            {openModal && <ModalDialogAdd open={openModal} handleClose={handleModal}/>}
+            {openModalAdd && <ModalDialogAdd open={openModalAdd} handleClose={handleModalAdd} />}
+            {openModalEdit.open && <ModalDialogEdit open={openModalEdit.open}
+                item={openModalEdit.item}
+                handleClose={handleModalEdit} />}
 
             <Box display="flex" justifyContent="center">
                 <Typography component="h4"> Listado de Productos en Stock</Typography>
@@ -57,7 +81,7 @@ const ProductList = ({ products, handleCurrentPage, handleRemoveItems }) => {
             <Grid container>
                 <Grid xs={12} item>
                     <Button
-                        onClick={handleModal}
+                        onClick={handleModalAdd}
                         size="small"
                         variant="contained"
                         color="primary"
@@ -100,10 +124,10 @@ const ProductList = ({ products, handleCurrentPage, handleRemoveItems }) => {
                                         <TableCell align="right">Working on this cell</TableCell>
                                         <TableCell >
                                             <Box display="flex" justifyContent="flex-end">
-                                                <IconButton aria-label="delete">
+                                                <IconButton aria-label="edit" onClick={() => handleEditItem(product)}>
                                                     <EditIcon />
                                                 </IconButton>
-                                                <IconButton aria-label="edit">
+                                                <IconButton aria-label="delete" onClick={() => handleDeleteItem(product)}>
                                                     <DeleteIcon />
                                                 </IconButton>
                                             </Box>

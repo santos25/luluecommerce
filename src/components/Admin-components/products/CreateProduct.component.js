@@ -187,14 +187,16 @@ const CreateProduct = ({ uploadStart, uploadSuccess, isUploading, handleClose })
         console.log({ itemschips });
     }
 
+// think later if we can avoid reading the document to insert 
+
     const handleRegister = async (e) => {
         e.preventDefault();
         console.log({ product });
         console.log({ items });
-        const docRef = firestore.collection('collections').where('genre', '==', product.genre)
+        const collectionRef = firestore.collection('collections').where('genre', '==', product.genre)
             .where('brand', '==', product.brand)
 
-        docRef.get().then((snapshot) => {
+            collectionRef.get().then((snapshot) => {
             snapshot.docs.forEach(async document => {
                 if (document.exists) {
                     // const DocData = { id: document.id, ...document.data() }
