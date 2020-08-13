@@ -21,6 +21,7 @@ import {
     TableCell,
     TableBody,
     TableFooter,
+    Paper,
 
 } from '@material-ui/core';
 
@@ -95,7 +96,7 @@ const ProductList = ({ products }) => {
             <Grid container>
 
                 <Grid xs={12} item>
-                    <TableContainer >
+                    <TableContainer component={Paper}>
                         <Table className={classes.table} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
@@ -108,8 +109,8 @@ const ProductList = ({ products }) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {products.map((product) => (
-                                    <TableRow key={product.name}>
+                                {products.map((product , index) => (
+                                    <TableRow key={index}>
                                         {/* {console.log(product.createdt.toDate())} */}
                                         <TableCell component="th" scope="row">
                                             <Avatar

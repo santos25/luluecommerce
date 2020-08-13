@@ -70,8 +70,8 @@ const NavAdmin = ({ currentUser , open , handleDrawerOpen }) => {
                 </IconButton>
 
                 <Link className={classes.link} component={RouterLink} to="/"> LULU</Link>
-                <Link className={classes.link} component={RouterLink} to="/producto"> Productos</Link>
-                <Link className={classes.link} component={RouterLink} to="/prendas"> Prendas</Link>
+                {/* <Link className={classes.link} component={RouterLink} to="/producto"> Productos</Link> */}
+                {/* <Link className={classes.link} component={RouterLink} to="/prendas"> Prendas</Link> */}
 
                 {
                     currentUser ? (

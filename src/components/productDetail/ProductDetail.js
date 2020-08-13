@@ -94,7 +94,7 @@ const ProductDetail = ({ product, addItemsToCart }) => {
                                 onChange={handleTalla}
                             >
                                 {
-                                    product.tallas.map(talla => <MenuItem value={talla}>{talla}</MenuItem>)
+                                    product.tallas.map((talla,i) => <MenuItem key={i} value={talla}>{talla}</MenuItem>)
                                 }
                             </Select>
                         </FormControl>
@@ -141,7 +141,7 @@ const mapDispatchToState = (dispatch) => ({
 })
 
 const mapStateToProps = (state, ownProps) => ({
-    product: dataProductDetailSelector(ownProps.match.params.collectionId, ownProps.match.params.productId)(state)
+    product: dataProductDetailSelector(ownProps.match.params.collectionId, ownProps.match.params.productId , ownProps.tagId)(state)
     // newCollections: newCollectionsHomeSelector(state)
 
 })

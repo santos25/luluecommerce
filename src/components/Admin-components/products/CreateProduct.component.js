@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { uploadImages, uploadProductDB, firestore } from '../../../FireBase/FireBaseUtil';
 import { isUploadinSelector } from "../../../Redux/Admin/Products/product.selectors";
-import { addNewItemsAsync, addCategory, uploadProductsStart, uploadProductsSuccess } from '../../../Redux/Admin/Products/product.actions';
+import { uploadProductsStart, uploadProductsSuccess } from '../../../Redux/Admin/Products/product.actions';
 
 import { CloudUpload } from '@material-ui/icons';
 import {
@@ -187,21 +187,21 @@ const CreateProduct = ({ uploadStart, uploadSuccess, isUploading, handleClose })
         console.log({ itemschips });
     }
 
-// think later if we can avoid reading the document to insert 
+    // think later if we can avoid reading the document to insert 
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        uploadStart()
         console.log({ product });
         console.log({ items });
         const collectionRef = firestore.collection('collections').where('genre', '==', product.genre)
             .where('brand', '==', product.brand)
 
-            collectionRef.get().then((snapshot) => {
+        collectionRef.get().then((snapshot) => {
             snapshot.docs.forEach(async document => {
                 if (document.exists) {
                     // const DocData = { id: document.id, ...document.data() }
-                    uploadStart()
-                    const uploadedItemsImages = await uploadImages(items, product.category);
+                    const uploadedItemsImages = await uploadImages(items, product.category , product.genre);
                     console.log(uploadedItemsImages);
                     const result = await uploadProductDB(document, product, uploadedItemsImages);
                     console.log(result);
@@ -489,5 +489,6 @@ const mapDispatchToState = (dispatch) => ({
 const mapStateToProps = (state) => ({
     isUploading: isUploadinSelector(state)
 })
+
 
 export default connect(mapStateToProps, mapDispatchToState)(CreateProduct);

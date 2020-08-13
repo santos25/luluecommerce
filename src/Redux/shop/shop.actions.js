@@ -23,18 +23,17 @@ const fetchingCollectionFailed = (error) => {
     }
 }
 
-export const fetchingCollectionsAsync = (genre) => {
+export const fetchingCollectionsAsync = (collections) => {
     return (dispatch) => {
-        const collectionRef = firestore.collection('collections').where('genre', '==', genre);
+        // const collectionRef = firestore.collection('collections').where('genre', '==', genre);
 
-        dispatch(fetchingCollectionStart());
-        
-        collectionRef.get().then(snapShot => {
-            snapShot.docs.forEach(document => {
-                dispatch(fetchingCollectionSucces({ id: document.id , ...document.data()}))
-            })
-        })
-        // createCollectionAndDocuments('items' , TEMPDATA)
+        // dispatch(fetchingCollectionStart());
 
+        /*  collectionRef.get().then(snapShot => {
+             snapShot.docs.forEach(document => {
+                 dispatch(fetchingCollectionSucces({ id: document.id , ...document.data()}))
+             })
+         }) */
+        dispatch(fetchingCollectionSucces(collections))
     }
 }

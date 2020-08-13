@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 //selectors
-import { categorySelector, newCollectionSelector } from '../../Redux/directory/directory.selectors';
+import { categorySelector, newCollectionSelector} from '../../Redux/directory/directory.selectors';
+import { landscapeImageSelector} from '../../Redux/shop/shop.selectors';
 //actions
 import { loadDirectory, loadNewCollection } from '../../Redux/directory/directory.action';
+import { fetchingCollectionsAsync } from '../../Redux/shop/shop.actions';
 //firebase
 import { firestore } from '../../FireBase/FireBaseUtil';
 //components
@@ -32,13 +34,13 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
     },
     gridList: {
-        width: 900,
+        width: 'auto',
         // height: 450,
         // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
         transform: 'translateZ(0)',
     },
-    gridListTitle : {
-        cursor : 'Pointer'
+    gridListTitle: {
+        cursor: 'Pointer'
     },
     titleBar: {
         background:
@@ -48,10 +50,15 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         color: 'white',
     },
+    image:{
+        backgroundPosition : "center",
+        backgroundSize: '200px 100px'
+    }
 }));
 
-const Directory = ({ categoryCollection, loadDirectory, loadNewCollection, newCollection }) => {
-    console.log(categoryCollection);
+const Directory = ({ categoryCollection, loadDirectory, loadNewCollection, newCollection, loadallCollections , imageHeader }) => {
+    console.log(newCollection);
+    console.log({imageHeader});
     const classes = useStyles();
     const history = useHistory()
 
@@ -64,7 +71,27 @@ const Directory = ({ categoryCollection, loadDirectory, loadNewCollection, newCo
             loadDirectory(document.data());
         })
 
-    }, [loadDirectory , loadNewCollection]);
+        const collectionRef = firestore.collection('collections')
+        collectionRef.get().then(snapshot => {
+            
+            loadallCollections(snapshot.docs.map(document => ({ id: document.id, ...document.data() })))
+
+            const allNewCollection = []
+            snapshot.docs.forEach(document => {
+                Object.keys(document.data().categories).forEach(category => {
+                    Object.keys(document.data().categories[category]).forEach(itemKey => {
+                        allNewCollection.push({...document.data().categories[category][itemKey], categoryid : category , genreid : document.data().genre})
+                    })
+                })
+            })
+
+            // console.log(allNewCollection);
+            allNewCollection.sort(function (x, y) {
+                return y.createdt.toDate() - x.createdt.toDate()
+            })
+            loadNewCollection(allNewCollection);
+        })
+    }, [loadDirectory, loadNewCollection]);
 
     const handleCategory = (collection) => {
         console.log(collection);
@@ -73,18 +100,18 @@ const Directory = ({ categoryCollection, loadDirectory, loadNewCollection, newCo
 
     return (
         <Box>
-            {/* <Header /> */}
+            <Header image={imageHeader}/>
             <Box mt={6} mb={2} display="flex" justifyContent="center">
                 <Typography variant="h5">
                     COLECCIONES
                     </Typography>
             </Box>
-            <Box>
+            <Box p={2}>
                 <div className={classes.root}>
-                    <GridList cellHeight={200} spacing={4} cols={4} className={classes.gridList} >
+                    <GridList cellHeight={200} spacing={10} cols={4} className={classes.gridList} >
                         {categoryCollection && categoryCollection.map((collection, i) => (
                             <GridListTile className={classes.gridListTitle} key={i} cols={2} rows={2} onClick={() => handleCategory(collection)} >
-                                <img src={collection.image} alt="" />
+                                <img className={classes.image} src={collection.image} alt="" />
                                 <GridListTileBar
                                     title={collection.name.toUpperCase()}
                                     titlePosition="top"
@@ -101,13 +128,12 @@ const Directory = ({ categoryCollection, loadDirectory, loadNewCollection, newCo
                     </GridList>
                 </div>
             </Box>
-            <Box  mt={4} mb={2} ml={2} display="flex" justifyContent="flex-start">
+            {/*  */}
+            <Box mt={4} mb={2} ml={2} >
                 <Typography variant="h5">
                     New Colecciones
                     </Typography>
-            </Box>
-            <Box>
-                {/* <SlickCollection collections={newCollection} /> */}
+                <SlickCollection collections={newCollection}  tagId=""/>
             </Box>
         </Box>
     );
@@ -115,12 +141,14 @@ const Directory = ({ categoryCollection, loadDirectory, loadNewCollection, newCo
 
 const mapStateToProps = createStructuredSelector({
     categoryCollection: categorySelector,
-    newCollection: newCollectionSelector
+    newCollection: newCollectionSelector,
+    imageHeader: landscapeImageSelector('mujer')
 })
 
 const mapDispatchToState = (dispatch) => ({
     loadDirectory: (items) => dispatch(loadDirectory(items)),
-    loadNewCollection: (items) => dispatch(loadNewCollection(items))
+    loadNewCollection: (items) => dispatch(loadNewCollection(items)),
+    loadallCollections: (collections) => dispatch(fetchingCollectionsAsync(collections))
 })
 
 export default connect(mapStateToProps, mapDispatchToState)(Directory);

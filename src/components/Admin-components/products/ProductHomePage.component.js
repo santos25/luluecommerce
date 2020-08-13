@@ -23,6 +23,7 @@ const ProductPage = ({ fetchProductsAsync, products, isFetchingProducts, removeI
     const [currentPage, setCurrentPage] = useState("home");
     const [product, setProduct] = useState(null);
 
+    console.log(products);
     useEffect(() => {
         console.log("fetching Products");
         fetchProductsAsync();
@@ -55,10 +56,10 @@ const ProductPage = ({ fetchProductsAsync, products, isFetchingProducts, removeI
                   </Button>
                     </Container> */}
                     {/* <Box> */}
-                        <ProductListWithSpinner isLoading={isFetchingProducts} products={products}
-                            handleCurrentPage={handleCurrentPage}
-                            handleRemoveItems={handleRemoveItems}
-                        />
+                    <ProductListWithSpinner isLoading={isFetchingProducts} products={products}
+                        handleCurrentPage={handleCurrentPage}
+                        handleRemoveItems={handleRemoveItems}
+                    />
                     {/* </Box> */}
                 </Box>
             ) :

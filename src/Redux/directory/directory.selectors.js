@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 const directory = state => state.directory.DirectoryData;
+const newcollection = state => state.directory.newCollection;
 
 export const categorySelector = createSelector(
     [directory],
@@ -8,7 +9,7 @@ export const categorySelector = createSelector(
         if (data !== '') {
             console.log(data);
             return (
-                Object.keys(data.prendas).map(prenda => ({
+                Object.keys(data.prendas).filter( (key, i) => i < 4).map(prenda => ({
                     id: data.name.toLowerCase(),
                     name: data.prendas[prenda].name,
                     image: data.prendas[prenda].image
@@ -20,6 +21,11 @@ export const categorySelector = createSelector(
 )
 
 export const newCollectionSelector = createSelector(
+    [newcollection],
+    collection => collection
+)
+
+export const landscapeImageSelector = createSelector(
     [directory],
-    items => items.newCollection
+    directory => directory.landscape
 )

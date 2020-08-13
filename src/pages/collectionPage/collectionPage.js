@@ -12,23 +12,23 @@ const CollectionPage = ({ itemscollection }) => {
 
     // console.log(itemscollection);
     return (
-            <Grid container
-                direction="row"
-            >
-                    {
-                        itemscollection.map((item, i) => (
-                            <Grid key={i} item xs={12} sm={3}>
-                                <CardImages item={item} />
-                            </Grid>
-                        )
-                        )
-                    }
-            </Grid>
+        <Grid container
+            direction="row"
+        >
+            {
+                itemscollection.map((item, i) => (
+                    <Grid key={i} xs={12} sm={3} item>
+                        <CardImages key={i} item={item} />
+                    </Grid>
+                )
+                )
+            }
+        </Grid>
     )
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    itemscollection: dataCollectionSelector(ownProps.match.params.collectionId)(state)
+    itemscollection: dataCollectionSelector(ownProps.match.params.collectionId, ownProps.tagId)(state)
 })
 
 

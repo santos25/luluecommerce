@@ -108,13 +108,13 @@ export const uploadProductDB = async (document, product, items) => {
     return result;
 }
 
-export const uploadImages = async (items, category) => {
-    // console.log(product);
+export const uploadImages = async (items, category , genre) => {
+    console.log(items);
 
     try {
         const promisesItem = items.map(item => (
             item.image.map(image => {
-                const uploadImage = storage.ref(`images-lulu/${category}/${item.name}`).child(image.name).put(image);
+                const uploadImage = storage.ref(`images-lulu/${genre}/${category}/${item.name}`).child(image.name).put(image);
                 uploadImage.on(firebase.storage.TaskEvent.STATE_CHANGED,
                     snapshot => {
                         let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -163,7 +163,7 @@ export const uploadImages = async (items, category) => {
 // }
 
 export const updateItem = (docRef, category, itemKey , editedItem) => {
-
+    console.log(editedItem);
     docRef.update({
         [`categories.${category}.${itemKey}`]: editedItem
     });

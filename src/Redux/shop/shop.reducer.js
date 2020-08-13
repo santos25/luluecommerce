@@ -2,7 +2,7 @@ import SHOPTYPES from './shop.types';
 
 
 const INITIAL_STATE = {
-    dataShop: {},
+    dataShop: [],
     isFetching: true,
     errorMessage: ''
 

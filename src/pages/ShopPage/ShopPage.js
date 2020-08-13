@@ -17,42 +17,43 @@ const CollectionOverviewWitSpinner = WithSpinner(CollectionOverview);
 const CollectionPageWitSpinner = WithSpinner(CollectionPage);
 const ProductDetailWitSpinner = WithSpinner(ProductDetail);
 
-const ShopPage = ({ fetchCollections, isLoading }) => {
+const ShopPage = ({isLoading}) => {
 
     let match = useRouteMatch();
     let { tagid } = match.params;
 
+
     useEffect(() => {
 
-        console.log("Fetching ShopPage");
+        console.log("rendering ShopPage");
+        console.log(tagid);
+        // fetchCollections(tagid);
+    }, []);
 
-        fetchCollections(tagid);
-    }, [tagid, fetchCollections]);
-
-    console.log({ isLoading });
-    console.log({ match });
+    // console.log({ isLoading });
+    // console.log({ match });
 
     return (
         <Switch>
             <Route exact path={match.url}>
-                <CollectionOverviewWitSpinner isLoading={isLoading} />
+                <CollectionOverviewWitSpinner isLoading={isLoading} tagId={tagid} />
             </Route>
             <Route exact path={`${match.url}/:collectionId`}
-                render={(props) => <CollectionPageWitSpinner isLoading={isLoading} {...props} />}>
+                render={(props) => <CollectionPageWitSpinner  isLoading={isLoading} tagId={tagid} {...props} />}>
             </Route>
             <Route path={`${match.url}/:collectionId/:productId`}
-                render={(props) => <ProductDetailWitSpinner isLoading={isLoading} {...props} />}>
+                render={(props) => <ProductDetailWitSpinner isLoading={isLoading} {...props} tagId={tagid} />}>
             </Route>
         </Switch>
     )
 }
 
-const mapDispatchToState = (dispatch) => ({
-    fetchCollections: (genre) => dispatch(fetchingCollectionsAsync(genre))
-})
+// const mapDispatchToState = (dispatch) => ({
+//     getCollections: (genre) => dispatch(fetchingCollectionsAsync(genre))
+// })
 
 const mapStateToProps = (state) => ({
     isLoading: isLoadingCollections(state)
 })
 
-export default connect(mapStateToProps, mapDispatchToState)(ShopPage);
+export default connect(mapStateToProps, null)(ShopPage);
