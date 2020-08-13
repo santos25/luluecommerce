@@ -1,26 +1,26 @@
 {
   "files": {
     "main.css": "/luluecommerce/static/css/main.e394d3de.chunk.css",
-    "main.js": "/luluecommerce/static/js/main.de9c1efe.chunk.js",
-    "main.js.map": "/luluecommerce/static/js/main.de9c1efe.chunk.js.map",
+    "main.js": "/luluecommerce/static/js/main.4d1d7789.chunk.js",
+    "main.js.map": "/luluecommerce/static/js/main.4d1d7789.chunk.js.map",
     "runtime-main.js": "/luluecommerce/static/js/runtime-main.f1a7c16f.js",
     "runtime-main.js.map": "/luluecommerce/static/js/runtime-main.f1a7c16f.js.map",
     "static/css/2.111bb465.chunk.css": "/luluecommerce/static/css/2.111bb465.chunk.css",
-    "static/js/2.d1917945.chunk.js": "/luluecommerce/static/js/2.d1917945.chunk.js",
-    "static/js/2.d1917945.chunk.js.map": "/luluecommerce/static/js/2.d1917945.chunk.js.map",
+    "static/js/2.6749c4e6.chunk.js": "/luluecommerce/static/js/2.6749c4e6.chunk.js",
+    "static/js/2.6749c4e6.chunk.js.map": "/luluecommerce/static/js/2.6749c4e6.chunk.js.map",
     "index.html": "/luluecommerce/index.html",
-    "precache-manifest.f3e15a8d06edc56f3e5faf550c845298.js": "/luluecommerce/precache-manifest.f3e15a8d06edc56f3e5faf550c845298.js",
+    "precache-manifest.b1ce70a5ea2664cb06ffba2e96de26ea.js": "/luluecommerce/precache-manifest.b1ce70a5ea2664cb06ffba2e96de26ea.js",
     "service-worker.js": "/luluecommerce/service-worker.js",
     "static/css/2.111bb465.chunk.css.map": "/luluecommerce/static/css/2.111bb465.chunk.css.map",
     "static/css/main.e394d3de.chunk.css.map": "/luluecommerce/static/css/main.e394d3de.chunk.css.map",
-    "static/js/2.d1917945.chunk.js.LICENSE.txt": "/luluecommerce/static/js/2.d1917945.chunk.js.LICENSE.txt",
+    "static/js/2.6749c4e6.chunk.js.LICENSE.txt": "/luluecommerce/static/js/2.6749c4e6.chunk.js.LICENSE.txt",
     "static/media/slick-theme.css": "/luluecommerce/static/media/slick.f97e3bbf.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.f1a7c16f.js",
     "static/css/2.111bb465.chunk.css",
-    "static/js/2.d1917945.chunk.js",
+    "static/js/2.6749c4e6.chunk.js",
     "static/css/main.e394d3de.chunk.css",
-    "static/js/main.de9c1efe.chunk.js"
+    "static/js/main.4d1d7789.chunk.js"
   ]
 }
