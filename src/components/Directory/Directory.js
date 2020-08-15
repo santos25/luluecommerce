@@ -57,8 +57,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Directory = ({ categoryCollection, loadDirectory, loadNewCollection, newCollection, loadallCollections , imageHeader }) => {
-    console.log(newCollection);
-    console.log({imageHeader});
+    // console.log(newCollection);
+    // console.log({imageHeader});
     const classes = useStyles();
     const history = useHistory()
 
@@ -67,7 +67,7 @@ const Directory = ({ categoryCollection, loadDirectory, loadNewCollection, newCo
         const docRef = firestore.collection('genre').doc('mujer')
         docRef.get().then(document => {
             // const docuResult = document.data();
-            console.log(document.data());
+            // console.log(document.data());
             loadDirectory(document.data());
         })
 

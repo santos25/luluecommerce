@@ -45,12 +45,12 @@ const CardImages = ({ item, addItemsToCart, tagId }) => {
       url = `${match.url}/${item.categoryid}`
     }
   }else{
-    console.log("no tag");
-    console.log(item);
+    // console.log("no tag");
+    // console.log(item);
     url = `${item.genreid}/${item.categoryid}`
   }
 
-  console.log(match.params);
+  // console.log(match.params);
   return (
 
     <Card className={classes.root} >

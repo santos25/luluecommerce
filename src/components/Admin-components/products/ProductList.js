@@ -22,6 +22,7 @@ import {
     TableBody,
     TableFooter,
     Paper,
+    TablePagination,
 
 } from '@material-ui/core';
 
@@ -48,6 +49,8 @@ const ProductList = ({ products }) => {
     console.log(products);
     const [openModalAdd, setOpenModal] = useState(false)
     const [openModalEdit, setOpenModalEdit] = useState({ open: false, item: {} })
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [page, setPage] = useState(0);
 
     const handleModalAdd = () => {
         setOpenModal(!openModalAdd);
@@ -61,12 +64,21 @@ const ProductList = ({ products }) => {
 
     const handleEditItem = (selectedItem) => {
         console.log(selectedItem);
-
         setOpenModalEdit({ open: true, item: selectedItem });
     }
 
     const handleModalEdit = () => {
         setOpenModalEdit({ open: false, item: {} })
+    }
+
+    const handleChangePage = (event , newPage) =>{
+        console.log(event);
+        setPage(newPage)
+    }
+
+    const handleChangeRowsPerPage = (event) => {
+        console.log(event.target.value);
+        setRowsPerPage(parseInt(event.target.value))
     }
 
     return (
@@ -109,9 +121,12 @@ const ProductList = ({ products }) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {products.map((product , index) => (
+
+                                {(rowsPerPage > 0
+                                    ? products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    : products
+                                ).map((product , index) => (
                                     <TableRow key={index}>
-                                        {/* {console.log(product.createdt.toDate())} */}
                                         <TableCell component="th" scope="row">
                                             <Avatar
                                                 className={classes.large}
@@ -136,24 +151,24 @@ const ProductList = ({ products }) => {
                                     </TableRow>
                                 ))}
                             </TableBody>
-                            {/* <TableFooter>
+                            <TableFooter>
                                 <TableRow>
                                     <TablePagination
-                                        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                                        colSpan={3}
-                                        count={rows.length}
+                                        rowsPerPageOptions={[5, 10, 25]}
+                                        // colSpan={3}
+                                        count={products.length}
                                         rowsPerPage={rowsPerPage}
                                         page={page}
                                         SelectProps={{
                                             inputProps: { 'aria-label': 'rows per page' },
                                             native: true,
                                         }}
-                                        onChangePage={handleChangePage}
-                                        onChangeRowsPerPage={handleChangeRowsPerPage}
-                                        ActionsComponent={TablePaginationActions}
+                                    onChangePage={handleChangePage}
+                                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                                    // ActionsComponent={TablePaginationActions}
                                     />
                                 </TableRow>
-                            </TableFooter> */}
+                            </TableFooter>
                         </Table>
                     </TableContainer>
                 </Grid>
