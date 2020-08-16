@@ -6,7 +6,7 @@ const adminData = state => state.admin;
 export const productSelector = createSelector(
     [adminData],
     adminData => {
-        console.log(adminData.products);
+        // console.log(adminData.products);
         const dataItems = [];
         adminData.products.forEach((collection, index) => {
             Object.keys(collection.categories).forEach(categoryKey => {

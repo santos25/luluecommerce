@@ -4,6 +4,8 @@ import clsx from 'clsx'
 //components
 import NavAdmin from '../NavAdmin/NavAdmin.component'
 import ProductHomePage from '../products/ProductHomePage.component'
+import ListPrendasComponent from '../prendas/ListPrendas'
+
 import {
     makeStyles,
     useTheme,
@@ -21,8 +23,8 @@ import {
 import {
     ChevronLeft as ChevronLeftIcon,
     ChevronRight as ChevronRightIcon,
-    Inbox as InboxIcon,
-    Mail as MailIcon
+    Store as StoreIcon,
+    Wc as WcIcon,
 } from '@material-ui/icons'
 
 import {
@@ -118,17 +120,20 @@ const MiniDrawer = () => {
                         <Link component={RouterLink} to="/producto">
                             <ListItem button>
                                 <ListItemIcon>
-                                    <MailIcon />
+                                    <StoreIcon />
                                 </ListItemIcon>
                                 <ListItemText primary="Productos" />
                             </ListItem>
                         </Link>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <MailIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Prendas" />
-                        </ListItem>
+                        <Link component={RouterLink} to="/prendas">
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <WcIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Prendas" />
+                            </ListItem>
+                        </Link>
+
                     </List>
 
                 </Drawer>
@@ -142,9 +147,10 @@ const MiniDrawer = () => {
                         <Route path="/producto">
                             <ProductHomePage />
                         </Route>
-                        {/* <Route path="/prendas">
-                            <ListPrendas />
-                        </Route> */}
+                        <Route path="/prendas">
+                            <ListPrendasComponent />
+                        </Route>
+                        
                     </Switch>
                 </main>
             </div>

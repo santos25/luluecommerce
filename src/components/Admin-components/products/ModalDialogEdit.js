@@ -27,9 +27,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const ModalDialogEdit = ({ open, item ,  handleClose }) => {
+const ModalDialogEdit = ({ open, item, handleClose }) => {
     const classes = useStyles();
-
+    console.log("modalEdit");
+    console.log({open});
     return (
         <React.Fragment>
             <Dialog

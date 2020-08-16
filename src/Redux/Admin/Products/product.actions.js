@@ -1,5 +1,5 @@
 import PRODUCT_TYPE from './product.type';
-import { firestore, removeItem, uploadImages  } from '../../../FireBase/FireBaseUtil';
+import { firestore  } from '../../../FireBase/FireBaseUtil';
 
 const fetchingProductsStart = () => ({
     type: PRODUCT_TYPE.FETCHING_PRODUCTS_START
@@ -16,10 +16,16 @@ export const uploadProductsStart = () => ({
 });
 
 
-export const uploadProductsSuccess = () => ({
+const uploadProductsSuccess = () => ({
     type: PRODUCT_TYPE.UPLOADING_PRODUCTS_SUCCESS
 });
 
+export const uploadProductAsync = () => {
+    return (dispatch) => {
+        dispatch(uploadProductsSuccess());
+        dispatch(fetchingProductsAsync());
+    }
+}
 
 export const fetchingProductsAsync = () => {
     return (dispatch) => {
@@ -96,19 +102,19 @@ export const fetchingProductsAsync = () => {
 //     }
 // }
 
-export const removeItemsAsync = ({ idcollection, productoid }, item) => {
-    return (dispatch) => {
-        const productRef = firestore.collection('collections').doc(idcollection).collection('productos').doc(productoid)
-        productRef.get().then(async (snapshot) => {
-            console.log(snapshot.exists);
+// export const removeItemsAsync = ({ idcollection, productoid }, item) => {
+//     return (dispatch) => {
+//         const productRef = firestore.collection('collections').doc(idcollection).collection('productos').doc(productoid)
+//         productRef.get().then(async (snapshot) => {
+//             console.log(snapshot.exists);
 
-            if (snapshot.exists) {
-                removeItem(productRef, snapshot.data().items, item);
-                dispatch(fetchingProductsAsync())
-            } else
-                console.log("no exist document");
+//             if (snapshot.exists) {
+//                 removeItem(productRef, snapshot.data().items, item);
+//                 dispatch(fetchingProductsAsync())
+//             } else
+//                 console.log("no exist document");
 
-        })
+//         })
 
-    }
-}
+//     }
+// }

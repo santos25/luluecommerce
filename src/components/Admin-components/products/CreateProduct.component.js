@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react';
 // import { useHistory, useRouteMatch } from "react-router-dom";
 import { connect } from 'react-redux';
 import { uploadImages, uploadProductDB, firestore } from '../../../FireBase/FireBaseUtil';
+
+//selectors
 import { isUploadinSelector } from "../../../Redux/Admin/Products/product.selectors";
-import { uploadProductsStart, uploadProductsSuccess } from '../../../Redux/Admin/Products/product.actions';
+
+//actions
+import { uploadProductsStart, uploadProductAsync } from '../../../Redux/Admin/Products/product.actions';
 
 import { CloudUpload } from '@material-ui/icons';
 import {
@@ -482,7 +486,7 @@ const mapDispatchToState = (dispatch) => ({
     // addNewItems: (product) => dispatch(addNewItemsAsync(product)),
     // addNewCategory: (product) => dispatch(addCategory(product)),
     uploadStart: () => dispatch(uploadProductsStart()),
-    uploadSuccess: () => dispatch(uploadProductsSuccess())
+    uploadSuccess: () => dispatch(uploadProductAsync())
 
 })
 

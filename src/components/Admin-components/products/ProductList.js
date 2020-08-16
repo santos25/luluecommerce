@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux'
+//actions
+import { fetchingProductsAsync } from '../../../Redux/Admin/Products/product.actions'
 
 //firestore
 import { removeItem } from '../../../FireBase/FireBaseUtil'
 //components
 import ModalDialogAdd from './ModalDialogAdd'
 import ModalDialogEdit from './ModalDialogEdit'
+import AlertComponent from '../Utils/Alert';
 
 import {
     makeStyles,
@@ -23,6 +27,7 @@ import {
     TableFooter,
     Paper,
     TablePagination,
+    TextField,
 
 } from '@material-ui/core';
 
@@ -44,13 +49,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ProductList = ({ products }) => {
+const ProductList = ({ products, fetchingProductsAsync }) => {
     const classes = useStyles();
     console.log(products);
     const [openModalAdd, setOpenModal] = useState(false)
     const [openModalEdit, setOpenModalEdit] = useState({ open: false, item: {} })
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(0);
+    const [filterQuery, setFilterQUery] = useState('');
+    const [openDelete, setOpenDelete] = useState({ open: false, itemdelete: {} });
 
     const handleModalAdd = () => {
         setOpenModal(!openModalAdd);
@@ -60,6 +67,9 @@ const ProductList = ({ products }) => {
         console.log(item);
         const docRef = firestore.collection('collections').doc(item.id)
         removeItem(docRef, item.category, item.itemkey);
+
+        handleCloseDelete()
+        fetchingProductsAsync()
     }
 
     const handleEditItem = (selectedItem) => {
@@ -71,7 +81,7 @@ const ProductList = ({ products }) => {
         setOpenModalEdit({ open: false, item: {} })
     }
 
-    const handleChangePage = (event , newPage) =>{
+    const handleChangePage = (event, newPage) => {
         console.log(event);
         setPage(newPage)
     }
@@ -81,18 +91,43 @@ const ProductList = ({ products }) => {
         setRowsPerPage(parseInt(event.target.value))
     }
 
+    const filterData = (products) => {
+        const filteredData = products.filter(data => data.name.toLowerCase().includes(filterQuery))
+        return filteredData;
+    }
+
+    const handleCloseDelete = () => {
+        setOpenDelete({ open: false, itemdelete: {} })
+    }
+
+
     return (
         <div>
-            {openModalAdd && <ModalDialogAdd open={openModalAdd} handleClose={handleModalAdd} />}
+            {/* {openModalAdd && <ModalDialogAdd open={openModalAdd} handleClose={handleModalAdd} />}
+            */}
+            <ModalDialogAdd open={openModalAdd} handleClose={handleModalAdd} />
+
             {openModalEdit.open && <ModalDialogEdit open={openModalEdit.open}
                 item={openModalEdit.item}
                 handleClose={handleModalEdit} />}
 
+
+            {/* <ModalDialogEdit open={openModalEdit.open}
+                item={openModalEdit.item}
+                handleClose={handleModalEdit} /> */}
+
+            <AlertComponent open={openDelete.open}
+                itemToDelete={openDelete.itemdelete}
+                handleClose={handleCloseDelete}
+                handleConfirm={handleDeleteItem}
+                message="Al eliminar el producto será borrado en la Base de datos y no podra ser recuperado.
+                        ¿Está Seguro de eliminarlo?"
+                title="Eliminar Producto?" />
             <Box display="flex" justifyContent="center">
                 <Typography component="h4"> Listado de Productos en Stock</Typography>
             </Box>
             <Grid container>
-                <Grid xs={12} item>
+                <Grid xs={6} item>
                     <Button
                         onClick={handleModalAdd}
                         size="small"
@@ -103,6 +138,18 @@ const ProductList = ({ products }) => {
                     >
                         Agregar
                     </Button>
+                </Grid>
+                <Grid xs={6} item>
+                    <TextField
+                        onChange={(e) => setFilterQUery(e.target.value)}
+                        // autoComplete="fname"
+                        name="filterTable"
+                        variant="outlined"
+                        id="filterTable"
+                        label="Filtrar"
+                        size="small"
+                        variant="outlined"
+                    />
                 </Grid>
             </Grid>
             <Grid container>
@@ -123,9 +170,9 @@ const ProductList = ({ products }) => {
                             <TableBody>
 
                                 {(rowsPerPage > 0
-                                    ? products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    : products
-                                ).map((product , index) => (
+                                    ? filterData(products).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    : filterData(products)
+                                ).map((product, index) => (
                                     <TableRow key={index}>
                                         <TableCell component="th" scope="row">
                                             <Avatar
@@ -143,7 +190,10 @@ const ProductList = ({ products }) => {
                                                 <IconButton aria-label="edit" onClick={() => handleEditItem(product)}>
                                                     <EditIcon />
                                                 </IconButton>
-                                                <IconButton aria-label="delete" onClick={() => handleDeleteItem(product)}>
+                                                {/* <IconButton aria-label="delete" onClick={() => handleDeleteItem(product)}>
+                                                    <DeleteIcon />
+                                                </IconButton> */}
+                                                <IconButton aria-label="delete" onClick={() => setOpenDelete({ open: true, itemdelete: product })}>
                                                     <DeleteIcon />
                                                 </IconButton>
                                             </Box>
@@ -156,15 +206,15 @@ const ProductList = ({ products }) => {
                                     <TablePagination
                                         rowsPerPageOptions={[5, 10, 25]}
                                         // colSpan={3}
-                                        count={products.length}
+                                        count={filterData(products).length}
                                         rowsPerPage={rowsPerPage}
                                         page={page}
                                         SelectProps={{
                                             inputProps: { 'aria-label': 'rows per page' },
                                             native: true,
                                         }}
-                                    onChangePage={handleChangePage}
-                                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                                        onChangePage={handleChangePage}
+                                        onChangeRowsPerPage={handleChangeRowsPerPage}
                                     // ActionsComponent={TablePaginationActions}
                                     />
                                 </TableRow>
@@ -177,4 +227,7 @@ const ProductList = ({ products }) => {
         </div >)
 }
 
-export default ProductList
+const mapdispatchToState = (dispatch) => ({
+    fetchingProductsAsync: () => dispatch(fetchingProductsAsync())
+})
+export default connect(null, mapdispatchToState)(ProductList)

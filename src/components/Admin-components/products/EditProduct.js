@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
+//firebase
 import { firestore, updateItem, uploadImages } from '../../../FireBase/FireBaseUtil'
-import { uploadProductsStart, uploadProductsSuccess } from '../../../Redux/Admin/Products/product.actions'
+
+//actions
+import { uploadProductsStart, uploadProductAsync } from '../../../Redux/Admin/Products/product.actions'
+
 import { isUploadinSelector } from '../../../Redux/Admin/Products/product.selectors'
 
 import {
@@ -273,6 +277,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToState = (dispatch) => ({
     updateStart: () => dispatch(uploadProductsStart()),
-    updateSuccess: () => dispatch(uploadProductsSuccess())
+    updateSuccess: () => dispatch(uploadProductAsync())
 })
 export default connect(mapStateToProps, mapDispatchToState)(EditProduct)

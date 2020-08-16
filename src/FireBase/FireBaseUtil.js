@@ -175,3 +175,10 @@ export const removeItem = (docRef, category, itemKey) => {
         [`categories.${category}.${itemKey}`]: firebase.firestore.FieldValue.delete()
     });
 }
+
+export const removePrenda = (docRef, item) => {
+
+    docRef.update({
+        [`prendas.${item.name.toLowerCase()}`]: firebase.firestore.FieldValue.delete()
+    });
+}
