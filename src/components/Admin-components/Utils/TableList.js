@@ -14,10 +14,7 @@ import {
   Paper,
   TablePagination,
   makeStyles,
-  IconButton,
 } from "@material-ui/core";
-
-import { Delete } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -83,9 +80,14 @@ const TableList = ({ datas, columns, renderButtons }) => {
                       </TableCell>
                     )
                   )}
-                  <TableCell>
+                  {
+                    renderButtons && (
+                    <TableCell>
                     <Box>{renderButtons(index)}</Box>
                   </TableCell>
+                    )
+                  }
+                  
                 </TableRow>
               ))}
             </TableBody>

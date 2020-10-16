@@ -13,6 +13,11 @@ import {
   TextField,
   Typography,
   CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Grid,
 } from "@material-ui/core";
 
 const useStyle = makeStyles((theme) => ({
@@ -31,12 +36,17 @@ const useStyle = makeStyles((theme) => ({
       marginLeft: theme.spacing(2),
     },
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
 }));
 
 const CreateOrder = ({ closeModal }) => {
   const [items, setItems] = useState([]);
   const [client, setClient] = useState({ id: null, name: "" });
   const inputSearchRef = useRef(null);
+  const [orderInfo, setOrderInfo] = useState({ payType: "", abono: 0 });
   const pdfRef = useRef(null);
 
   const [loading, setLoading] = useState(false);
@@ -111,6 +121,7 @@ const CreateOrder = ({ closeModal }) => {
     await docRef.set({
       items: items,
       date: new Date(),
+      ...orderInfo,
     });
     // let batch = firestore.batch();
 
@@ -126,6 +137,12 @@ const CreateOrder = ({ closeModal }) => {
     // fetchOrders();
   };
 
+  const getTotal = () => {
+    const total = items.reduce((total, item) => {
+      return total + item.total;
+    }, 0);
+    return total - orderInfo.abono;
+  };
   return (
     <Box>
       <Box className={classes.search}>
@@ -149,16 +166,50 @@ const CreateOrder = ({ closeModal }) => {
           Buscar
         </Button>
 
-        <TextField
-          id="username"
-          name="username"
-          disabled={true}
-          variant="outlined"
-          size="small"
-          value={client.name}
-        />
+        <FormControl className={classes.formControl}>
+          <InputLabel id="demo-simple-select-label">Tipo de Pago</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={orderInfo.payType}
+            onChange={(e) =>
+              setOrderInfo({ ...orderInfo, payType: e.target.value })
+            }
+          >
+            <MenuItem value="Contra Entrega">Contra Entrega</MenuItem>
+            <MenuItem value="Tarjeta">Tarjeta</MenuItem>
+          </Select>
+        </FormControl>
       </Box>
 
+      <Box display="flex">
+        <Grid container>
+          <Grid xs={6} item>
+            <TextField
+              label="Nombre"
+              id="username"
+              name="username"
+              disabled={true}
+              variant="outlined"
+              size="small"
+              value={client.name}
+            />
+          </Grid>
+          <Grid xs={6} item>
+            <TextField
+              id="abono"
+              name="abono"
+              variant="outlined"
+              size="small"
+              value={orderInfo.abono}
+              label="Abono"
+              onChange={(e) =>
+                setOrderInfo({ ...orderInfo, abono: e.target.value })
+              }
+            />
+          </Grid>
+        </Grid>
+      </Box>
       <Box display="flex" flexDirection="column" alignItems="center">
         <Button
           variant="contained"
@@ -170,8 +221,16 @@ const CreateOrder = ({ closeModal }) => {
           Agregar
         </Button>
 
-        <OrderTable pdfRef={pdfRef} items={items} handleItems={handleItems} />
+        <OrderTable
+          pdfRef={pdfRef}
+          items={items}
+          handleItems={handleItems}
+          disabled={false}
+        />
 
+        <Box display="flex" justifyContent="center" width="1">
+          <Typography component="h2"> {`TOTAL: ${getTotal()}`} </Typography>
+        </Box>
         <Box display="flex" justifyContent="center">
           {loading ? (
             <div className={classes.loading}>

@@ -1,29 +1,35 @@
 import React, { useState, useEffect } from "react";
 
-import { Box, Button, Grid } from "@material-ui/core";
-import { AddCircle as AddCircleIcon } from "@material-ui/icons";
+import { Box, Button, Grid, IconButton, Typography } from "@material-ui/core";
+import { ArrowBack , Visibility } from "@material-ui/icons";
 
 //components
 import ModalDialog from "../Utils/ModalDialog";
 import TableList from "../Utils/TableList";
-import CreateOrder from "./CreateOrder";
+import ViewOrder from "../Orders/ViewOrder";
 
+// import CreateOrder from "./CreateOrder";
+
+import {formatDate} from '../Utils/FormatDate';
 import { firestore } from "../../../FireBase/FireBaseUtil";
 
-const OrderList = () => {
+const OrderList = ({user, returnPage}) => {
   const [orders, setOrders] = useState([]);
-  const [openModalAdd, setOpenModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState({});
+  const [openModalUserOrders, setopenModalUserOrders] = useState(false);
 
+  // console.log(user);
   useEffect(() => {
     fetchOrders();
+    
   }, []);
 
-  const handleModalAdd = () => {
-    setOpenModal(!openModalAdd);
-  };
+  // const handleModalAdd = () => {
+  //   setOpenModal(!openModalAdd);
+  // };
 
   const fetchOrders = () => {
-    const collectionRef = firestore.collection("orders");
+    const collectionRef = firestore.collection("clients").doc(user.cedula).collection('orders');
     collectionRef.get().then((snapshot) => {
       const ordersDatas = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -36,41 +42,69 @@ const OrderList = () => {
 
   const columnsDataTable = [
     { name: "ID ORDEN", align: "right" },
-    { name: "ID CLIENTE", align: "right" },
-    { name: "CLIENTE", align: "right" },
+    { name: "FECHA", align: "right" },
+    { name: "ACCIONES", align: "right" },
   ];
 
   const rowsDataTable = orders.map((order) => ({
     columnValue1: { image: false, value: order.id },
-    columnValue2: { image: false, value: order.clientid },
-    columnValue3: { image: false, value: order.client },
+    columnValue2: { image: false, value: formatDate(order.date.toDate())},
+    
   }));
 
+  
+  const handleModalUserOrders = () => {
+    setopenModalUserOrders(!openModalUserOrders);
+  };
+
+  const handleOrderView = (index)=>{
+      console.log(orders[index]);
+      setSelectedOrder((orders[index]))
+      handleModalUserOrders();
+      
+
+  }
+
   return (
-    <Box textAlign="center">
-      <ModalDialog
-        tittle="Crear Orden"
-        open={openModalAdd}
-        handleClose={handleModalAdd}
+    <Box >
+        <ModalDialog
+        tittle="Detalles Orden"
+        open={openModalUserOrders}
+        handleClose={handleModalUserOrders}
       >
-        <CreateOrder closeModal={handleModalAdd} fetchOrders={fetchOrders} />
+        
+        <ViewOrder closeModal={handleModalUserOrders} dataUser={user} dataOrder={selectedOrder} />
       </ModalDialog>
 
-      <h4>Listado de Ordenes de Compra</h4>
+      <Typography variant="h6">
+        {`Ordenes de compra Usuario: ${user.name} ${user.lastName}`}
+      </Typography>
       <Grid container>
         <Grid xs={12} item>
           <Button
-            onClick={handleModalAdd}
+            onClick={returnPage}
             size="small"
             variant="contained"
             color="primary"
-            endIcon={<AddCircleIcon />}
+            endIcon={<ArrowBack />}
           >
-            Agregar
+            Regresar
           </Button>
         </Grid>
         <Grid xs={12} item>
-          <TableList columns={columnsDataTable} datas={rowsDataTable} />
+          <TableList columns={columnsDataTable} 
+          datas={rowsDataTable}
+          renderButtons={(index) => (
+            <Box display="flex" justifyContent="flex-end">
+              <IconButton
+                onClick={() => handleOrderView(index)}
+                aria-label="delete"
+              >
+                <Visibility />
+              </IconButton>
+            </Box>
+          )}
+          />
         </Grid>
       </Grid>
     </Box>

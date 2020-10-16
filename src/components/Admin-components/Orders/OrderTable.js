@@ -32,7 +32,7 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const OrderTable = ({ pdfRef, items, handleItems }) => {
+const OrderTable = ({ pdfRef, items, handleItems , disabled }) => {
   const classes = useStyle();
   console.log(items);
   return (
@@ -74,7 +74,9 @@ const OrderTable = ({ pdfRef, items, handleItems }) => {
                 name="description"
                 fullWidth={true}
                 variant="outlined"
-                onChange={(e) => handleItems(e, index)}
+                onChange={ handleItems && ((e) => handleItems(e, index)) }
+                disabled={disabled}
+                defaultValue={item.description}
               />
             </Box>
             <Box className="cantidad">
@@ -87,7 +89,10 @@ const OrderTable = ({ pdfRef, items, handleItems }) => {
                 //   shrink: true,
                 // }}
                 variant="outlined"
-                onChange={(e) => handleItems(e, index)}
+                onChange={ handleItems && ((e) => handleItems(e, index)) }
+                disabled={disabled}
+                defaultValue={item.quantity}
+
               />
             </Box>
             <Box className="precio">
@@ -97,7 +102,10 @@ const OrderTable = ({ pdfRef, items, handleItems }) => {
                 name="price"
                 type="number"
                 variant="outlined"
-                onChange={(e) => handleItems(e, index)}
+                onChange={ handleItems && ((e) => handleItems(e, index)) }
+                disabled={disabled}
+                defaultValue={item.price}
+
               />
             </Box>
             <Box className="precio-total">
@@ -117,7 +125,8 @@ const OrderTable = ({ pdfRef, items, handleItems }) => {
                 type="number"
                 name="discount"
                 defaultValue={item.discount}
-                onChange={(e) => handleItems(e, index)}
+                onChange={handleItems && ((e) => handleItems(e, index)) }
+                disabled={disabled}
               />
             </Box>
           </Box>

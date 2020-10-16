@@ -5,8 +5,8 @@ import clsx from "clsx";
 import NavAdmin from "../NavAdmin/NavAdmin.component";
 import ProductHomePage from "../products/ProductHomePage.component";
 import ListPrendasComponent from "../prendas/ListPrendas";
-import UserList from "../Users/UserList.component";
-import OrderList from "../Orders/OrderList";
+import UserHome from "../Users/UserHome";
+// import OrderList from "../Orders/OrderList";
 
 import {
   makeStyles,
@@ -169,7 +169,7 @@ const MiniDrawer = () => {
               <ListPrendasComponent />
             </Route>
             <Route path="/users">
-              <UserList />
+              <UserHome />
             </Route>
             {/* <Route path="/orders">
               <OrderList />

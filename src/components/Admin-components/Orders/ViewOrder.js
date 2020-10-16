@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-import {
-  Box,
-  Typography,
-  makeStyles,
-  Grid,
-  IconButton,
-} from "@material-ui/core";
+import { Box, Typography, makeStyles } from "@material-ui/core";
 
 //components
-import TableList from "../Utils/TableList";
+// import TableList from "../Utils/TableList";
 import OrderTable from "../Orders/OrderTable";
 
-import { firestore } from "../../../FireBase/FireBaseUtil";
-import { GridOnOutlined } from "@material-ui/icons";
+// import { firestore } from "../../../FireBase/FireBaseUtil";
+// import { GridOnOutlined } from "@material-ui/icons";
 
 const useStyle = makeStyles((theme) => ({
   header: {
@@ -24,43 +18,16 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const ViewOrder = (props) => {
-  const { cedula, lastName, name } = props.data;
-  const [orders, setOrders] = useState([]);
-  const [PageDetail, setPageDetail] = useState({ open: false, dataDetail: [] });
-
+const ViewOrder = ({ dataOrder, dataUser }) => {
   const classes = useStyle();
-  useEffect(() => {
-    const collRef = firestore
-      .collection("clients")
-      .doc(cedula)
-      .collection("orders");
-    collRef.get().then((snapShot) => {
-      const dataOrders = snapShot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setOrders(dataOrders);
-    });
-  }, []);
 
-  const columnsDataTable = [
-    { name: "ID ORDEN", align: "right" },
-    { name: "FECHA", align: "right" },
-  ];
+  console.log(dataOrder);
 
-  const rowsDataTable = orders.map((order) => {
-    const date = new Date(order.date.toDate()).toString();
-    // console.log(order);
-    return {
-      columnValue1: { image: false, value: order.id },
-      columnValue2: { image: false, value: date },
-    };
-  });
-
-  const handleOrder = (index) => {
-    console.log(orders[index].items);
-    setPageDetail({ open: true, dataDetail: orders[index].items });
+  const getTotal = () => {
+    const total = dataOrder.items.reduce((total, item) => {
+      return total + item.total;
+    }, 0);
+    return total - dataOrder.abono;
   };
 
   return (
@@ -68,40 +35,35 @@ const ViewOrder = (props) => {
       <Box display="flex">
         <Typography className={classes.header} component="h3">
           {" "}
-          {`Cedula : ${cedula}`}
+          {`Cedula : ${dataUser.cedula}`}
         </Typography>
         <Typography className={classes.header} component="h3">
           {" "}
-          {`Nombre : ${name} ${lastName}`}
+          {`Nombre : ${dataUser.name} ${dataUser.lastName}`}
         </Typography>
       </Box>
-
-      {PageDetail.page ? (
-        <Grid container>
-          <Grid xs={12} item>
-            <TableList
-              columns={columnsDataTable}
-              datas={rowsDataTable}
-              renderButtons={(index) => (
-                <Box display="flex" justifyContent="flex-end">
-                  <IconButton
-                    onClick={() => handleOrder(index)}
-                    aria-label="delete"
-                  >
-                    <GridOnOutlined />
-                  </IconButton>
-                </Box>
-              )}
-            />
-          </Grid>
-        </Grid>
-      ) : (
-        <OrderTable
-          pdfRef={null}
-          items={PageDetail.dataDetail}
-          handleItems={null}
-        />
-      )}
+      <Box display="flex">
+        <Typography className={classes.header} component="h3">
+          {" "}
+          {`Abono : ${dataOrder.abono}`}
+        </Typography>
+        <Typography className={classes.header} component="h3">
+          {" "}
+          {`Tipo de Pago : ${dataOrder.payType} `}
+        </Typography>
+      </Box>
+      <OrderTable
+        pdfRef={null}
+        items={dataOrder.items}
+        handleItems={null}
+        disabled={true}
+      />
+      <Box display="flex">
+        <Typography className={classes.header} component="h3">
+          {" "}
+          {`Total : ${getTotal()}`}
+        </Typography>
+      </Box>
     </Box>
   );
 };
