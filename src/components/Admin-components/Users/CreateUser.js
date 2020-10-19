@@ -32,6 +32,7 @@ const CreateUser = ({ closeModal, fetchUsers }) => {
     cedula: "",
     lastName: "",
     phone: "",
+    address: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -87,6 +88,13 @@ const CreateUser = ({ closeModal, fetchUsers }) => {
             id="phone"
             name="phone"
             label="Telefono"
+            variant="outlined"
+          />
+          <TextField
+            onChange={(e) => handleChange(e)}
+            id="address"
+            name="address"
+            label="Direccion"
             variant="outlined"
           />
         </form>

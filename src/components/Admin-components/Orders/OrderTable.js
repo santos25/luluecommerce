@@ -1,138 +1,166 @@
 import React from "react";
 
-import { Box, TextField, Typography, makeStyles } from "@material-ui/core";
+import {
+  Box,
+  TextField,
+  Typography,
+  makeStyles,
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "@material-ui/core";
 
 const useStyle = makeStyles((theme) => ({
-  container: {
-    margin: "10px 0",
-    // border: "1px solid black",
-    display: "flex",
-    flexDirection: "column",
-    width: "90%",
+  table: {
+    maxWidth: 900,
   },
-  header: {
-    width: "100%",
-    display: "flex",
+  descriptionField: {
+    width: "45%",
+  },
+  numberField: {
+    width: "15%",
+  },
+  smallQuantityField: {
+    width: "11%",
+  },
+  // head: {
+  //   backgroundColor: theme.palette.common.black,
+  //   color: theme.palette.common.white,
+  // },
+  // container: {
+  //   margin: "10px 0",
+  //   // border: "1px solid black",
+  //   display: "flex",
+  //   flexDirection: "column",
+  //   width: "90%",
+  // },
+  // header: {
+  //   width: "100%",
+  //   display: "flex",
 
-    justifyContent: "center",
-    "& > *": {
-      border: "1px solid black",
-      width: "13.75%",
-      padding: "5px 10px",
-    },
-    "& .first": {
-      width: "45%",
-    },
-    "& .desc , & .cantidad": {
-      width: "11%",
-    },
-    "& .precio-total , & .precio": {
-      width: "15%",
-    },
-  },
+  //   justifyContent: "center",
+  //   "& > *": {
+  //     border: "1px solid black",
+  //     width: "13.75%",
+  //     padding: "5px 10px",
+  //   },
+  //   "& .first": {
+  //     width: "45%",
+  //   },
+  //   "& .desc , & .cantidad": {
+  //     width: "11%",
+  //   },
+  //   "& .precio-total , & .precio": {
+  //     width: "15%",
+  //   },
+  // },
 }));
 
-const OrderTable = ({ pdfRef, items, handleItems , disabled }) => {
+const OrderTable = ({ items, handleItems, disabled, buttons }) => {
   const classes = useStyle();
   console.log(items);
+  console.log(disabled);
   return (
-    <Box className={classes.container} ref={pdfRef}>
-      <Box className={classes.header}>
-        <Box component="span" className="first">
-          <Typography display="inline" component="h3">
-            Descripcion Articulo
-          </Typography>
-        </Box>
-        <Box component="span" className="cantidad">
-          <Typography display="inline" component="h3">
-            Cant.
-          </Typography>
-        </Box>
-        <Box component="span" className="precio">
-          <Typography display="inline" component="h3">
-            P. Unitario
-          </Typography>
-        </Box>
-        <Box component="span" className="precio-total">
-          <Typography display="inline" component="h3">
-            Total
-          </Typography>
-        </Box>
-        <Box component="span" className="desc">
-          <Typography display="inline" component="h3">
-            Desc. %
-          </Typography>
-        </Box>
-      </Box>
-      {items.map((item, index) => {
-        return (
-          <Box key={index} className={classes.header}>
-            <Box className="first">
-              <TextField
-                size="small"
-                id={`desc_${index}`}
-                name="description"
-                fullWidth={true}
-                variant="outlined"
-                onChange={ handleItems && ((e) => handleItems(e, index)) }
-                disabled={disabled}
-                defaultValue={item.description}
-              />
-            </Box>
-            <Box className="cantidad">
-              <TextField
-                size="small"
-                id={`quantity_${index}`}
-                name="quantity"
-                type="number"
-                // InputLabelProps={{
-                //   shrink: true,
-                // }}
-                variant="outlined"
-                onChange={ handleItems && ((e) => handleItems(e, index)) }
-                disabled={disabled}
-                defaultValue={item.quantity}
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell className={classes.descriptionField}>
+              Descripcion Articulo
+            </TableCell>
+            <TableCell className={classes.smallQuantityField} align="right">
+              Cant.
+            </TableCell>
+            <TableCell className={classes.numberField} align="right">
+              P. Unitario
+            </TableCell>
+            <TableCell className={classes.numberField} align="right">
+              Total
+            </TableCell>
+            <TableCell className={classes.smallQuantityField} align="right">
+              Desc. %
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {items.map((item, index) => {
+            return (
+              <TableRow key={index}>
+                <TableCell component="th" scope="row">
+                  <TextField
+                    size="small"
+                    id={`desc_${index}`}
+                    name="description"
+                    fullWidth={true}
+                    variant="outlined"
+                    onChange={handleItems && ((e) => handleItems(e, index))}
+                    disabled={disabled}
+                    value={item.description}
+                  />
+                </TableCell>
 
-              />
-            </Box>
-            <Box className="precio">
-              <TextField
-                size="small"
-                id={`price_${index}`}
-                name="price"
-                type="number"
-                variant="outlined"
-                onChange={ handleItems && ((e) => handleItems(e, index)) }
-                disabled={disabled}
-                defaultValue={item.price}
-
-              />
-            </Box>
-            <Box className="precio-total">
-              <TextField
-                size="small"
-                id={`total_${index}`}
-                variant="outlined"
-                disabled={true}
-                value={item.total}
-              />
-            </Box>
-            <Box className="desc">
-              <TextField
-                size="small"
-                id={`discount_${index}`}
-                variant="outlined"
-                type="number"
-                name="discount"
-                defaultValue={item.discount}
-                onChange={handleItems && ((e) => handleItems(e, index)) }
-                disabled={disabled}
-              />
-            </Box>
-          </Box>
-        );
-      })}
-    </Box>
+                <TableCell align="right">
+                  <TextField
+                    size="small"
+                    id={`quantity_${index}`}
+                    name="quantity"
+                    type="number"
+                    variant="outlined"
+                    onChange={handleItems && ((e) => handleItems(e, index))}
+                    disabled={disabled}
+                    value={item.quantity}
+                  />
+                </TableCell>
+                <TableCell align="right">
+                  {" "}
+                  <TextField
+                    size="small"
+                    id={`price_${index}`}
+                    name="price"
+                    type="number"
+                    variant="outlined"
+                    onChange={handleItems && ((e) => handleItems(e, index))}
+                    disabled={disabled}
+                    value={item.price}
+                  />
+                </TableCell>
+                <TableCell align="right">
+                  {" "}
+                  <TextField
+                    size="small"
+                    id={`total_${index}`}
+                    variant="outlined"
+                    disabled={true}
+                    value={item.total}
+                  />
+                </TableCell>
+                <TableCell align="right">
+                  <TextField
+                    size="small"
+                    id={`discount_${index}`}
+                    variant="outlined"
+                    type="number"
+                    name="discount"
+                    value={item.discount}
+                    onChange={handleItems && ((e) => handleItems(e, index))}
+                    disabled={disabled}
+                  />
+                </TableCell>
+                {buttons && (
+                  <TableCell>
+                    <Box>{buttons(index)}</Box>
+                  </TableCell>
+                )}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 

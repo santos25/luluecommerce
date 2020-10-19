@@ -1,10 +1,12 @@
 import React, { useState, useRef } from "react";
-import ToPdf from "react-to-pdf";
+import ReactToPrint from "react-to-print";
 
+import ToPdf from "react-to-pdf";
 import { firestore } from "../../../FireBase/FireBaseUtil";
 
 //components
 import OrderTable from "./OrderTable";
+import PrintOrder from "./PrintOrder/PrintOrder";
 
 import {
   Box,
@@ -18,16 +20,15 @@ import {
   MenuItem,
   Select,
   Grid,
+  IconButton,
+  ButtonGroup,
 } from "@material-ui/core";
+import { ArrowBack, Delete } from "@material-ui/icons";
 
 const useStyle = makeStyles((theme) => ({
   search: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-
     "& > *": {
-      margin: theme.spacing(1),
+      marginRight: theme.spacing(2),
     },
   },
   loading: {
@@ -40,14 +41,18 @@ const useStyle = makeStyles((theme) => ({
     margin: theme.spacing(1),
     minWidth: 120,
   },
+  print: {
+    visibility: "hidden",
+  },
 }));
 
-const CreateOrder = ({ closeModal }) => {
+const CreateOrder = ({ closeModal, returnPage }) => {
   const [items, setItems] = useState([]);
   const [client, setClient] = useState({ id: null, name: "" });
   const inputSearchRef = useRef(null);
   const [orderInfo, setOrderInfo] = useState({ payType: "", abono: 0 });
   const pdfRef = useRef(null);
+  const componentRef = useRef();
 
   const [loading, setLoading] = useState(false);
 
@@ -133,8 +138,13 @@ const CreateOrder = ({ closeModal }) => {
     // await batch.commit();
 
     setLoading(false);
-    closeModal();
     // fetchOrders();
+  };
+
+  const handleDeleteRow = (index) => {
+    console.log(index);
+    items.splice(index, 1);
+    setItems([...items]);
   };
 
   const getTotal = () => {
@@ -145,57 +155,71 @@ const CreateOrder = ({ closeModal }) => {
   };
   return (
     <Box>
-      <Box className={classes.search}>
-        <Typography component="h2">Cliente</Typography>
-        <TextField
-          // onChange={(e) => handleChange(e)}
-          id="userid"
-          name="userid"
-          label="Cedula"
-          inputProps={{ ref: inputSearchRef }}
-          variant="outlined"
-          size="small"
-        />
+      <Button
+        onClick={returnPage}
+        startIcon={<ArrowBack />}
+        size="small"
+        variant="contained"
+        color="primary"
+      >
+        Regresar
+      </Button>
+      <Box display="flex" alignItems="center" py={2} mb={1}>
+        <div className={classes.search}>
+          <TextField
+            id="userid"
+            name="userid"
+            label="Cedula"
+            placeholder="Ingrese Cedula"
+            inputProps={{ ref: inputSearchRef }}
+            variant="outlined"
+            size="small"
+          />
 
-        <Button
-          variant="contained"
-          size="small"
-          onClick={searchClient}
-          color="primary"
-        >
-          Buscar
-        </Button>
-
-        <FormControl className={classes.formControl}>
-          <InputLabel id="demo-simple-select-label">Tipo de Pago</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={orderInfo.payType}
-            onChange={(e) =>
-              setOrderInfo({ ...orderInfo, payType: e.target.value })
-            }
+          <Button
+            variant="contained"
+            size="small"
+            onClick={searchClient}
+            color="primary"
           >
-            <MenuItem value="Contra Entrega">Contra Entrega</MenuItem>
-            <MenuItem value="Tarjeta">Tarjeta</MenuItem>
-          </Select>
-        </FormControl>
+            Buscar
+          </Button>
+        </div>
+        <div>
+          <TextField
+            label="Nombre"
+            id="username"
+            style={{ width: "25rem" }}
+            name="username"
+            disabled={true}
+            variant="outlined"
+            size="small"
+            value={client.name}
+          />
+        </div>
       </Box>
 
       <Box display="flex">
         <Grid container>
-          <Grid xs={6} item>
-            <TextField
-              label="Nombre"
-              id="username"
-              name="username"
-              disabled={true}
-              variant="outlined"
-              size="small"
-              value={client.name}
-            />
+          <Grid xs={12} sm={6} item>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-simple-select-label">
+                Tipo de Pago
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={orderInfo.payType}
+                onChange={(e) =>
+                  setOrderInfo({ ...orderInfo, payType: e.target.value })
+                }
+              >
+                <MenuItem value="Contra Entrega">Contra Entrega</MenuItem>
+                <MenuItem value="Tarjeta">Tarjeta</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
-          <Grid xs={6} item>
+          <Grid xs={12} sm={6} item>
             <TextField
               id="abono"
               name="abono"
@@ -221,16 +245,27 @@ const CreateOrder = ({ closeModal }) => {
           Agregar
         </Button>
 
-        <OrderTable
-          pdfRef={pdfRef}
-          items={items}
-          handleItems={handleItems}
-          disabled={false}
-        />
-
-        <Box display="flex" justifyContent="center" width="1">
-          <Typography component="h2"> {`TOTAL: ${getTotal()}`} </Typography>
+        <Box my={1}>
+          <OrderTable
+            items={items}
+            handleItems={handleItems}
+            disabled={false}
+            buttons={(index) => {
+              return (
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => handleDeleteRow(index)}
+                >
+                  <Delete />
+                </IconButton>
+              );
+            }}
+          />
+          <Box display="flex" justifyContent="flex-end" width="1" py={1} mt={1}>
+            <Typography variant="h5"> {`TOTAL: ${getTotal()}`} </Typography>
+          </Box>
         </Box>
+
         <Box display="flex" justifyContent="center">
           {loading ? (
             <div className={classes.loading}>
@@ -238,16 +273,38 @@ const CreateOrder = ({ closeModal }) => {
             </div>
           ) : null}
 
-          <Button
-            onClick={saveOrder}
-            variant="contained"
-            color="primary"
-            size="small"
-            disabled={client.id ? false : true}
+          <ButtonGroup aria-label="outlined primary button group">
+            <Button
+              onClick={saveOrder}
+              variant="contained"
+              color="primary"
+              size="small"
+              disabled={client.id ? false : true}
+            >
+              Guardar como Pedido
+            </Button>
+            <ReactToPrint
+              trigger={() => (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  disabled={client.id ? false : true}
+                >
+                  Generar Pre-Factura
+                </Button>
+              )}
+              content={() => componentRef.current}
+            />
+          </ButtonGroup>
+
+          {/* <ToPdf
+            targetRef={pdfRef}
+            filename="PreFactura.pdf"
+            x={0}
+            y={0}
+            scale={0.8}
           >
-            Guardar como Pedido
-          </Button>
-          <ToPdf targetRef={pdfRef} filename="PreFactura.pdf">
             {({ toPdf }) => (
               <Button
                 variant="contained"
@@ -256,10 +313,19 @@ const CreateOrder = ({ closeModal }) => {
                 onClick={toPdf}
                 disabled={client.id ? false : true}
               >
-                Pre-Factura
+                Generar Pre-Factura
               </Button>
             )}
-          </ToPdf>
+          </ToPdf> */}
+        </Box>
+        <Box className={classes.print}>
+          <PrintOrder
+            items={items}
+            client={client}
+            total={getTotal()}
+            printRef={componentRef}
+            orderInfo={orderInfo}
+          />
         </Box>
       </Box>
     </Box>

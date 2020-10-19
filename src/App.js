@@ -4,6 +4,9 @@ import { connect } from "react-redux";
 import { setCurrentUser } from "./Redux/user/user.actions";
 import { currentUserSelector } from "./Redux/user/user-selectors";
 
+//Material UI
+import { ThemeProvider, createMuiTheme } from "@material-ui/core";
+
 //components
 import MiniDrawer from "./components/Admin-components/mini-drawer/MiniDrawer";
 // import ProductHome from './components/Admin-components/products/ProductHomePage.component'
@@ -23,6 +26,17 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+
+const theme = createMuiTheme({
+  // palette: {
+  //   primary: {
+  //     main: "#40b2a4",
+  //   },
+  //   secondary: {
+  //     main: "#0d1a2b",
+  //   },
+  // },
+});
 
 const App = ({ setCurrentUser, currentUser }) => {
   useEffect(() => {
@@ -49,8 +63,10 @@ const App = ({ setCurrentUser, currentUser }) => {
   return (
     <div>
       {
-        <MiniDrawer />
-        //  <MiniDrawer />
+        <ThemeProvider theme={theme}>
+          <MiniDrawer />
+        </ThemeProvider>
+
         // currentUser && currentUser.isAdmin ? (
         //   <MiniDrawer />
         // ) : (

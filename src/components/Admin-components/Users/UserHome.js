@@ -34,10 +34,9 @@ const UserHome = () => {
   const [openModalAddUser, setOpenModalUser] = useState(false);
   const [openModalAddOrder, setOpenModalOrder] = useState(false);
   const [clientSelected, setClientSelected] = useState({});
-  const [currentPage, setCurrentPage] = useState('listUsers');
+  const [currentPage, setCurrentPage] = useState("listUsers");
 
   // const classes = useStyles();
-
 
   useEffect(() => {
     fetchUsers();
@@ -58,12 +57,16 @@ const UserHome = () => {
     setOpenModalOrder(!openModalAddOrder);
   };
 
-
   const HandleOrderFromClient = (index) => {
     // setopenModalUserOrders(!openModalUserOrders);
-    setCurrentPage('listOrders')
+    setCurrentPage("listOrders");
     setClientSelected(users[index]);
+  };
 
+  const HandleCreateOrder = (index) => {
+    // setopenModalUserOrders(!openModalUserOrders);
+    setCurrentPage("createOrder");
+    // setClientSelected(users[index]);
   };
 
   const columnsDataTable = [
@@ -80,26 +83,27 @@ const UserHome = () => {
   }));
 
   const renderPages = () => {
-
-    if(currentPage === 'listUsers'){
+    if (currentPage === "listUsers") {
       return (
-        <UserLists handleModalAddUser={handleModalAddUser}
-        handleModalAddOrder={handleModalAddOrder}
-        HandleOrderFromClient={HandleOrderFromClient}
-        columnsDataTable={columnsDataTable}
-        rowsDataTable={rowsDataTable}/>
-      )
-    }else if(currentPage === 'listOrders'){
-        return (
-          <OrderList 
-            returnPage={() => setCurrentPage('listUsers')}
-            user={clientSelected}
-            
-            
-            />
-        )
+        <UserLists
+          handleModalAddUser={handleModalAddUser}
+          HandleCreateOrder={HandleCreateOrder}
+          HandleOrderFromClient={HandleOrderFromClient}
+          columnsDataTable={columnsDataTable}
+          rowsDataTable={rowsDataTable}
+        />
+      );
+    } else if (currentPage === "listOrders") {
+      return (
+        <OrderList
+          returnPage={() => setCurrentPage("listUsers")}
+          user={clientSelected}
+        />
+      );
+    } else if (currentPage === "createOrder") {
+      return <CreateOrder returnPage={() => setCurrentPage("listUsers")} />;
     }
-  }
+  };
 
   return (
     <Box>
@@ -111,17 +115,15 @@ const UserHome = () => {
         <CreateUser closeModal={handleModalAddUser} fetchUsers={fetchUsers} />
       </ModalDialog>
 
-      <ModalDialog
+      {/* <ModalDialog
         tittle="Crear Orden"
         open={openModalAddOrder}
         handleClose={handleModalAddOrder}
       >
         <CreateOrder closeModal={handleModalAddOrder} />
-      </ModalDialog>
+      </ModalDialog> */}
 
-    
-
-     {renderPages()}
+      {renderPages()}
     </Box>
   );
 };

@@ -1,27 +1,28 @@
-import React from "react";
+import React, { useRef } from "react";
+import ReactToPrint from "react-to-print";
 
-import { Box, Typography, makeStyles } from "@material-ui/core";
+import { Box, Typography, makeStyles, Grid, Button } from "@material-ui/core";
 
 //components
 // import TableList from "../Utils/TableList";
 import OrderTable from "../Orders/OrderTable";
+import PrintOrder from "../Orders/PrintOrder/PrintOrder";
 
 // import { firestore } from "../../../FireBase/FireBaseUtil";
 // import { GridOnOutlined } from "@material-ui/icons";
 
 const useStyle = makeStyles((theme) => ({
-  header: {
-    margin: "10px 15px",
-    border: "1px solid black",
-    borderRadius: "5px",
-    padding: "10px 15px",
+  header: {},
+  print: {
+    visibility: "hidden",
   },
 }));
 
 const ViewOrder = ({ dataOrder, dataUser }) => {
   const classes = useStyle();
+  const componentRef = useRef();
 
-  console.log(dataOrder);
+  console.log(dataUser);
 
   const getTotal = () => {
     const total = dataOrder.items.reduce((total, item) => {
@@ -32,37 +33,56 @@ const ViewOrder = ({ dataOrder, dataUser }) => {
 
   return (
     <Box>
-      <Box display="flex">
-        <Typography className={classes.header} component="h3">
-          {" "}
-          {`Cedula : ${dataUser.cedula}`}
-        </Typography>
-        <Typography className={classes.header} component="h3">
-          {" "}
-          {`Nombre : ${dataUser.name} ${dataUser.lastName}`}
-        </Typography>
+      <Grid container>
+        <Grid xs={12} sm={6} item>
+          <Typography className={classes.header} component="h3">
+            {`Cedula : ${dataUser.cedula}`}
+          </Typography>
+        </Grid>
+        <Grid xs={12} sm={6} item>
+          <Typography className={classes.header} component="h3">
+            {`Nombre : ${dataUser.name} ${dataUser.lastName}`}
+          </Typography>
+        </Grid>
+
+        <Grid xs={12} sm={6} item>
+          <Typography className={classes.header} component="h3">
+            {`Abono : ${dataOrder.abono}`}
+          </Typography>
+        </Grid>
+        <Grid xs={12} sm={6} item>
+          <Typography className={classes.header} component="h3">
+            {`Tipo de Pago : ${dataOrder.payType} `}
+          </Typography>
+        </Grid>
+      </Grid>
+
+      <OrderTable items={dataOrder.items} handleItems={null} disabled={true} />
+      <Box display="flex" width={1} justifyContent="flex-end">
+        <Typography variant="h6">{`Total : ${getTotal()}`}</Typography>
       </Box>
-      <Box display="flex">
-        <Typography className={classes.header} component="h3">
-          {" "}
-          {`Abono : ${dataOrder.abono}`}
-        </Typography>
-        <Typography className={classes.header} component="h3">
-          {" "}
-          {`Tipo de Pago : ${dataOrder.payType} `}
-        </Typography>
-      </Box>
-      <OrderTable
-        pdfRef={null}
-        items={dataOrder.items}
-        handleItems={null}
-        disabled={true}
+
+      <ReactToPrint
+        trigger={() => (
+          <Button
+            variant="contained"
+            color="secondary"
+            size="small"
+            // disabled={client.id ? false : true}
+          >
+            Generar Factura
+          </Button>
+        )}
+        content={() => componentRef.current}
       />
-      <Box display="flex">
-        <Typography className={classes.header} component="h3">
-          {" "}
-          {`Total : ${getTotal()}`}
-        </Typography>
+      <Box className={classes.print}>
+        <PrintOrder
+          items={dataOrder.items}
+          client={dataUser}
+          total={getTotal()}
+          printRef={componentRef}
+          orderInfo={dataOrder}
+        />
       </Box>
     </Box>
   );

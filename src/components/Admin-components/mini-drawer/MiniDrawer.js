@@ -77,6 +77,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  list: {
+    color: "black",
+  },
 }));
 const MiniDrawer = () => {
   const classes = useStyles();
@@ -126,7 +129,7 @@ const MiniDrawer = () => {
                 <ListItemIcon>
                   <StoreIcon />
                 </ListItemIcon>
-                <ListItemText primary="Productos" />
+                <ListItemText className={classes.list} primary="Productos" />
               </ListItem>
             </Link>
             <Link component={RouterLink} to="/prendas">
@@ -134,7 +137,7 @@ const MiniDrawer = () => {
                 <ListItemIcon>
                   <WcIcon />
                 </ListItemIcon>
-                <ListItemText primary="Prendas" />
+                <ListItemText className={classes.list} primary="Prendas" />
               </ListItem>
             </Link>
             <Link component={RouterLink} to="/users">
@@ -142,7 +145,7 @@ const MiniDrawer = () => {
                 <ListItemIcon>
                   <WcIcon />
                 </ListItemIcon>
-                <ListItemText primary="Clientes" />
+                <ListItemText className={classes.list} primary="Clientes" />
               </ListItem>
             </Link>
             {/* <Link component={RouterLink} to="/orders">

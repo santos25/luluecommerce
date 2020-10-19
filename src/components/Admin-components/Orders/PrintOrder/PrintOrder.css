@@ -1,0 +1,39 @@
+.containerPrint {
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.containerPrint .header {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.containerPrint .header img {
+  width: 20%;
+  margin: 0 2rem;
+  border-radius: 5px;
+}
+
+.containerPrint .info {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0.5rem 0;
+}
+
+.info h3 {
+  border: 1px solid pink;
+  border-radius: 5px;
+  padding: 10px 15px;
+  margin: 0 10px;
+}
+
+.containerPrint .items {
+  margin: 1rem 0;
+  padding: 0 0.5rem;
+}
+
+.total {
+  width: 100%;
+  text-align: end;
+}
