@@ -82,6 +82,7 @@ const CreateOrder = ({ closeModal, returnPage }) => {
           console.log("Exist ", document.data());
           setClient({
             id: document.id,
+            cedula: document.data().cedula,
             name: `${document.data().name} ${document.data().lastName}`,
           });
         } else {
