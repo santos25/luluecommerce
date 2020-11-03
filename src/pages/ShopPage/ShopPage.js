@@ -3,7 +3,7 @@ import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { connect } from "react-redux";
 
 //redux
-// import { fetchingCollectionsAsync } from '../../Redux/shop/shop.actions';
+import { fetchingCollectionsAsync } from "../../Redux/shop/shop.actions";
 import { isLoadingCollections } from "../../Redux/shop/shop.selectors";
 
 //components
@@ -17,15 +17,15 @@ const CollectionOverviewWitSpinner = WithSpinner(CollectionOverview);
 const CollectionPageWitSpinner = WithSpinner(CollectionPage);
 const ProductDetailWitSpinner = WithSpinner(ProductDetail);
 
-const ShopPage = ({ isLoading }) => {
+const ShopPage = ({ isLoading, fetchCollections }) => {
   let match = useRouteMatch();
   let { tagid } = match.params;
 
   useEffect(() => {
     console.log("rendering ShopPage");
-    // console.log(tagid);
-    // fetchCollections(tagid);
-  }, []);
+    console.log(tagid);
+    fetchCollections(tagid);
+  }, [tagid, fetchCollections]);
 
   // console.log({ isLoading });
   // console.log({ match });
@@ -60,12 +60,12 @@ const ShopPage = ({ isLoading }) => {
   );
 };
 
-// const mapDispatchToState = (dispatch) => ({
-//     getCollections: (genre) => dispatch(fetchingCollectionsAsync(genre))
-// })
+const mapDispatchToState = (dispatch) => ({
+  fetchCollections: (genre) => dispatch(fetchingCollectionsAsync(genre)),
+});
 
 const mapStateToProps = (state) => ({
   isLoading: isLoadingCollections(state),
 });
 
-export default connect(mapStateToProps, null)(ShopPage);
+export default connect(mapStateToProps, mapDispatchToState)(ShopPage);

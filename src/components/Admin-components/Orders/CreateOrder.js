@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import ReactToPrint from "react-to-print";
 
-import ToPdf from "react-to-pdf";
+// import ToPdf from "react-to-pdf";
 import { firestore } from "../../../FireBase/FireBaseUtil";
 
 //components
@@ -51,7 +51,7 @@ const CreateOrder = ({ closeModal, returnPage }) => {
   const [client, setClient] = useState({ id: null, name: "" });
   const inputSearchRef = useRef(null);
   const [orderInfo, setOrderInfo] = useState({ payType: "", abono: 0 });
-  const pdfRef = useRef(null);
+  // const pdfRef = useRef(null);
   const componentRef = useRef();
 
   const [loading, setLoading] = useState(false);

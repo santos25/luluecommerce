@@ -59,14 +59,14 @@ const CollectionOverview = ({
   let match = useRouteMatch();
 
   const classes = useStyles();
-  console.log(suggestedCollection);
-  console.log(collections);
+  // console.log(suggestedCollection);
+  // console.log(collections);
   // console.log(tagId);
 
   return (
     <Box>
       <Header image={imageHeader} />
-      <Grid container direction="column" alignItems="center">
+      {/* <Grid container direction="column" alignItems="center">
         <Grid xs={12} item className={classes.title}>
           <Typography variant="h5"> COLECCIONES </Typography>
         </Grid>
@@ -106,24 +106,18 @@ const CollectionOverview = ({
             </div>
           </Grid>
         </Box>
-
-        {/* <Grid xs={12} item>
-                    <Typography variant="h5" > Prendas Recomendadas  </Typography>
-                </Grid> */}
-        {/* <Grid xs={12} item className={classes.title}>
-                </Grid> */}
-      </Grid>
-      <Box mt={4} mb={2} ml={2}>
+      </Grid> */}
+      {/* <Box mt={4} mb={2} ml={2}>
         <Typography variant="h5"> Prendas Recomendadas </Typography>
         <SlickCollection collections={suggestedCollection} tagId={tagId} />
-      </Box>
+      </Box> */}
     </Box>
   );
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  collections: dataShopSelector(ownProps.tagId)(state),
-  suggestedCollection: suggestedCollectionsSelector(ownProps.tagId)(state),
+  // collections: dataShopSelector(ownProps.tagId)(state),
+  // suggestedCollection: suggestedCollectionsSelector(ownProps.tagId)(state),
   imageHeader: landscapeImageSelector(ownProps.tagId)(state),
 });
 

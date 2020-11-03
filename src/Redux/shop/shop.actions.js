@@ -1,7 +1,7 @@
 import shop_types from "./shop.types";
 // import TEMPDATA from './tempdata';
 
-// import { convertCollectionsToObjects, firestore, createCollectionAndDocuments } from '../../FireBase/FireBaseUtil';
+import { firestore } from "../../FireBase/FireBaseUtil";
 
 const fetchingCollectionSucces = (collections) => {
   return {
@@ -10,11 +10,11 @@ const fetchingCollectionSucces = (collections) => {
   };
 };
 
-// const fetchingCollectionStart = () => {
-//     return {
-//         type: shop_types.FETCHING_COLLECIONS_START
-//     }
-// }
+const fetchingCollectionStart = () => {
+  return {
+    type: shop_types.FETCHING_COLLECIONS_START,
+  };
+};
 
 // const fetchingCollectionFailed = (error) => {
 //     return {
@@ -23,17 +23,20 @@ const fetchingCollectionSucces = (collections) => {
 //     }
 // }
 
-export const fetchingCollectionsAsync = (collections) => {
+export const fetchingCollectionsAsync = (genre) => {
   return (dispatch) => {
-    // const collectionRef = firestore.collection('collections').where('genre', '==', genre);
+    const collectionRef = firestore
+      .collection("collections")
+      .where("genre", "==", genre);
 
-    // dispatch(fetchingCollectionStart());
+    dispatch(fetchingCollectionStart());
 
-    /*  collectionRef.get().then(snapShot => {
-             snapShot.docs.forEach(document => {
-                 dispatch(fetchingCollectionSucces({ id: document.id , ...document.data()}))
-             })
-         }) */
-    dispatch(fetchingCollectionSucces(collections));
+    collectionRef.get().then((snapShot) => {
+      const collection = snapShot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      dispatch(fetchingCollectionSucces(collection));
+    });
   };
 };

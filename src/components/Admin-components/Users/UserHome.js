@@ -7,7 +7,7 @@ import {
   // Grid,
   // Typography,
   // IconButton,
-  makeStyles,
+  // makeStyles,
 } from "@material-ui/core";
 // import { AddCircle as AddCircleIcon } from "@material-ui/icons";
 
@@ -32,7 +32,7 @@ import { firestore } from "../../../FireBase/FireBaseUtil";
 const UserHome = () => {
   const [users, setUsers] = useState([]);
   const [openModalAddUser, setOpenModalUser] = useState(false);
-  const [openModalAddOrder, setOpenModalOrder] = useState(false);
+  // const [openModalAddOrder, setOpenModalOrder] = useState(false);
   const [clientSelected, setClientSelected] = useState({});
   const [currentPage, setCurrentPage] = useState("listUsers");
 
@@ -53,9 +53,9 @@ const UserHome = () => {
     setOpenModalUser(!openModalAddUser);
   };
 
-  const handleModalAddOrder = () => {
-    setOpenModalOrder(!openModalAddOrder);
-  };
+  // const handleModalAddOrder = () => {
+  //   setOpenModalOrder(!openModalAddOrder);
+  // };
 
   const HandleOrderFromClient = (index) => {
     // setopenModalUserOrders(!openModalUserOrders);

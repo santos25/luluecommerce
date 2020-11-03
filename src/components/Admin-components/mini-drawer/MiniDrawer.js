@@ -7,6 +7,7 @@ import ProductHomePage from "../products/ProductHomePage.component";
 import ListPrendasComponent from "../prendas/ListPrendas";
 import UserHome from "../Users/UserHome";
 // import OrderList from "../Orders/OrderList";
+import { Image } from "../../../assets/images/logo.jpeg";
 
 import {
   makeStyles,
@@ -163,7 +164,7 @@ const MiniDrawer = () => {
           {/* <div className={classes.toolbar} /> */}
           <Switch>
             <Route exact path="/">
-              Bienvenidos Panel de administracion
+              <img src={Image} alt="" />
             </Route>
             <Route path="/producto">
               <ProductHomePage />
