@@ -1,33 +1,28 @@
-import React from 'react';
-// import logo1 from "../../assets/images/imageone.jpg";
-// import logo2 from "../../assets/images/imagetwo.jpg";
+import React from "react";
 import Slider from "react-slick";
 
-const Header = ({image}) => {
+const Header = ({ image }) => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: false,
+    autoplaySpeed: 2000,
+    pauseOnHover: false,
+    arrows: false,
+  };
 
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        pauseOnHover: false,
-        arrows: false
-       
-    };
-
-    return (
+  return (
+    <div>
+      <Slider {...settings}>
         <div>
-            <Slider {...settings}>
-                <div>
-                    <img src={image} alt="" />
-                </div>
-            </Slider>
+          <img src={image.image} alt="" />
         </div>
-
-    );
-}
+      </Slider>
+    </div>
+  );
+};
 
 export default Header;

@@ -32,11 +32,21 @@ export const fetchingCollectionsAsync = (genre) => {
     dispatch(fetchingCollectionStart());
 
     collectionRef.get().then((snapShot) => {
-      const collection = snapShot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      dispatch(fetchingCollectionSucces(collection));
+      snapShot.docs.forEach((doc) => {
+        const categoriesRef = doc.ref.collection("categories").limit(4);
+        categoriesRef.get().then((snapShot) => {
+          const categories = snapShot.docs.map((categoryDoc) => ({
+            id: categoryDoc.id,
+            ...categoryDoc.data(),
+          }));
+          const collection = {
+            id: doc.id,
+            ...doc.data(),
+            categories: categories,
+          };
+          dispatch(fetchingCollectionSucces(collection));
+        });
+      });
     });
   };
 };

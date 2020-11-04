@@ -32,7 +32,7 @@ const Footer = () => {
       {/* <Container maxWidth="md" className={classes.footer}> */}
       <Box borderTop={1} borderColor="grey.500" p={1}>
         <Typography className={classes.title} variant="subtitle2">
-          Siguenos
+          Síguenos en
         </Typography>
         <Box display="flex" justifyContent="center" alignItems="center" mt={1}>
           <Box mr={3}>
