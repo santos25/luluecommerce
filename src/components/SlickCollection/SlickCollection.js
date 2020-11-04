@@ -4,15 +4,15 @@ import NextArrow from "../SlickArrows/NextArrow";
 import PreviewArrow from "../SlickArrows/PreviewArrow";
 import CardImages from "../CardImages/CardImages";
 
-import { Container } from "@material-ui/core";
+import { Button, Container } from "@material-ui/core";
 
 const SlickCollection = ({ collections, tagId }) => {
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 2,
+    slidesToShow: 2,
+    slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PreviewArrow />,
   };
@@ -20,9 +20,17 @@ const SlickCollection = ({ collections, tagId }) => {
   return (
     <Container>
       <Slider {...settings}>
-        {collections.map((collection, i) => (
-          <CardImages key={i} item={collection} tagId={tagId} />
-        ))}
+        {collections[Math.floor(Math.random() * 4)].products
+          .filter((_, index) => index < 10)
+          .map((product, indexColl) => (
+            <CardImages
+              key={indexColl}
+              item={product}
+              tagId={tagId}
+              iconFav={false}
+              renderActions={null}
+            />
+          ))}
       </Slider>
     </Container>
   );

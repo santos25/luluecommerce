@@ -25,28 +25,31 @@ const fetchingCollectionStart = () => {
 
 export const fetchingCollectionsAsync = (genre) => {
   return (dispatch) => {
-    const collectionRef = firestore
-      .collection("collections")
-      .where("genre", "==", genre);
-
     dispatch(fetchingCollectionStart());
 
-    collectionRef.get().then((snapShot) => {
-      snapShot.docs.forEach((doc) => {
-        const categoriesRef = doc.ref.collection("categories").limit(4);
-        categoriesRef.get().then((snapShot) => {
-          const categories = snapShot.docs.map((categoryDoc) => ({
-            id: categoryDoc.id,
-            ...categoryDoc.data(),
-          }));
-          const collection = {
-            id: doc.id,
-            ...doc.data(),
-            categories: categories,
-          };
-          dispatch(fetchingCollectionSucces(collection));
-        });
-      });
+    const docRef = firestore.collection("genre").doc(genre);
+
+    docRef.get().then((document) => {
+      const collections = document.data().categorias;
+      dispatch(fetchingCollectionSucces(collections));
     });
+
+    // collectionRef.get().then((snapShot) => {
+    //   snapShot.docs.forEach((doc) => {
+    //     const categoriesRef = doc.ref.collection("categories").limit(4);
+    //     categoriesRef.get().then((snapShot) => {
+    //       const categories = snapShot.docs.map((categoryDoc) => ({
+    //         id: categoryDoc.id,
+    //         ...categoryDoc.data(),
+    //       }));
+    //       const collection = {
+    //         id: doc.id,
+    //         ...doc.data(),
+    //         categories: categories,
+    //       };
+    //       dispatch(fetchingCollectionSucces(collection));
+    //     });
+    //   });
+    // });
   };
 };

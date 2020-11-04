@@ -28,9 +28,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Categories = ({ data }) => {
+const Categories = ({ data, history }) => {
   const classes = useStyles();
-  console.log(data[0].image);
+  // console.log(data[0].image);
+  // console.log(history);
   return (
     <>
       <div className={classes.root}>
@@ -39,7 +40,11 @@ const Categories = ({ data }) => {
             <ListSubheader component="div">December</ListSubheader>
           </GridListTile> */}
           {data.map((category) => (
-            <GridListTile key={category.id}>
+            <GridListTile
+              key={category.id}
+              rows={1.5}
+              onClick={() => history.push(`/${encodeURI(category.name)}`)}
+            >
               <img src={`http://${category.image}`} alt="" />
               <GridListTileBar
                 classes={{

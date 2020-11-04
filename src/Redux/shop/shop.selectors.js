@@ -10,22 +10,26 @@ export const landscapeImageSelector = () =>
 
 export const categoriesSelector = () =>
   createSelector([data], (data) => {
-    return data.collection.categories;
+    return Object.keys(data.collections).map((key) => {
+      return data.collections[key];
+    });
+  });
 
-    // const resultCollection = Object.keys(collectionGenre.categories).map(
-    //   (key) => {
-    //     const imageByCategory = Object.keys(collectionGenre.categories[key])
-    //       .filter((item, i) => i < 1)
-    //       .map((item) => collectionGenre.categories[key][item].image[0]);
-
-    //     return {
-    //       name: key,
-    //       image: imageByCategory[0],
-    //     };
-    //   }
-    // );
-
-    // return resultCollection;
+export const dataCollectionSelector = (collectionId, genreId) =>
+  createSelector([data], (data) => {
+    console.log(collectionId);
+    console.log(genreId);
+    const collectionGenre = data.dataShop.find(
+      (item) => item.genre === genreId
+    );
+    console.log(collectionGenre);
+    const itemCollections = Object.keys(
+      collectionGenre.categories[collectionId.toLowerCase()]
+    ).map(
+      (itemKey) =>
+        collectionGenre.categories[collectionId.toLowerCase()][itemKey]
+    );
+    return itemCollections;
   });
 
 export const suggestedCollectionsSelector = (genreId) =>
@@ -42,29 +46,6 @@ export const suggestedCollectionsSelector = (genreId) =>
     }));
     return itemResults;
   });
-
-export const dataCollectionSelector = (collectionId, genreId) =>
-  createSelector(
-    [data],
-    (data) => {
-      console.log(collectionId);
-      console.log(genreId);
-      const collectionGenre = data.dataShop.find(
-        (item) => item.genre === genreId
-      );
-      console.log(collectionGenre);
-      const itemCollections = Object.keys(
-        collectionGenre.categories[collectionId.toLowerCase()]
-      ).map(
-        (itemKey) =>
-          collectionGenre.categories[collectionId.toLowerCase()][itemKey]
-      );
-      return itemCollections;
-    }
-
-    //
-    //
-  );
 
 export const dataProductDetailSelector = (collectionId, productId, genreId) =>
   createSelector(

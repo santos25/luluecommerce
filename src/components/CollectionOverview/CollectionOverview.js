@@ -12,21 +12,19 @@ import {
 //components
 import Header from "../Header/Header";
 import Categories from "./Categories";
+import SlickCollection from "../SlickCollection/SlickCollection";
 
-import {
-  Box,
-  makeStyles,
-  Typography,
-  GridList,
-  GridListTile,
-  GridListTileBar,
-  IconButton,
-  Grid,
-} from "@material-ui/core";
+//material UI
+import { Box, makeStyles, Typography } from "@material-ui/core";
 
-import { Info } from "@material-ui/icons";
+import { Info, WhatsApp as WhatsappIcon } from "@material-ui/icons";
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  bold: {
+    fontWeight: "bold",
+    textTransform: "uppercase",
+  },
+}));
 
 const CollectionOverview = ({ categories, imageHeader, tagId }) => {
   let history = useHistory();
@@ -41,12 +39,26 @@ const CollectionOverview = ({ categories, imageHeader, tagId }) => {
     <Box>
       <Header image={imageHeader} />
       <Box mt={1}>
-        <Categories data={categories} />
+        <Categories history={history} data={categories} />
       </Box>
-      {/* <Box mt={4} mb={2} ml={2}>
-        <Typography variant="h5"> Prendas Recomendadas </Typography>
-        <SlickCollection collections={suggestedCollection} tagId={tagId} />
-      </Box> */}
+      <Box my={2} px={1}>
+        <Typography variant="h6" className={classes.bold}>
+          Ofertas del Dia
+        </Typography>
+        <Box>
+          <SlickCollection collections={categories} tagId={tagId} />
+        </Box>
+      </Box>
+      <Box mt={6} mb={4} px={1}>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Box>
+            <WhatsappIcon fontSize="large" />
+          </Box>
+          <Box border={1} borderColor="primary.main" p={1} borderRadius={16}>
+            <Typography variant="button"> Ventas Whatsapp </Typography>
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 };
