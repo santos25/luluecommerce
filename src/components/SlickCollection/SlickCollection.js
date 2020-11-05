@@ -16,11 +16,11 @@ const SlickCollection = ({ collections, tagId }) => {
     nextArrow: <NextArrow />,
     prevArrow: <PreviewArrow />,
   };
-  console.log({ collections });
+
   return (
     <Container>
       <Slider {...settings}>
-        {collections[Math.floor(Math.random() * 4)].products
+        {collections
           .filter((_, index) => index < 10)
           .map((product, indexColl) => (
             <CardImages

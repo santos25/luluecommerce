@@ -19,6 +19,7 @@ const ProductDetailWitSpinner = WithSpinner(ProductDetail);
 
 const ShopPage = ({ isLoading, fetchCollections }) => {
   let match = useRouteMatch();
+  console.log(match);
   let { tagid } = match.params;
 
   useEffect(() => {
@@ -32,16 +33,16 @@ const ShopPage = ({ isLoading, fetchCollections }) => {
 
   return (
     <Switch>
-      <Route exact path={match.url}>
+      <Route exact path={match.path}>
         <CollectionOverviewWitSpinner isLoading={isLoading} tagId={tagid} />
       </Route>
       <Route
         exact
-        path={`${match.url}/:collectionId`}
+        path={`${match.path}/:collectionId`}
         render={(props) => (
           <CollectionPageWitSpinner
             isLoading={isLoading}
-            tagId={tagid}
+            // tagId={tagid}
             {...props}
           />
         )}

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
-import { useHistory, useRouteMatch } from "react-router-dom";
+//firebase
+import { firestore } from "../../FireBase/FireBaseUtil";
 
 //selectors
 import {
@@ -15,9 +16,9 @@ import Categories from "./Categories";
 import SlickCollection from "../SlickCollection/SlickCollection";
 
 //material UI
-import { Box, makeStyles, Typography } from "@material-ui/core";
+import { Box, Button, makeStyles, Typography } from "@material-ui/core";
 
-import { Info, WhatsApp as WhatsappIcon } from "@material-ui/icons";
+import { WhatsApp as WhatsappIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   bold: {
@@ -27,36 +28,62 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CollectionOverview = ({ categories, imageHeader, tagId }) => {
-  let history = useHistory();
-  let match = useRouteMatch();
+  const [productToday, setProductToday] = useState([]);
 
+  useEffect(() => {
+    const selectedCategory = categories[Math.floor(Math.random() * 3)];
+    console.log(selectedCategory);
+    const collecRef = firestore
+      .collection("collections")
+      .where("genre", "==", tagId);
+    collecRef.get().then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        const collCategRef = doc.ref
+          .collection("categories")
+          .where("name", "==", selectedCategory[0].name);
+
+        collCategRef.get().then((snapshot) => {
+          snapshot.docs.forEach((docCateg) => {
+            setProductToday(docCateg.data().products);
+          });
+        });
+      });
+    });
+  }, [categories]);
   const classes = useStyles();
-  console.log(categories);
-  // console.log(collections);
-  // console.log(tagId);
+  // console.log(imageHeader);
+  // console.log(categories);
+  // console.log(productToday);
 
   return (
     <Box>
       <Header image={imageHeader} />
       <Box mt={1}>
-        <Categories history={history} data={categories} />
+        <Categories categories={categories} />
       </Box>
       <Box my={2} px={1}>
         <Typography variant="h6" className={classes.bold}>
           Ofertas del Dia
         </Typography>
         <Box>
-          <SlickCollection collections={categories} tagId={tagId} />
+          <SlickCollection collections={productToday} tagId={tagId} />
         </Box>
       </Box>
       <Box mt={6} mb={4} px={1}>
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <Box>
-            <WhatsappIcon fontSize="large" />
-          </Box>
-          <Box border={1} borderColor="primary.main" p={1} borderRadius={16}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          // border={1}
+          // borderColor="primary.main"
+          p={1}
+          // borderRadius={16}
+          // width={}
+        >
+          <WhatsappIcon fontSize="large" />
+          <Button variant="contained" size="small" color="primary">
             <Typography variant="button"> Ventas Whatsapp </Typography>
-          </Box>
+          </Button>
         </Box>
       </Box>
     </Box>

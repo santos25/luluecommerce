@@ -30,7 +30,7 @@ export const fetchingCollectionsAsync = (genre) => {
     const docRef = firestore.collection("genre").doc(genre);
 
     docRef.get().then((document) => {
-      const collections = document.data().categorias;
+      const collections = { ...document.data() };
       dispatch(fetchingCollectionSucces(collections));
     });
 

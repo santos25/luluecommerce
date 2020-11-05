@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useHistory, useRouteMatch } from "react-router-dom";
+
 import {
   GridList,
   GridListTile,
@@ -26,10 +28,15 @@ const useStyles = makeStyles((theme) => ({
     background:
       "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
   },
+  imageList: {
+    cursor: "pointer",
+  },
 }));
 
-const Categories = ({ data, history }) => {
+const Categories = ({ categories }) => {
   const classes = useStyles();
+  let match = useRouteMatch();
+  let history = useHistory();
   // console.log(data[0].image);
   // console.log(history);
   return (
@@ -39,31 +46,36 @@ const Categories = ({ data, history }) => {
           {/* <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
             <ListSubheader component="div">December</ListSubheader>
           </GridListTile> */}
-          {data.map((category) => (
-            <GridListTile
-              key={category.id}
-              rows={1.5}
-              onClick={() => history.push(`/${encodeURI(category.name)}`)}
-            >
-              <img src={`http://${category.image}`} alt="" />
-              <GridListTileBar
-                classes={{
-                  root: classes.titleBar,
-                  title: classes.title,
-                }}
-                title={category.name}
-                // subtitle={<span>by: {tile.author}</span>}
-                // actionIcon={
-                //   <IconButton
-                //     aria-label={`info about ${tile.title}`}
-                //     className={classes.icon}
-                //   >
-                //     <InfoIcon />
-                //   </IconButton>
-                // }
-              />
-            </GridListTile>
-          ))}
+          {categories.map((category) => {
+            return category.map((item) => (
+              <GridListTile
+                key={item.name}
+                rows={1.5}
+                // className={classes.imagesList}
+                onClick={() =>
+                  history.push(`${match.url}/${encodeURI(item.name)}`)
+                }
+              >
+                <img src={`http://${item.image}`} alt="" />
+                <GridListTileBar
+                  classes={{
+                    root: classes.titleBar,
+                    title: classes.title,
+                  }}
+                  title={item.name}
+                  // subtitle={<span>by: {tile.author}</span>}
+                  // actionIcon={
+                  //   <IconButton
+                  //     aria-label={`info about ${tile.title}`}
+                  //     className={classes.icon}
+                  //   >
+                  //     <InfoIcon />
+                  //   </IconButton>
+                  // }
+                />
+              </GridListTile>
+            ));
+          })}
         </GridList>
       </div>
     </>

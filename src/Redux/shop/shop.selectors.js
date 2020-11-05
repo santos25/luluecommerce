@@ -4,14 +4,14 @@ const data = (state) => state.shop;
 
 export const landscapeImageSelector = () =>
   createSelector([data], (data) => {
-    if (data.collection === undefined) return "";
-    else return data.collection.landscape;
+    if (data.collections === undefined) return "";
+    else return data.collections.landscape;
   });
 
 export const categoriesSelector = () =>
   createSelector([data], (data) => {
-    return Object.keys(data.collections).map((key) => {
-      return data.collections[key];
+    return Object.keys(data.collections.categorias).map((key) => {
+      return data.collections.categorias[key];
     });
   });
 
@@ -30,21 +30,6 @@ export const dataCollectionSelector = (collectionId, genreId) =>
         collectionGenre.categories[collectionId.toLowerCase()][itemKey]
     );
     return itemCollections;
-  });
-
-export const suggestedCollectionsSelector = (genreId) =>
-  createSelector([data], (data) => {
-    const collectionGenre = data.dataShop.find(
-      (item) => item.genre === genreId
-    );
-    const categoryRandom = Object.keys(collectionGenre.categories)[0];
-    const categorySuggested = collectionGenre.categories[categoryRandom];
-    // console.log(categorySuggested);
-    const itemResults = Object.keys(categorySuggested).map((itemKey) => ({
-      ...categorySuggested[itemKey],
-      categoryid: categoryRandom,
-    }));
-    return itemResults;
   });
 
 export const dataProductDetailSelector = (collectionId, productId, genreId) =>
