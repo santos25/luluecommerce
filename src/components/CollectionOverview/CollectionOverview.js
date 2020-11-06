@@ -8,17 +8,24 @@ import { firestore } from "../../FireBase/FireBaseUtil";
 import {
   categoriesSelector,
   landscapeImageSelector,
+  dataSuggestedCollectionSelector,
+  isLoadingSuggestedCollections,
 } from "../../Redux/shop/shop.selectors";
+
+//actions
+import { fetchingSuggestedCollectionsAsync } from "../../Redux/shop/shop.actions";
 
 //components
 import Header from "../Header/Header";
 import Categories from "./Categories";
 import SlickCollection from "../SlickCollection/SlickCollection";
-
+import WithSpinner from "../with-spinner/withSpinner";
 //material UI
 import { Box, Button, makeStyles, Typography } from "@material-ui/core";
 
 import { WhatsApp as WhatsappIcon } from "@material-ui/icons";
+
+const SlickCollectionWitSpinner = WithSpinner(SlickCollection);
 
 const useStyles = makeStyles((theme) => ({
   bold: {
@@ -27,33 +34,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CollectionOverview = ({ categories, imageHeader, tagId }) => {
-  const [productToday, setProductToday] = useState([]);
-
+const CollectionOverview = ({
+  categories,
+  imageHeader,
+  fetchSuggestedCollections,
+  tagId,
+  suggestedCollections,
+  isLoading,
+}) => {
   useEffect(() => {
-    const selectedCategory = categories[Math.floor(Math.random() * 3)];
-    console.log(selectedCategory);
-    const collecRef = firestore
-      .collection("collections")
-      .where("genre", "==", tagId);
-    collecRef.get().then((snapshot) => {
-      snapshot.docs.forEach((doc) => {
-        const collCategRef = doc.ref
-          .collection("categories")
-          .where("name", "==", selectedCategory[0].name);
+    const pickedCategory =
+      categories[Math.floor(Math.random() * categories.length)];
+    const pickedProduct =
+      pickedCategory[Math.floor(Math.random() * pickedCategory.length)];
 
-        collCategRef.get().then((snapshot) => {
-          snapshot.docs.forEach((docCateg) => {
-            setProductToday(docCateg.data().products);
-          });
-        });
-      });
-    });
-  }, [categories]);
+    fetchSuggestedCollections(tagId, pickedProduct.name);
+  }, []);
   const classes = useStyles();
-  // console.log(imageHeader);
-  // console.log(categories);
-  // console.log(productToday);
 
   return (
     <Box>
@@ -66,7 +63,10 @@ const CollectionOverview = ({ categories, imageHeader, tagId }) => {
           Ofertas del Dia
         </Typography>
         <Box>
-          <SlickCollection collections={productToday} tagId={tagId} />
+          <SlickCollectionWitSpinner
+            isLoading={isLoading}
+            collections={suggestedCollections}
+          />{" "}
         </Box>
       </Box>
       <Box mt={6} mb={4} px={1}>
@@ -94,6 +94,12 @@ const mapStateToProps = (state, ownProps) => ({
   categories: categoriesSelector()(state),
   // suggestedCollection: suggestedCollectionsSelector(ownProps.tagId)(state),
   imageHeader: landscapeImageSelector()(state),
+  suggestedCollections: dataSuggestedCollectionSelector()(state),
+  isLoading: isLoadingSuggestedCollections(state),
+});
+const mapDispatchToState = (dispatch) => ({
+  fetchSuggestedCollections: (genre, collectionId) =>
+    dispatch(fetchingSuggestedCollectionsAsync(genre, collectionId)),
 });
 
-export default connect(mapStateToProps)(CollectionOverview);
+export default connect(mapStateToProps, mapDispatchToState)(CollectionOverview);

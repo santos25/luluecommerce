@@ -17,15 +17,17 @@ const SlickCollection = ({ collections }) => {
     prevArrow: <PreviewArrow />,
   };
 
+  console.log(collections);
   return (
     <Container>
       <Slider {...settings}>
-        {collections
+        {collections.products
           .filter((_, index) => index < 10)
           .map((product, indexColl) => (
             <CardImages
               key={indexColl}
               item={product}
+              typeCollection={collections.type}
               iconFav={false}
               renderActions={null}
             />

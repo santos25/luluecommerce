@@ -3,8 +3,12 @@ import { connect } from "react-redux";
 import {
   dataCollectionSelector,
   isLoadingCollections,
+  categoriesSelector,
 } from "../../Redux/shop/shop.selectors";
-import { fetchingCollectionsAsync } from "../../Redux/shop/shop.actions";
+import {
+  fetchingCollectionsAsync,
+  fetchingSuggestedCollectionsAsync,
+} from "../../Redux/shop/shop.actions";
 import CardImages from "../../components/CardImages/CardImages";
 
 //firebase
@@ -29,18 +33,27 @@ const CollectionPage = ({
   collections,
   match,
   fetchCollections,
+  fetchSuggestedCollections,
+  categories,
 }) => {
   // const [collections, setCollections] = useState([]);
   const classes = useStyles();
 
   const { tagid, collectionId } = match.params;
-  // console.log(rest);
+  console.log("collection Page");
   useEffect(() => {
-    console.log("render Collection page");
+    console.log("render new  Collection page");
+    const pickedCategory =
+      categories[Math.floor(Math.random() * categories.length)];
+    const pickedProduct =
+      pickedCategory[Math.floor(Math.random() * pickedCategory.length)];
+
     fetchCollections(tagid, collectionId);
+    fetchSuggestedCollections(tagid, pickedProduct.name);
   }, [tagid, collectionId]);
 
   // console.log(collections);
+  // console.log(isLoading);
   return (
     <Grid>
       <Grid component={Box} textAlign="center" xs={12} py={1} item>
@@ -53,18 +66,23 @@ const CollectionPage = ({
       </Grid>
 
       <Grid container>
-        {collections
-          .filter((_, index) => index < 10)
-          .map((item, i) => (
-            <Grid key={i} xs={6} sm={3} item>
-              <CardImages
-                key={i}
-                item={item}
-                renderActions={true}
-                iconFav={true}
-              />
-            </Grid>
-          ))}
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          collections.products
+            .filter((_, index) => index < 10)
+            .map((item, i) => (
+              <Grid key={i} xs={6} sm={3} item>
+                <CardImages
+                  key={i}
+                  item={item}
+                  typeCollection={collections.type}
+                  renderActions={true}
+                  iconFav={true}
+                />
+              </Grid>
+            ))
+        )}
       </Grid>
     </Grid>
   );
@@ -73,11 +91,14 @@ const CollectionPage = ({
 const mapStateToProps = (state, ownProps) => ({
   isLoading: isLoadingCollections(state),
   collections: dataCollectionSelector()(state),
+  categories: categoriesSelector()(state),
 });
 
 const mapDispatchToState = (dispatch) => ({
   fetchCollections: (genre, collectionId) =>
     dispatch(fetchingCollectionsAsync(genre, collectionId)),
+  fetchSuggestedCollections: (genre, collectionId) =>
+    dispatch(fetchingSuggestedCollectionsAsync(genre, collectionId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToState)(CollectionPage);

@@ -10,6 +10,14 @@ export const landscapeImageSelector = () =>
 
 export const categoriesSelector = () =>
   createSelector([data], (data) => {
+    console.log(data.categories.categorias);
+    // if (typeof product === "undefined") {
+    //   return [];
+    // } else {
+    //   return Object.keys(data.categories.categorias).map((key) => {
+    //     return data.categories.categorias[key];
+    //   });
+    // }
     return Object.keys(data.categories.categorias).map((key) => {
       return data.categories.categorias[key];
     });
@@ -20,16 +28,41 @@ export const dataCollectionSelector = () =>
     return data.collections;
   });
 
+export const dataSuggestedCollectionSelector = () =>
+  createSelector([data], (data) => {
+    return data.suggestedCollections;
+  });
+
 export const dataProductDetailSelector = (productId) =>
   createSelector([data], (data) => {
-    const product = data.collections.find((item) => {
-      return item.name.toLowerCase() === productId.toLowerCase();
-    });
+    let product;
+    // console.log(data.collections.products);
+    if (typeof data.collections.products !== "undefined") {
+      product = data.collections.products.find((item) => {
+        return item.name.toLowerCase() === productId.toLowerCase();
+      });
+    }
 
+    if (typeof product === "undefined") {
+      // console.log("undefined");
+      product = data.suggestedCollections.products.find((item) => {
+        return item.name.toLowerCase() === productId.toLowerCase();
+      });
+    }
     return product;
   });
 
-export const isLoadingCollections = createSelector(
+export const isLoadingOverView = createSelector(
   [data],
   (data) => data.isFetching
+);
+
+export const isLoadingCollections = createSelector(
+  [data],
+  (data) => data.isFetchingCollection
+);
+
+export const isLoadingSuggestedCollections = createSelector(
+  [data],
+  (data) => data.isFetchingSuggested
 );

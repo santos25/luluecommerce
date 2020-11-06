@@ -30,30 +30,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CardImages = ({ item, addItemsToCart, iconFav, renderActions }) => {
+const CardImages = ({
+  item,
+  addItemsToCart,
+  typeCollection,
+  iconFav,
+  renderActions,
+}) => {
   const classes = useStyles();
   // console.log(item);
   const history = useHistory();
   const match = useRouteMatch();
   let url;
-  // console.log(match);
-  // if (tagId !== "") {
-  if (match.params.hasOwnProperty("collectionId")) {
-    url = match.url;
-  } else {
-    // url = `${match.url}/${item.categoryid}`;
-  }
-  // } else {
-  //   // console.log("no tag");
-  //   // console.log(item);
-  //   url = `${item.genreid}/${item.categoryid}`;
-  // }
 
-  // console.log(match.params);
+  const { tagid, collectionId } = match.params;
+
+  // console.log(match);
+  // console.log(collectionId);
   return (
     <Card className={classes.root}>
       <CardActionArea
-        onClick={() => history.push(encodeURI(`${url}/${item.name}`))}
+        onClick={() =>
+          history.push(encodeURI(`/${tagid}/${typeCollection}/${item.name}`))
+        }
       >
         <CardMedia
           className={classes.media}

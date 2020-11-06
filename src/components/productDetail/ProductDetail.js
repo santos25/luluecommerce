@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { addItemsToCart } from "../../Redux/Cart/cart.action";
+// import {  } from "../../Redux/shop/shop.actions";
 
 //reac-router
 import { useRouteMatch } from "react-router-dom";
@@ -8,6 +9,8 @@ import { useRouteMatch } from "react-router-dom";
 import {
   dataProductDetailSelector,
   categoriesSelector,
+  dataSuggestedCollectionSelector,
+  isLoadingSuggestedCollections,
 } from "../../Redux/shop/shop.selectors";
 
 //firebase
@@ -18,6 +21,7 @@ import Slider from "react-slick";
 import NextArrow from "../SlickArrows/NextArrow";
 import PreviewArrow from "../SlickArrows/PreviewArrow";
 import SlickCollection from "../SlickCollection/SlickCollection";
+import WithSpinner from "../with-spinner/withSpinner";
 
 import {
   Done as DoneIcon,
@@ -59,37 +63,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProductDetail = ({ product, addItemsToCart, categories }) => {
-  const [suggestedProducts, setSuggestedProducts] = useState([]);
+const SlickCollectionWitSpinner = WithSpinner(SlickCollection);
+
+const ProductDetail = ({
+  product,
+  addItemsToCart,
+  categories,
+  suggestedCollections,
+  fetchSuggestedCollections,
+  isLoading,
+}) => {
   const [talla, setTalla] = useState("");
 
   const classes = useStyles();
   let match = useRouteMatch();
-  // console.log(suggestedProducts);
+  console.log({ product });
 
   useEffect(() => {
-    const pickedCategory =
-      categories[Math.floor(Math.random() * categories.length)];
-    const pickedProduct =
-      pickedCategory[Math.floor(Math.random() * pickedCategory.length)];
+    console.log("PRODUCT DETAIL");
+    // const pickedCategory =
+    //   categories[Math.floor(Math.random() * categories.length)];
+    // const pickedProduct =
+    //   pickedCategory[Math.floor(Math.random() * pickedCategory.length)];
 
-    const collecRef = firestore
-      .collection("collections")
-      .where("genre", "==", match.params.tagid);
-    collecRef.get().then((snapshot) => {
-      snapshot.docs.forEach((doc) => {
-        const collCategRef = doc.ref
-          .collection("categories")
-          .where("name", "==", pickedProduct.name);
-
-        collCategRef.get().then((snapshot) => {
-          snapshot.docs.forEach((docCateg) => {
-            setSuggestedProducts(docCateg.data().products);
-          });
-        });
-      });
-    });
-  }, [categories]);
+    // fetchSuggestedCollections(match.params.tagid, pickedProduct.name);
+  }, [match.params.productId]);
 
   const settings = {
     dots: true,
@@ -126,9 +124,7 @@ const ProductDetail = ({ product, addItemsToCart, categories }) => {
       <Grid item xs={12} sm={8}>
         <Slider {...settings}>
           {product.images.map((url, indexColl) => (
-            // <GridListTile key={indexColl} cols={2} rows={2}>
             <img key={indexColl} src={`http://${url}`} alt="" />
-            // </GridListTile>
           ))}
         </Slider>
       </Grid>
@@ -147,7 +143,6 @@ const ProductDetail = ({ product, addItemsToCart, categories }) => {
       <Grid xs={12} item>
         <Box mt={2} p={1}>
           <Typography variant="subtitle1">
-            {" "}
             <span className={classes.bold}> Color: </span> Negro
           </Typography>
         </Box>
@@ -207,11 +202,15 @@ const ProductDetail = ({ product, addItemsToCart, categories }) => {
 
       <Grid xs={12} item>
         <Box my={4} p={1}>
-          <Typography variant="h6" className={classes.bold} color="">
+          <Typography variant="h6" className={classes.bold}>
             PUEDE QUE TAMBIÉN TE GUSTE
           </Typography>
           <Box>
-            <SlickCollection collections={suggestedProducts} />
+            {/* {console.log(isLoading)} */}
+            <SlickCollectionWitSpinner
+              isLoading={isLoading}
+              collections={suggestedCollections}
+            />
           </Box>
         </Box>
       </Grid>
@@ -227,6 +226,8 @@ const mapDispatchToState = (dispatch) => ({
 
 const mapStateToProps = (state, ownProps) => ({
   product: dataProductDetailSelector(ownProps.match.params.productId)(state),
-  categories: categoriesSelector()(state),
+  // categories: categoriesSelector()(state),
+  suggestedCollections: dataSuggestedCollectionSelector()(state),
+  isLoading: isLoadingSuggestedCollections(state),
 });
 export default connect(mapStateToProps, mapDispatchToState)(ProductDetail);

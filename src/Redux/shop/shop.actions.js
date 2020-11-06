@@ -17,9 +17,28 @@ const fetchingCollectionsSucces = (collections) => {
   };
 };
 
+const fetchingSuggestedCollectionsSucces = (collections) => {
+  return {
+    type: shop_types.FETCHING_SUGGESTED_COLLECTIONS_SUCCESS,
+    payload: collections,
+  };
+};
+
 const fetchingCollectionStart = () => {
   return {
     type: shop_types.FETCHING_COLLECIONS_START,
+  };
+};
+
+const fetchingCategoriesStart = () => {
+  return {
+    type: shop_types.FETCHING_CATEGORIES_START,
+  };
+};
+
+const fetchingSuggestedCategoriesStart = () => {
+  return {
+    type: shop_types.FETCHING_SUGGESTED_COLLECIONS_START,
   };
 };
 
@@ -32,8 +51,8 @@ const fetchingCollectionStart = () => {
 
 export const fetchingCollectionsOverViewAsync = (genre) => {
   return (dispatch) => {
-    dispatch(fetchingCollectionStart());
-
+    dispatch(fetchingCategoriesStart());
+    console.log("fetching overview");
     const docRef = firestore.collection("genre").doc(genre);
 
     docRef.get().then((document) => {
@@ -43,26 +62,49 @@ export const fetchingCollectionsOverViewAsync = (genre) => {
   };
 };
 
+async function fetchCollections(genre, collectionId) {
+  let objectResult = {};
+
+  const collecRef = firestore
+    .collection("collections")
+    .where("genre", "==", genre);
+  const snapshot = await collecRef.get();
+  const collCategRef = snapshot.docs[0].ref
+    .collection("categories")
+    .where("name", "==", collectionId);
+
+  const snapshotProduct = await collCategRef.get();
+  // console.log(snapshotProduct.docs[0].data());
+  return snapshotProduct.docs[0].data();
+}
 export const fetchingCollectionsAsync = (genre, collectionId) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     console.log("fetching collections Async");
     dispatch(fetchingCollectionStart());
 
-    const collecRef = firestore
-      .collection("collections")
-      .where("genre", "==", genre);
-    collecRef.get().then((snapshot) => {
-      snapshot.docs.forEach((doc) => {
-        const collCategRef = doc.ref
-          .collection("categories")
-          .where("name", "==", collectionId);
+    const result = await fetchCollections(genre, collectionId);
 
-        collCategRef.get().then((snapshot) => {
-          snapshot.docs.forEach((docCateg) => {
-            dispatch(fetchingCollectionsSucces(docCateg.data().products));
-          });
-        });
-      });
-    });
+    dispatch(
+      fetchingCollectionsSucces({
+        type: result.name,
+        products: result.products,
+      })
+    );
+  };
+};
+
+export const fetchingSuggestedCollectionsAsync = (genre, collectionId) => {
+  return async (dispatch) => {
+    console.log("fetching Suggested collections Async");
+    dispatch(fetchingSuggestedCategoriesStart());
+
+    const result = await fetchCollections(genre, collectionId);
+
+    dispatch(
+      fetchingSuggestedCollectionsSucces({
+        type: result.name,
+        products: result.products,
+      })
+    );
   };
 };
