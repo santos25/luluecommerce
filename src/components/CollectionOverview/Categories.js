@@ -51,12 +51,15 @@ const Categories = ({ categories }) => {
               <GridListTile
                 key={item.name}
                 rows={1.5}
-                // className={classes.imagesList}
                 onClick={() =>
                   history.push(`${match.url}/${encodeURI(item.name)}`)
                 }
               >
-                <img src={`http://${item.image}`} alt="" />
+                <img
+                  className={classes.imageList}
+                  src={`http://${item.image}`}
+                  alt=""
+                />
                 <GridListTileBar
                   classes={{
                     root: classes.titleBar,

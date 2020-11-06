@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { addItemsToCart } from "../../Redux/Cart/cart.action";
 
+//reac-router
+import { useRouteMatch } from "react-router-dom";
 //selectors
-import { dataProductDetailSelector } from "../../Redux/shop/shop.selectors";
-// import { newCollectionsHomeSelector } from '../../Redux/directory/directory.selectors'
+import {
+  dataProductDetailSelector,
+  categoriesSelector,
+} from "../../Redux/shop/shop.selectors";
+
+//firebase
+import { firestore } from "../../FireBase/FireBaseUtil";
 
 //components
 import Slider from "react-slick";
 import NextArrow from "../SlickArrows/NextArrow";
 import PreviewArrow from "../SlickArrows/PreviewArrow";
+import SlickCollection from "../SlickCollection/SlickCollection";
 
-import { Done as DoneIcon } from "@material-ui/icons";
 import {
-  GridList,
-  GridListTile,
+  Done as DoneIcon,
+  FavoriteBorder as FavoriteBorderIcon,
+  AddShoppingCart as AddShopIcon,
+} from "@material-ui/icons";
+import {
   makeStyles,
   Box,
   Grid,
@@ -24,6 +34,7 @@ import {
   Select,
   MenuItem,
   Button,
+  IconButton,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,8 +59,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProductDetail = ({ product, addItemsToCart }) => {
+const ProductDetail = ({ product, addItemsToCart, categories }) => {
+  const [suggestedProducts, setSuggestedProducts] = useState([]);
+  const [talla, setTalla] = useState("");
+
   const classes = useStyles();
+  let match = useRouteMatch();
+  // console.log(suggestedProducts);
+
+  useEffect(() => {
+    const pickedCategory =
+      categories[Math.floor(Math.random() * categories.length)];
+    const pickedProduct =
+      pickedCategory[Math.floor(Math.random() * pickedCategory.length)];
+
+    const collecRef = firestore
+      .collection("collections")
+      .where("genre", "==", match.params.tagid);
+    collecRef.get().then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        const collCategRef = doc.ref
+          .collection("categories")
+          .where("name", "==", pickedProduct.name);
+
+        collCategRef.get().then((snapshot) => {
+          snapshot.docs.forEach((docCateg) => {
+            setSuggestedProducts(docCateg.data().products);
+          });
+        });
+      });
+    });
+  }, [categories]);
 
   const settings = {
     dots: true,
@@ -61,12 +101,24 @@ const ProductDetail = ({ product, addItemsToCart }) => {
     prevArrow: <PreviewArrow />,
   };
 
-  const [talla, setTalla] = useState("");
-  console.log(product);
+  const settingsSuggestions = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    nextArrow: <NextArrow />,
+    prevArrow: <PreviewArrow />,
+  };
+  // console.log(categories);
 
   const handleTalla = (event) => {
     console.log(event.target);
     setTalla(event.target.value);
+  };
+
+  const createDescriptionHtml = () => {
+    return { __html: product.description };
   };
 
   return (
@@ -75,7 +127,7 @@ const ProductDetail = ({ product, addItemsToCart }) => {
         <Slider {...settings}>
           {product.images.map((url, indexColl) => (
             // <GridListTile key={indexColl} cols={2} rows={2}>
-            <img src={`http://${url}`} alt="" />
+            <img key={indexColl} src={`http://${url}`} alt="" />
             // </GridListTile>
           ))}
         </Slider>
@@ -128,66 +180,41 @@ const ProductDetail = ({ product, addItemsToCart }) => {
         </Box>
       </Grid>
       <Grid xs={12} item>
-        <Box mt={2} p={1}>
+        <Box display="flex" justifyContent="space-between" mt={2} p={1}>
           <Button
+            startIcon={<AddShopIcon />}
             variant="contained"
             color="primary"
             fullWidth
+            size="small"
             onClick={() => addItemsToCart(product)}
           >
             añadir a mi bolsa
           </Button>
+          <IconButton color="primary" aria-label="Favoritet">
+            <FavoriteBorderIcon fontSize="large" />
+          </IconButton>
         </Box>
       </Grid>
-      {/* <Grid item xs={12} sm={4}>
-        <Box
-          height="100%"
-          display="flex"
-          flexDirection="column"
-          justifyContent="flex-start"
-          alignItems="stretch"
-          mt={4}
-        >
-          
-          
-          <Box m={2}>
-            
+      <Grid xs={12} item>
+        <Box mt={3} p={1}>
+          <Typography variant="h6" className={classes.bold}>
+            DETALLES DEL PRODUCTO
+          </Typography>
+          <div dangerouslySetInnerHTML={createDescriptionHtml()} />;
+        </Box>
+      </Grid>
+
+      <Grid xs={12} item>
+        <Box my={4} p={1}>
+          <Typography variant="h6" className={classes.bold} color="">
+            PUEDE QUE TAMBIÉN TE GUSTE
+          </Typography>
+          <Box>
+            <SlickCollection collections={suggestedProducts} />
           </Box>
-          <Box m={2} display="flex">
-           
-          </Box>
         </Box>
-      </Grid> */}
-      {/* <Grid item xs={12}>
-        <Box
-          p={4}
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Typography variant="body1" component="h5">
-            Detalles del Producto
-          </Typography>
-          <Typography variant="body2" component="p">
-            {product.detail}
-          </Typography>
-        </Box>
-      </Grid> */}
-      {/* <Grid item xs={12}>
-        <Box
-          mt={2}
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Typography variant="body1" component="h5">
-            RECOMENDACIONES
-          </Typography>
-          <SlickCollection collections={newCollections[0].items} />
-        </Box>
-      </Grid> */}
+      </Grid>
     </Grid>
   );
 };
@@ -199,11 +226,7 @@ const mapDispatchToState = (dispatch) => ({
 });
 
 const mapStateToProps = (state, ownProps) => ({
-  product: dataProductDetailSelector(
-    // ownProps.match.params.collectionId,
-    ownProps.match.params.productId
-    // ownProps.tagId
-  )(state),
-  // newCollections: newCollectionsHomeSelector(state)
+  product: dataProductDetailSelector(ownProps.match.params.productId)(state),
+  categories: categoriesSelector()(state),
 });
 export default connect(mapStateToProps, mapDispatchToState)(ProductDetail);

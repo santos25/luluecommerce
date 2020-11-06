@@ -43,7 +43,7 @@ const ShopPage = ({ isLoading, fetchCollectionsOverView }) => {
         )}
       ></Route>
       <Route
-        path={`${match.url}/:collectionId/:productId`}
+        path={`${match.path}/:collectionId/:productId`}
         render={(props) => (
           <ProductDetailWitSpinner
             isLoading={isLoading}

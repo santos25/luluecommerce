@@ -6,7 +6,7 @@ import CardImages from "../CardImages/CardImages";
 
 import { Button, Container } from "@material-ui/core";
 
-const SlickCollection = ({ collections, tagId }) => {
+const SlickCollection = ({ collections }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -26,7 +26,6 @@ const SlickCollection = ({ collections, tagId }) => {
             <CardImages
               key={indexColl}
               item={product}
-              tagId={tagId}
               iconFav={false}
               renderActions={null}
             />

@@ -30,13 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CardImages = ({
-  item,
-  addItemsToCart,
-  tagId,
-  iconFav,
-  renderActions,
-}) => {
+const CardImages = ({ item, addItemsToCart, iconFav, renderActions }) => {
   const classes = useStyles();
   // console.log(item);
   const history = useHistory();
