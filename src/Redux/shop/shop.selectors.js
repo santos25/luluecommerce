@@ -4,49 +4,30 @@ const data = (state) => state.shop;
 
 export const landscapeImageSelector = () =>
   createSelector([data], (data) => {
-    if (data.collections === undefined) return "";
-    else return data.collections.landscape;
+    if (data.categories === undefined) return "";
+    else return data.categories.landscape;
   });
 
 export const categoriesSelector = () =>
   createSelector([data], (data) => {
-    return Object.keys(data.collections.categorias).map((key) => {
-      return data.collections.categorias[key];
+    return Object.keys(data.categories.categorias).map((key) => {
+      return data.categories.categorias[key];
     });
   });
 
-export const dataCollectionSelector = (collectionId, genreId) =>
+export const dataCollectionSelector = () =>
   createSelector([data], (data) => {
-    console.log(collectionId);
-    console.log(genreId);
-    const collectionGenre = data.dataShop.find(
-      (item) => item.genre === genreId
-    );
-    console.log(collectionGenre);
-    const itemCollections = Object.keys(
-      collectionGenre.categories[collectionId.toLowerCase()]
-    ).map(
-      (itemKey) =>
-        collectionGenre.categories[collectionId.toLowerCase()][itemKey]
-    );
-    return itemCollections;
+    return data.collections;
   });
 
-export const dataProductDetailSelector = (collectionId, productId, genreId) =>
-  createSelector(
-    [data],
-    (data) => {
-      const collectionGenre = data.dataShop.find(
-        (item) => item.genre === genreId
-      );
-      const itemDetail = Object.keys(collectionGenre.categories[collectionId])
-        .map((itemKey) => collectionGenre.categories[collectionId][itemKey])
-        .find((item) => item.name === productId);
-      return itemDetail;
-    }
+export const dataProductDetailSelector = (productId) =>
+  createSelector([data], (data) => {
+    const product = data.collections.find((item) => {
+      return item.name.toLowerCase() === productId.toLowerCase();
+    });
 
-    //    [collectionId].items.find(item => item.name.toLowerCase() === productId.toLowerCase())
-  );
+    return product;
+  });
 
 export const isLoadingCollections = createSelector(
   [data],

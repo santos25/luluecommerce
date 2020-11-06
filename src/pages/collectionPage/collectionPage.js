@@ -1,63 +1,83 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { dataCollectionSelector } from "../../Redux/shop/shop.selectors";
+import {
+  dataCollectionSelector,
+  isLoadingCollections,
+} from "../../Redux/shop/shop.selectors";
+import { fetchingCollectionsAsync } from "../../Redux/shop/shop.actions";
 import CardImages from "../../components/CardImages/CardImages";
-// import './collection.styles.css';
 
 //firebase
 import { firestore } from "../../FireBase/FireBaseUtil";
 
-import { Grid, Typography } from "@material-ui/core";
+import {
+  Box,
+  Grid,
+  Typography,
+  makeStyles,
+  CircularProgress,
+} from "@material-ui/core";
 
-const CollectionPage = ({ match, ...rest }) => {
-  const [collections, setCollections] = useState([]);
+const useStyles = makeStyles((theme) => ({
+  filtering: {
+    backgroundColor: "#eee",
+  },
+}));
+
+const CollectionPage = ({
+  isLoading,
+  collections,
+  match,
+  fetchCollections,
+}) => {
+  // const [collections, setCollections] = useState([]);
+  const classes = useStyles();
 
   const { tagid, collectionId } = match.params;
-
-  console.log(rest);
+  // console.log(rest);
   useEffect(() => {
-    const collecRef = firestore
-      .collection("collections")
-      .where("genre", "==", tagid);
-    collecRef.get().then((snapshot) => {
-      snapshot.docs.forEach((doc) => {
-        const collCategRef = doc.ref
-          .collection("categories")
-          .where("name", "==", collectionId);
-
-        collCategRef.get().then((snapshot) => {
-          snapshot.docs.forEach((docCateg) => {
-            setCollections(docCateg.data().products);
-          });
-        });
-      });
-    });
+    console.log("render Collection page");
+    fetchCollections(tagid, collectionId);
   }, [tagid, collectionId]);
 
-  console.log(collections);
+  // console.log(collections);
   return (
     <Grid>
-      <Grid xs={12} item>
+      <Grid component={Box} textAlign="center" xs={12} py={1} item>
         <Typography variant="h5">{collectionId}</Typography>
       </Grid>
+      <Grid item>
+        <Box py={1} textAlign="center" className={classes.filtering}>
+          <Typography variant="subtitle1">FILTRAR</Typography>
+        </Box>
+      </Grid>
+
       <Grid container>
-        {collections.map((item, i) => (
-          <Grid key={i} xs={6} sm={3} item>
-            <CardImages
-              key={i}
-              item={item}
-              renderActions={true}
-              iconFav={true}
-            />
-          </Grid>
-        ))}
+        {collections
+          .filter((_, index) => index < 10)
+          .map((item, i) => (
+            <Grid key={i} xs={6} sm={3} item>
+              <CardImages
+                key={i}
+                item={item}
+                renderActions={true}
+                iconFav={true}
+              />
+            </Grid>
+          ))}
       </Grid>
     </Grid>
   );
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  // itemscollection: dataCollectionSelector(ownProps.match.params.collectionId, ownProps.tagId)(state)
+  isLoading: isLoadingCollections(state),
+  collections: dataCollectionSelector()(state),
 });
 
-export default connect(null, null)(CollectionPage);
+const mapDispatchToState = (dispatch) => ({
+  fetchCollections: (genre, collectionId) =>
+    dispatch(fetchingCollectionsAsync(genre, collectionId)),
+});
+
+export default connect(mapStateToProps, mapDispatchToState)(CollectionPage);

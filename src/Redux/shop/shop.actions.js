@@ -3,7 +3,14 @@ import shop_types from "./shop.types";
 
 import { firestore } from "../../FireBase/FireBaseUtil";
 
-const fetchingCollectionSucces = (collections) => {
+const fetchingCategoriesSucces = (collections) => {
+  return {
+    type: shop_types.FETCHING_CATEGORIES_SUCCESS,
+    payload: collections,
+  };
+};
+
+const fetchingCollectionsSucces = (collections) => {
   return {
     type: shop_types.FETCHING_COLLECTIONS_SUCCESS,
     payload: collections,
@@ -23,7 +30,7 @@ const fetchingCollectionStart = () => {
 //     }
 // }
 
-export const fetchingCollectionsAsync = (genre) => {
+export const fetchingCollectionsOverViewAsync = (genre) => {
   return (dispatch) => {
     dispatch(fetchingCollectionStart());
 
@@ -31,25 +38,31 @@ export const fetchingCollectionsAsync = (genre) => {
 
     docRef.get().then((document) => {
       const collections = { ...document.data() };
-      dispatch(fetchingCollectionSucces(collections));
+      dispatch(fetchingCategoriesSucces(collections));
     });
+  };
+};
 
-    // collectionRef.get().then((snapShot) => {
-    //   snapShot.docs.forEach((doc) => {
-    //     const categoriesRef = doc.ref.collection("categories").limit(4);
-    //     categoriesRef.get().then((snapShot) => {
-    //       const categories = snapShot.docs.map((categoryDoc) => ({
-    //         id: categoryDoc.id,
-    //         ...categoryDoc.data(),
-    //       }));
-    //       const collection = {
-    //         id: doc.id,
-    //         ...doc.data(),
-    //         categories: categories,
-    //       };
-    //       dispatch(fetchingCollectionSucces(collection));
-    //     });
-    //   });
-    // });
+export const fetchingCollectionsAsync = (genre, collectionId) => {
+  return (dispatch) => {
+    console.log("fetching collections Async");
+    dispatch(fetchingCollectionStart());
+
+    const collecRef = firestore
+      .collection("collections")
+      .where("genre", "==", genre);
+    collecRef.get().then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        const collCategRef = doc.ref
+          .collection("categories")
+          .where("name", "==", collectionId);
+
+        collCategRef.get().then((snapshot) => {
+          snapshot.docs.forEach((docCateg) => {
+            dispatch(fetchingCollectionsSucces(docCateg.data().products));
+          });
+        });
+      });
+    });
   };
 };

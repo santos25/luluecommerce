@@ -3,7 +3,7 @@ import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { connect } from "react-redux";
 
 //redux
-import { fetchingCollectionsAsync } from "../../Redux/shop/shop.actions";
+import { fetchingCollectionsOverViewAsync } from "../../Redux/shop/shop.actions";
 import { isLoadingCollections } from "../../Redux/shop/shop.selectors";
 
 //components
@@ -17,19 +17,14 @@ const CollectionOverviewWitSpinner = WithSpinner(CollectionOverview);
 const CollectionPageWitSpinner = WithSpinner(CollectionPage);
 const ProductDetailWitSpinner = WithSpinner(ProductDetail);
 
-const ShopPage = ({ isLoading, fetchCollections }) => {
+const ShopPage = ({ isLoading, fetchCollectionsOverView }) => {
   let match = useRouteMatch();
-  console.log(match);
   let { tagid } = match.params;
 
   useEffect(() => {
     console.log("rendering ShopPage");
-    console.log(tagid);
-    fetchCollections(tagid);
-  }, [tagid, fetchCollections]);
-
-  // console.log({ isLoading });
-  // console.log({ match });
+    fetchCollectionsOverView(tagid);
+  }, [tagid, fetchCollectionsOverView]);
 
   return (
     <Switch>
@@ -41,7 +36,7 @@ const ShopPage = ({ isLoading, fetchCollections }) => {
         path={`${match.path}/:collectionId`}
         render={(props) => (
           <CollectionPageWitSpinner
-            isLoading={isLoading}
+            // isLoading={isLoading}
             // tagId={tagid}
             {...props}
           />
@@ -62,7 +57,8 @@ const ShopPage = ({ isLoading, fetchCollections }) => {
 };
 
 const mapDispatchToState = (dispatch) => ({
-  fetchCollections: (genre) => dispatch(fetchingCollectionsAsync(genre)),
+  fetchCollectionsOverView: (genre) =>
+    dispatch(fetchingCollectionsOverViewAsync(genre)),
 });
 
 const mapStateToProps = (state) => ({

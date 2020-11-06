@@ -1,6 +1,7 @@
 import SHOPTYPES from "./shop.types";
 
 const INITIAL_STATE = {
+  categories: [],
   collections: [],
   isFetching: true,
   errorMessage: "",
@@ -12,6 +13,12 @@ const shopReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isFetching: true,
+      };
+    case SHOPTYPES.FETCHING_CATEGORIES_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        categories: action.payload,
       };
     case SHOPTYPES.FETCHING_COLLECTIONS_SUCCESS:
       return {

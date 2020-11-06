@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     height: 340,
   },
   icon: {
-    fontSize: 30,
+    fontSize: 26,
   },
 }));
 
@@ -42,23 +42,24 @@ const CardImages = ({
   const history = useHistory();
   const match = useRouteMatch();
   let url;
-  if (tagId !== "") {
-    if (match.params.hasOwnProperty("collectionId")) {
-      url = match.url;
-    } else {
-      url = `${match.url}/${item.categoryid}`;
-    }
+  // console.log(match);
+  // if (tagId !== "") {
+  if (match.params.hasOwnProperty("collectionId")) {
+    url = match.url;
   } else {
-    // console.log("no tag");
-    // console.log(item);
-    url = `${item.genreid}/${item.categoryid}`;
+    // url = `${match.url}/${item.categoryid}`;
   }
+  // } else {
+  //   // console.log("no tag");
+  //   // console.log(item);
+  //   url = `${item.genreid}/${item.categoryid}`;
+  // }
 
   // console.log(match.params);
   return (
     <Card className={classes.root}>
       <CardActionArea
-        onClick={() => history.push(`${url}/${encodeURI(item.name)}`)}
+        onClick={() => history.push(encodeURI(`${url}/${item.name}`))}
       >
         <CardMedia
           className={classes.media}
@@ -67,10 +68,10 @@ const CardImages = ({
         <CardContent>
           <Box display="flex" width="auto">
             <Box flexGrow={1}>
-              <Typography variant="subtitle2" component="h2">
+              <Typography variant="subtitle2">
                 {item.name.substring(0, 10)}
               </Typography>
-              <Typography variant="body2" component="p">
+              <Typography variant="body2">
                 {`$${item.price.current.text}`}
               </Typography>
             </Box>
@@ -88,7 +89,7 @@ const CardImages = ({
             onClick={() => {
               addItemsToCart(item);
             }}
-            variant="outlined"
+            variant="contained"
             size="small"
             color="primary"
           >
