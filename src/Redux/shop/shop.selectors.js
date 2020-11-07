@@ -11,13 +11,7 @@ export const landscapeImageSelector = () =>
 export const categoriesSelector = () =>
   createSelector([data], (data) => {
     console.log(data.categories.categorias);
-    // if (typeof product === "undefined") {
-    //   return [];
-    // } else {
-    //   return Object.keys(data.categories.categorias).map((key) => {
-    //     return data.categories.categorias[key];
-    //   });
-    // }
+
     return Object.keys(data.categories.categorias).map((key) => {
       return data.categories.categorias[key];
     });

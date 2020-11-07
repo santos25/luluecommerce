@@ -33,8 +33,6 @@ const CollectionPage = ({
   collections,
   match,
   fetchCollections,
-  fetchSuggestedCollections,
-  categories,
 }) => {
   // const [collections, setCollections] = useState([]);
   const classes = useStyles();
@@ -43,13 +41,13 @@ const CollectionPage = ({
   console.log("collection Page");
   useEffect(() => {
     console.log("render new  Collection page");
-    const pickedCategory =
-      categories[Math.floor(Math.random() * categories.length)];
-    const pickedProduct =
-      pickedCategory[Math.floor(Math.random() * pickedCategory.length)];
+    // const pickedCategory =
+    //   categories[Math.floor(Math.random() * categories.length)];
+    // const pickedProduct =
+    //   pickedCategory[Math.floor(Math.random() * pickedCategory.length)];
 
     fetchCollections(tagid, collectionId);
-    fetchSuggestedCollections(tagid, pickedProduct.name);
+    // fetchSuggestedCollections(tagid, pickedProduct.name);
   }, [tagid, collectionId]);
 
   // console.log(collections);
@@ -77,7 +75,7 @@ const CollectionPage = ({
                   key={i}
                   item={item}
                   typeCollection={collections.type}
-                  renderActions={true}
+                  renderActions={false}
                   iconFav={true}
                 />
               </Grid>
@@ -91,14 +89,12 @@ const CollectionPage = ({
 const mapStateToProps = (state, ownProps) => ({
   isLoading: isLoadingCollections(state),
   collections: dataCollectionSelector()(state),
-  categories: categoriesSelector()(state),
+  // categories: categoriesSelector()(state),
 });
 
 const mapDispatchToState = (dispatch) => ({
   fetchCollections: (genre, collectionId) =>
     dispatch(fetchingCollectionsAsync(genre, collectionId)),
-  fetchSuggestedCollections: (genre, collectionId) =>
-    dispatch(fetchingSuggestedCollectionsAsync(genre, collectionId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToState)(CollectionPage);

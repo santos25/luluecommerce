@@ -2,12 +2,19 @@ import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { auth } from "../../FireBase/FireBaseUtil";
 import { connect } from "react-redux";
+
+//selectors
 import { currentUserSelector } from "../../Redux/user/user-selectors";
 import { hiddeCartSelector } from "../../Redux/Cart/cart-selectors";
 
+//react-router
+import { useHistory } from "react-router-dom";
+
+//components
 import CartIconComponent from "../Cart-Icon/car-icon.component";
 import CartDropdown from "../Card-Dropdown/card-dropdown";
 
+//material
 import {
   Search as SearchIcon,
   AccountCircle,
@@ -21,6 +28,7 @@ import {
 } from "@material-ui/icons";
 
 import { fade } from "@material-ui/core/styles";
+
 import {
   AppBar,
   Toolbar,
@@ -37,79 +45,12 @@ import {
   // Box
 } from "@material-ui/core";
 
-// import logo from "./lulu.png";
-const useStyle = makeStyles((theme) => ({
-  grow: {
-    flexGrow: 1,
-    // marginLeft: theme.spacing(7),
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    display: "block",
-
-    [theme.breakpoints.down("sm")]: {
-      display: "block",
-      fontSize: theme.spacing(3.5),
-      color: theme.palette.common.white,
-      textDecoration: "none",
-    },
-  },
-  // search: {
-  //   position: "relative",
-  //   borderRadius: theme.shape.borderRadius,
-  //   backgroundColor: fade(theme.palette.common.white, 0.15),
-  //   "&:hover": {
-  //     backgroundColor: fade(theme.palette.common.white, 0.25),
-  //   },
-  //   marginRight: theme.spacing(2),
-  //   marginLeft: 0,
-  //   width: "100%",
-  //   [theme.breakpoints.up("sm")]: {
-  //     marginLeft: theme.spacing(3),
-  //     width: "auto",
-  //   },
-  // },
-  // searchIcon: {
-  //   padding: theme.spacing(0, 2),
-  //   height: "100%",
-  //   position: "absolute",
-  //   pointerEvents: "none",
-  //   display: "flex",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  // },
-  // inputRoot: {
-  //   color: "inherit",
-  // },
-  // inputInput: {
-  //   padding: theme.spacing(1, 1, 1, 0),
-  //   // vertical padding + font size from searchIcon
-  //   paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-  //   transition: theme.transitions.create("width"),
-  //   width: "100%",
-  //   [theme.breakpoints.up("md")]: {
-  //     width: "20ch",
-  //   },
-  // },
-  sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
-    },
-  },
-  sectionMobile: {
-    display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none",
-    },
-  },
-}));
+import UseStyles from "./Styles";
 
 const Nav = ({ currentUser, hidden }) => {
   // console.log({ currentUser, hidden });
-  const classes = useStyle();
+  const classes = UseStyles();
+  const history = useHistory();
   // const [anchorEl, setAnchorEl] = React.useState(null);
   // const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -211,42 +152,9 @@ const Nav = ({ currentUser, hidden }) => {
           >
             LULU
           </Typography>
-          {/* <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div> */}
+
           <div className={classes.grow} />
-          {/* <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div> */}
+
           <div className={classes.sectionMobile}>
             <IconButton aria-label="show 4 new mails" color="inherit">
               <SearchIcon />
@@ -257,7 +165,11 @@ const Nav = ({ currentUser, hidden }) => {
             <IconButton aria-label="show 4 new mails" color="inherit">
               <FavoriteBorderIcon />
             </IconButton>
-            <IconButton aria-label="show 4 new mails" color="inherit">
+            <IconButton
+              onClick={() => history.push("/checkout")}
+              aria-label="show 4 new mails"
+              color="inherit"
+            >
               <LocalMallIcon />
             </IconButton>
             {/* <IconButton

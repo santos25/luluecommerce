@@ -153,9 +153,10 @@ const ProductDetail = ({
             <span className={classes.bold}> Talla: </span>
           </Typography>
           <Box>
-            <FormControl variant="filled" fullWidth>
+            <FormControl required variant="filled" fullWidth>
               <InputLabel id="select-talla">Selecciona tu talla</InputLabel>
               <Select
+                required
                 labelId="select-talla"
                 id="talla"
                 value={talla}
@@ -182,7 +183,7 @@ const ProductDetail = ({
             color="primary"
             fullWidth
             size="small"
-            onClick={() => addItemsToCart(product)}
+            onClick={() => addItemsToCart({ ...product, selectedTalla: talla })}
           >
             añadir a mi bolsa
           </Button>
