@@ -14,10 +14,10 @@ export const addUniqueitemTocart = (cartitems, newItem) => {
 
 export const clearItemfromCart = (items, itemtoRemove) => {
   if (itemtoRemove.quantity === 1) {
-    return items.filter((item) => item.id !== itemtoRemove.id);
+    return items.filter((item) => item.name !== itemtoRemove.name);
   } else {
     return items.map((item) =>
-      item.id === itemtoRemove.id
+      item.name === itemtoRemove.name
         ? { ...item, quantity: item.quantity - 1 }
         : item
     );

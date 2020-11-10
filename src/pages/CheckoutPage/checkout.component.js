@@ -33,8 +33,16 @@ const CheckOutPage = ({ cartitems = [], totalprice }) => {
               <CheckOutItems key={index} cartItem={item} />
             ))}
           </Grid>
-
-          {/* <div className='total'>TOTAL: ${totalprice}</div> */}
+          <Grid
+            xs={12}
+            component={Box}
+            display="flex"
+            justifyContent="flex-end"
+            mt={2}
+            item
+          >
+            <Typography variant="h6"> TOTAL: ${totalprice}</Typography>
+          </Grid>
         </Grid>
       ) : (
         <Grid component={Box} mt={2} container>

@@ -28,6 +28,8 @@ import {
   FavoriteBorder as FavoriteBorderIcon,
   AddShoppingCart as AddShopIcon,
 } from "@material-ui/icons";
+
+import { Alert } from "@material-ui/lab";
 import {
   makeStyles,
   Box,
@@ -74,6 +76,8 @@ const ProductDetail = ({
   isLoading,
 }) => {
   const [talla, setTalla] = useState("");
+  const [tallaError, setTallaError] = useState(null);
+  const [productAdded, setProductAdded] = useState(null);
 
   const classes = useStyles();
   let match = useRouteMatch();
@@ -119,6 +123,15 @@ const ProductDetail = ({
     return { __html: product.description };
   };
 
+  const addToTheCart = (product) => {
+    if (talla !== "") {
+      addItemsToCart({ ...product, selectedTalla: talla });
+      setTallaError(null);
+      setProductAdded("¡Ya te lo guardamos en tu bolsa!");
+    } else {
+      setTallaError("Ingrese Talla del producto");
+    }
+  };
   return (
     <Grid container>
       <Grid item xs={12} sm={8}>
@@ -172,6 +185,7 @@ const ProductDetail = ({
                 })}
               </Select>
             </FormControl>
+            {tallaError && <Alert severity="error">{tallaError}</Alert>}
           </Box>
         </Box>
       </Grid>
@@ -183,7 +197,7 @@ const ProductDetail = ({
             color="primary"
             fullWidth
             size="small"
-            onClick={() => addItemsToCart({ ...product, selectedTalla: talla })}
+            onClick={() => addToTheCart(product)}
           >
             añadir a mi bolsa
           </Button>
@@ -191,6 +205,7 @@ const ProductDetail = ({
             <FavoriteBorderIcon fontSize="large" />
           </IconButton>
         </Box>
+        {productAdded && <Alert severity="success">{productAdded}</Alert>}
       </Grid>
       <Grid xs={12} item>
         <Box mt={3} p={1}>

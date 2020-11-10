@@ -93,6 +93,8 @@ const App = ({ setCurrentUser, currentUser }) => {
 
   return (
     <div>
+      {/* <MiniDrawer /> */}
+
       <ThemeProvider theme={theme}>
         {currentUser && currentUser.isAdmin ? (
           <MiniDrawer />
@@ -101,7 +103,6 @@ const App = ({ setCurrentUser, currentUser }) => {
             <Nav />
             <Switch>
               <Route exact path="/">
-                {/* <HomePage /> */}
                 <Redirect to="/mujer" />
               </Route>
               <Route

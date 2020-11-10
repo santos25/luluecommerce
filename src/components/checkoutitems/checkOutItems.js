@@ -9,13 +9,16 @@ import {
 import "./checkout-item.styles.css";
 
 import {
-  Avatar,
+  Box,
+  // Avatar,
   Button,
   ButtonBase,
   Grid,
+  IconButton,
   Paper,
   Typography,
 } from "@material-ui/core";
+import { Add as AddIcon, Remove as RemoveIcon } from "@material-ui/icons";
 import UseStyles from "./Styles";
 
 const CheckOutItems = ({ cartItem, removeItem, addItem, clearItem }) => {
@@ -28,7 +31,7 @@ const CheckOutItems = ({ cartItem, removeItem, addItem, clearItem }) => {
     quantity,
     selectedTalla,
   } = cartItem;
-  console.log(cartItem);
+  // console.log(cartItem);
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -64,9 +67,28 @@ const CheckOutItems = ({ cartItem, removeItem, addItem, clearItem }) => {
                     <Typography variant="subtitle1">{current.text}</Typography>
                   </Grid>
                 </Grid>
-                <Typography variant="body2" color="textSecondary">
-                  {`Cantidad: ${quantity}`}
-                </Typography>
+                <Box display="flex" alignItems="center" justify="center">
+                  <Typography variant="subtitle1" color="textSecondary">
+                    {`Cantidad:`}
+                  </Typography>
+                  <Box display="flex" alignItems="center" justify="center">
+                    <IconButton
+                      aria-label="Eliminar"
+                      onClick={() => removeItem(cartItem)}
+                      color="primary"
+                    >
+                      <RemoveIcon fontSize="small" />
+                    </IconButton>
+                    <Typography variant="body1">{quantity}</Typography>
+                    <IconButton
+                      aria-label="Agregar"
+                      onClick={() => addItem(cartItem)}
+                      color="primary"
+                    >
+                      <AddIcon fontSize="small" />
+                    </IconButton>
+                  </Box>
+                </Box>
               </Grid>
               <Grid item>
                 <Button
@@ -93,11 +115,11 @@ const CheckOutItems = ({ cartItem, removeItem, addItem, clearItem }) => {
     //   </div>
     //   <span className="name">{name}</span>
     //   <span className="quantity">
-    //     <div className="arrow" onClick={() => removeItem(cartItem)}>
+    //     <div className="arrow">
     //       &#10094;
     //     </div>
     //     <span className="value">{quantity}</span>
-    //     <div className="arrow" onClick={() => addItem(cartItem)}>
+    //     <div className="arrow" >
     //       &#10095;
     //     </div>
     //   </span>

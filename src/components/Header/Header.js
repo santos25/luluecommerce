@@ -30,7 +30,7 @@ const Header = ({ image }) => {
       <Slider {...settings}>
         <div
           className={classes.header}
-          onClick={() => history.push(`/${match.url}/${image.link}`)}
+          onClick={() => history.push(`${match.url}/${image.link}`)}
         >
           <img src={image.image} alt="" />
         </div>
