@@ -22,20 +22,22 @@ const useStyles = makeStyles((theme) => ({
 
 const Drawer = ({ anchor, toggleDrawer, categories }) => {
   const [currentPage, setCurrentPage] = useState(0);
-  const [collections, setcollections] = useState([0]);
+  const [collections, setcollections] = useState([]);
 
   console.log(categories);
   const classes = useStyles();
 
-  const getCollections = (index) => {
-    console.log(index);
+  const getCollections = (key) => {
+    console.log(key);
+    setcollections(categories[key]);
+    setCurrentPage(1);
   };
   const renderPages = () => {
     switch (currentPage) {
       case 0:
         return (
           <DrawerCategory
-            setCurrentPage={setCurrentPage}
+            categories={categories}
             getCollections={getCollections}
           />
         );

@@ -26,12 +26,7 @@ const CollectionOverviewWitSpinner = WithSpinner(CollectionOverview);
 const CollectionPageWitSpinner = WithSpinner(CollectionPage);
 const ProductDetailWitSpinner = WithSpinner(ProductDetail);
 
-const ShopPage = ({
-  isLoading,
-  fetchCollectionsOverView,
-  fetchSuggestedCollections,
-  categories,
-}) => {
+const ShopPage = ({ isLoading, fetchCollectionsOverView }) => {
   let match = useRouteMatch();
   let { tagid } = match.params;
 

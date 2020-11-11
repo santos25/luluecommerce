@@ -16,9 +16,12 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(10),
     height: theme.spacing(10),
   },
+  title: {
+    textTransform: "uppercase",
+  },
 }));
 
-const DrawerCategory = ({ getCollections }) => {
+const DrawerCategory = ({ categories, getCollections }) => {
   const classes = useStyles();
 
   return (
@@ -27,47 +30,33 @@ const DrawerCategory = ({ getCollections }) => {
         <Typography variant="h6">MUJER</Typography>
       </Box>
       <List>
-        <ListItem onClick={() => getCollections(0)} button alignItems="center">
-          <ListItemAvatar>
-            <Avatar
-              alt="ropa"
-              variant="rounded"
-              className={classes.large}
-              src="https://images.unsplash.com/photo-1572804013427-4d7ca7268217?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=401&q=80"
-            />
-          </ListItemAvatar>
-          <Box display="flex" width="100%" justifyContent="center">
-            <Typography variant="body1">ROPA</Typography>
-          </Box>
-        </ListItem>
-        <Divider />
-        <ListItem button alignItems="center">
-          <ListItemAvatar>
-            <Avatar
-              alt="zapatos"
-              variant="rounded"
-              className={classes.large}
-              src="https://images.unsplash.com/photo-1559504344-33abd17324d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
-            />
-          </ListItemAvatar>
-          <Box display="flex" width="100%" justifyContent="center">
-            <Typography variant="body1">ZAPATOS</Typography>
-          </Box>
-        </ListItem>
-        <Divider />
-        <ListItem button alignItems="center">
-          <ListItemAvatar>
-            <Avatar
-              alt="accesorios"
-              variant="rounded"
-              className={classes.large}
-              src="https://images.unsplash.com/photo-1575201647632-45fae95c9ce4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=733&q=80"
-            />
-          </ListItemAvatar>
-          <Box display="flex" width="100%" justifyContent="center">
-            <Typography variant="body1">ACCESORIOS</Typography>
-          </Box>
-        </ListItem>
+        {Object.keys(categories).map((key) => {
+          return (
+            <>
+              <ListItem
+                onClick={() => getCollections(key)}
+                button
+                alignItems="center"
+              >
+                <ListItemAvatar>
+                  <Avatar
+                    alt="ropa"
+                    variant="rounded"
+                    className={classes.large}
+                    src={`http://${categories[key][0].image}`}
+                    // "https://images.unsplash.com/photo-1572804013427-4d7ca7268217?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=401&q=80"
+                  />
+                </ListItemAvatar>
+                <Box display="flex" width="100%" justifyContent="center">
+                  <Typography className={classes.title} variant="body1">
+                    {key}
+                  </Typography>
+                </Box>
+              </ListItem>
+              <Divider />
+            </>
+          );
+        })}
       </List>
     </>
   );

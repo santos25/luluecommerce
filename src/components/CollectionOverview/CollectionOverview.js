@@ -43,8 +43,9 @@ const CollectionOverview = ({
   isLoading,
 }) => {
   useEffect(() => {
-    const pickedCategory =
-      categories[Math.floor(Math.random() * categories.length)];
+    const pickedCategory = Object.keys(categories).map(
+      (key) => categories[key]
+    )[Math.floor(Math.random() * Object.keys(categories).length)];
     const pickedProduct =
       pickedCategory[Math.floor(Math.random() * pickedCategory.length)];
 

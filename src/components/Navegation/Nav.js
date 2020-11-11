@@ -66,6 +66,7 @@ const Nav = ({ currentUser, hidden }) => {
     setDrawerState({ ...drawerState, [anchor]: open });
   };
 
+  console.log("navigationg");
   return (
     <div className={classes.grow}>
       <AppBar position="fixed" color="primary">

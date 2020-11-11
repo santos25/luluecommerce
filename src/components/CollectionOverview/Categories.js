@@ -46,39 +46,41 @@ const Categories = ({ categories }) => {
           {/* <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
             <ListSubheader component="div">December</ListSubheader>
           </GridListTile> */}
-          {categories.map((category) => {
-            return category.map((item) => (
-              <GridListTile
-                key={item.name}
-                rows={1.5}
-                onClick={() =>
-                  history.push(`${match.url}/${encodeURI(item.name)}`)
-                }
-              >
-                <img
-                  className={classes.imageList}
-                  src={`http://${item.image}`}
-                  alt=""
-                />
-                <GridListTileBar
-                  classes={{
-                    root: classes.titleBar,
-                    title: classes.title,
-                  }}
-                  title={item.name}
-                  // subtitle={<span>by: {tile.author}</span>}
-                  // actionIcon={
-                  //   <IconButton
-                  //     aria-label={`info about ${tile.title}`}
-                  //     className={classes.icon}
-                  //   >
-                  //     <InfoIcon />
-                  //   </IconButton>
-                  // }
-                />
-              </GridListTile>
-            ));
-          })}
+          {Object.keys(categories)
+            .map((key) => categories[key])
+            .map((category) => {
+              return category.map((item) => (
+                <GridListTile
+                  key={item.name}
+                  rows={1.5}
+                  onClick={() =>
+                    history.push(`${match.url}/${encodeURI(item.name)}`)
+                  }
+                >
+                  <img
+                    className={classes.imageList}
+                    src={`http://${item.image}`}
+                    alt=""
+                  />
+                  <GridListTileBar
+                    classes={{
+                      root: classes.titleBar,
+                      title: classes.title,
+                    }}
+                    title={item.name}
+                    // subtitle={<span>by: {tile.author}</span>}
+                    // actionIcon={
+                    //   <IconButton
+                    //     aria-label={`info about ${tile.title}`}
+                    //     className={classes.icon}
+                    //   >
+                    //     <InfoIcon />
+                    //   </IconButton>
+                    // }
+                  />
+                </GridListTile>
+              ));
+            })}
         </GridList>
       </div>
     </>

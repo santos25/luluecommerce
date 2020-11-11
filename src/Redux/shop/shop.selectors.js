@@ -10,11 +10,11 @@ export const landscapeImageSelector = () =>
 
 export const categoriesSelector = () =>
   createSelector([data], (data) => {
-    console.log(data.categories.categorias);
-
-    return Object.keys(data.categories.categorias).map((key) => {
-      return data.categories.categorias[key];
-    });
+    // console.log(data.categories.categorias);
+    return data.categories.categorias;
+    // return Object.keys(data.categories.categorias).map((key) => {
+    //   return data.categories.categorias[key];
+    // });
   });
 
 export const dataCollectionSelector = () =>

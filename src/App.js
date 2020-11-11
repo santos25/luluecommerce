@@ -93,9 +93,9 @@ const App = ({ setCurrentUser, currentUser }) => {
 
   return (
     <div>
-      <MiniDrawer />
+      {/* <MiniDrawer /> */}
 
-      {/* <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
         {currentUser && currentUser.isAdmin ? (
           <MiniDrawer />
         ) : (
@@ -127,7 +127,7 @@ const App = ({ setCurrentUser, currentUser }) => {
             <Footer />
           </Router>
         )}
-      </ThemeProvider> */}
+      </ThemeProvider>
     </div>
   );
 };
