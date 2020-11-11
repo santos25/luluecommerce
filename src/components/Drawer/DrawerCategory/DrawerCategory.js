@@ -34,6 +34,7 @@ const DrawerCategory = ({ categories, getCollections }) => {
           return (
             <>
               <ListItem
+                key={key}
                 onClick={() => getCollections(key)}
                 button
                 alignItems="center"

@@ -55,6 +55,7 @@ const Nav = ({ currentUser, hidden }) => {
   const history = useHistory();
 
   const toggleDrawer = (anchor, open) => (event) => {
+    console.log("toggleDrawer");
     if (
       event &&
       event.type === "keydown" &&
