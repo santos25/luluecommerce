@@ -78,8 +78,6 @@ const ShopPage = ({ isLoading, fetchCollectionsOverView }) => {
 const mapDispatchToState = (dispatch) => ({
   fetchCollectionsOverView: (genre) =>
     dispatch(fetchingCollectionsOverViewAsync(genre)),
-  fetchSuggestedCollections: (genre, collectionId) =>
-    dispatch(fetchingSuggestedCollectionsAsync(genre, collectionId)),
 });
 
 const mapStateToProps = (state) => ({

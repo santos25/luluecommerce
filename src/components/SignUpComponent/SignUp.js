@@ -1,163 +1,251 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 // import FirmInput from '../FormInput/InputField';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from "react-router-dom";
 
 // import Button from '../Button/Button';
-import { auth, createDocumentUserDb } from '../../FireBase/FireBaseUtil';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { auth, createDocumentUserDb } from "../../FireBase/FireBaseUtil";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+
+import { signInWithGoogle } from "../../FireBase/FireBaseUtil";
 
 import {
-    makeStyles,
-    Container,
-    CssBaseline,
-    Avatar,
-    Typography,
-    TextField,
-    FormControlLabel,
-    Checkbox,
-    Button,
-    Link,
-    Grid
-} from '@material-ui/core';
+  makeStyles,
+  Container,
+  CssBaseline,
+  Avatar,
+  Typography,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Button,
+  Link,
+  Grid,
+  Box,
+  FormControl,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  bold: {
+    fontWeight: "bold",
+  },
 }));
 
-
 const SignUp = (props) => {
+  const classes = useStyles();
 
-    const classes = useStyles();
+  const [userRegister, setUserRegister] = useState({
+    name: "",
+    email: "",
+    password: "",
+    lastname: "",
+  });
 
-    const [userRegister, setUserRegister] = useState({ displayName: '', email: '', password: '', repassword: '' })
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    password: "",
+    lastname: "",
+  });
 
-    const handleInputs = (e) => {
-        const { name, value } = e.target;
-
-        setUserRegister({ ...userRegister, [name]: value });
+  const validInput = (name, value) => {
+    if (name === "email") {
+      return value === ""
+        ? { valid: false, message: "Email Requerido!" }
+        : { valid: true, message: "" };
+    }
+    if (name === "name") {
+      return value === ""
+        ? { valid: false, message: "Nombre Requerido!" }
+        : { valid: true, message: "" };
+    }
+    if (name === "password") {
+      return value === ""
+        ? { valid: false, message: "Contraseña Requerida!" }
+        : { valid: true, message: "" };
     }
 
-    const handleSignIn = async (e) => {
-        e.preventDefault();
+    return true;
+  };
 
-        if (userRegister.password === userRegister.repassword) {
-            const { email, password, displayName } = userRegister;
-            const { user } = await auth.createUserWithEmailAndPassword(email, password);
-            createDocumentUserDb(user, { displayName ,  isAdmin : true , tienda: 'Lulu' })
-        } else {
-            alert("Contraseñas no Coinciden");
-        }
+  const validateForm = () => {
+    let nameMsj,
+      emailMsj,
+      passwordMsj = "";
+
+    if (!userRegister.name) {
+      nameMsj = "Nombre Requerido";
+    }
+    if (!userRegister.email) {
+      emailMsj = "Email Requerido";
+    }
+    if (!userRegister.password) {
+      passwordMsj = "Contraseña Requerida";
     }
 
-    return (
+    if (nameMsj || emailMsj || passwordMsj) {
+      setErrors({ name: nameMsj, email: emailMsj, password: passwordMsj });
+      return false;
+    }
+    return true;
+  };
 
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Registro
-                </Typography>
-                <form className={classes.form} noValidate>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                onChange={handleInputs}
-                                autoComplete="fname"
-                                name="displayName"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="displayName"
-                                label="Nombre"
-                                autoFocus
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                onChange={handleInputs}
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                onChange={handleInputs}
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                onChange={handleInputs}
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="repassword"
-                                label="Re-Password"
-                                type="password"
-                                id="repassword"
-                                autoComplete="current-password"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                label="I want to receive inspiration, marketing promotions and updates via email."
-                            />
-                        </Grid>
-                    </Grid>
-                    <Button
-                        onClick={handleSignIn}
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Registrar
+  const handleInputs = (e) => {
+    const { name, value } = e.target;
+    const statusInput = validInput(name, value);
+    if (statusInput.valid) {
+      setUserRegister({ ...userRegister, [name]: value });
+      setErrors({ ...errors, [name]: statusInput.message });
+    } else {
+      setUserRegister({ ...userRegister, [name]: "" });
+      setErrors({ ...errors, [name]: statusInput.message });
+    }
+  };
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      console.log("register user", validateForm());
+    }
+    //   const { user } = await auth.createUserWithEmailAndPassword(
+    //     email,
+    //     password
+    //   );
+
+    //   createDocumentUserDb(user, {
+    //     displayName,
+    //     isAdmin: true,
+    //     tienda: "Lulu",
+    //   });
+  };
+
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Grid container>
+        <Grid xs={12} component={Box} py={1} item>
+          <Typography className={classes.bold} align="center" variant="body1">
+            REGISTRATE CON...
+          </Typography>
+        </Grid>
+        <Grid xs={12} item>
+          <Button
+            startIcon={<i className="fab fa-google"></i>}
+            fullWidth
+            variant="outlined"
+            color="primary"
+            onClick={signInWithGoogle}
+          >
+            Google
           </Button>
-                    <Grid container justify="flex-end">
-                        <Grid item>
-                            <Link component={RouterLink} to="/signin" variant="body2">
-                                Ya tienes una cuenta? Inicia sesion.
-              </Link>
-                        </Grid>
-                    </Grid>
-                </form>
-            </div>
-        </Container>
+        </Grid>
+        <Grid xs={12} component={Box} mt={1} item>
+          <Typography variant="caption" gutterBottom>
+            Iniciar sesión con tu perfil social es muy rápido. No tendrás que
+            recordar más contraseñas, tu memoria no te fallará. No te preocupes,
+            nunca compartiremos tus datos ni publicaremos nada en tu nombre
+          </Typography>
+        </Grid>
 
-    );
-}
+        <Grid xs={12} item>
+          <Box mt={3}>
+            <Typography className={classes.bold} align="center" variant="body1">
+              REGÍSTRATE USANDO TU DIRECCIÓN DE EMAIL
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid xs={12} component={Box} item>
+          <form className={classes.form}>
+            <FormControl>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    onChange={handleInputs}
+                    variant="outlined"
+                    required
+                    error={errors.email ? true : false}
+                    helperText={errors.email ? errors.email : null}
+                    fullWidth
+                    id="email"
+                    label="Email"
+                    name="email"
+                    autoComplete="email"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    onChange={handleInputs}
+                    autoComplete="name"
+                    name="name"
+                    variant="outlined"
+                    error={errors.name ? true : false}
+                    helperText={errors.name ? errors.name : null}
+                    required
+                    fullWidth
+                    id="name"
+                    label="Nombre"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    onChange={handleInputs}
+                    autoComplete="lastName"
+                    name="lastName"
+                    variant="outlined"
+                    fullWidth
+                    id="lastName"
+                    label="Appelidos"
+                  />
+                </Grid>
 
+                <Grid item xs={12}>
+                  <TextField
+                    onChange={handleInputs}
+                    variant="outlined"
+                    required
+                    error={errors.password ? true : false}
+                    helperText={errors.password ? errors.password : null}
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                  />
+                </Grid>
+              </Grid>
+            </FormControl>
+            <Button
+              onClick={handleSignIn}
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Unete a Lulu
+            </Button>
+          </form>
+        </Grid>
+      </Grid>
+    </Container>
+  );
+};
 
 export default SignUp;

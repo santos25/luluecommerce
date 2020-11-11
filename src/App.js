@@ -16,10 +16,11 @@ import MiniDrawer from "./components/Admin-components/mini-drawer/MiniDrawer";
 // import ListPrendas from './components/Admin-components/prendas/ListPrendas'
 import Nav from "./components/Navegation/Nav";
 // import NavAdmin from './components/Admin-components/NavAdmin/NavAdmin.component';
-import HomePage from "./pages/homepage/HomePage";
+// import HomePage from "./pages/homepage/HomePage";
 import ShopPage from "./pages/ShopPage/ShopPage";
 import CheckoutPage from "./pages/CheckoutPage/checkout.component";
 import SignInComponent from "./components/SignInComponent/SignInComponent";
+import SignInAndUpPage from "./pages/SignInAndUpPage/SignInAndUpPage";
 import SignUp from "./components/SignUpComponent/SignUp";
 import Footer from "./components/Footer/Footer";
 
@@ -107,6 +108,13 @@ const App = ({ setCurrentUser, currentUser }) => {
               </Route>
               <Route
                 exact
+                path="/identity"
+                render={() =>
+                  currentUser ? <Redirect to="/" /> : <SignInAndUpPage />
+                }
+              />
+              {/* <Route
+                exact
                 path="/signin"
                 render={() =>
                   currentUser ? <Redirect to="/" /> : <SignInComponent />
@@ -116,7 +124,7 @@ const App = ({ setCurrentUser, currentUser }) => {
                 exact
                 path="/signup"
                 render={() => (currentUser ? <Redirect to="/" /> : <SignUp />)}
-              />
+              /> */}
               <Route exact path="/checkout">
                 <CheckoutPage />
               </Route>

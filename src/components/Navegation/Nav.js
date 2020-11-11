@@ -67,7 +67,6 @@ const Nav = ({ currentUser, hidden }) => {
     setDrawerState({ ...drawerState, [anchor]: open });
   };
 
-  console.log("navigationg");
   return (
     <div className={classes.grow}>
       <AppBar position="fixed" color="primary">
@@ -105,7 +104,11 @@ const Nav = ({ currentUser, hidden }) => {
             <IconButton aria-label="show 4 new mails" color="inherit">
               <SearchIcon />
             </IconButton>
-            <IconButton aria-label="show 4 new mails" color="inherit">
+            <IconButton
+              onClick={() => history.push("/identity")}
+              aria-label="show 4 new mails"
+              color="inherit"
+            >
               <PersonIcon />
             </IconButton>
             <IconButton aria-label="show 4 new mails" color="inherit">
