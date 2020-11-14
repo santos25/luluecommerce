@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
+
 import { auth } from "../../FireBase/FireBaseUtil";
+
 import { connect } from "react-redux";
 
 //selectors
@@ -111,7 +113,11 @@ const Nav = ({ currentUser, hidden }) => {
             >
               <PersonIcon />
             </IconButton>
-            <IconButton aria-label="show 4 new mails" color="inherit">
+            <IconButton
+              aria-label="show 4 new mails"
+              color="inherit"
+              onClick={() => history.push("/saved-lists")}
+            >
               <FavoriteBorderIcon />
             </IconButton>
             <CartIconComponent />

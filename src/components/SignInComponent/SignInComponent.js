@@ -1,23 +1,19 @@
 import React, { useState } from "react";
-// import InputField from '../FormInput/InputField';
+
 import { Link as RouterLink } from "react-router-dom";
 
-// import Button from '../Button/Button';
 import { signInWithGoogle, auth } from "../../FireBase/FireBaseUtil";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+
 import {
   makeStyles,
   Container,
   CssBaseline,
-  Avatar,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Button,
-  Link,
   Grid,
   Box,
   Typography,
+  CircularProgress,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SignInComponent = (props) => {
   const classes = useStyles();
-
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
 
@@ -52,7 +48,7 @@ const SignInComponent = (props) => {
         : { valid: true, message: "" };
     }
 
-    return true;
+    return { valid: true, message: "" };
   };
 
   const handleInputs = (e) => {
@@ -89,12 +85,15 @@ const SignInComponent = (props) => {
 
   const handleSignIn = (e) => {
     e.preventDefault();
-
+    setLoading(true);
     if (validateForm()) {
       console.log("register user", validateForm());
+      auth.signInWithEmailAndPassword(user.email, user.password);
+      setUser({ username: "", password: "" });
+      setLoading(false);
+    } else {
+      setLoading(false);
     }
-    // auth.signInWithEmailAndPassword(user.email, user.password);
-    // setUser({ username: "", password: "" });
   };
 
   return (
@@ -139,6 +138,7 @@ const SignInComponent = (props) => {
                 />
               </Grid>
             </Grid>
+            <Box mt={1}>{loading ? <CircularProgress /> : null}</Box>
             <Button
               onClick={handleSignIn}
               fullWidth

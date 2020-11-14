@@ -1,17 +1,8 @@
 import React from "react";
 
-import {
-  Facebook as FacebookIcon,
-  Instagram as InstagramIcon,
-} from "@material-ui/icons";
+import FollowIcons from "./FollowIcons";
 
-import {
-  Container,
-  makeStyles,
-  TextField,
-  Typography,
-  Box,
-} from "@material-ui/core";
+import { makeStyles, Typography, Box } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -21,32 +12,14 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(5),
     height: "auto",
   },
-  title: {
-    fontWeight: "bold",
-  },
 }));
+
 const Footer = () => {
   const classes = useStyles();
   return (
     <footer className={classes.footer}>
       {/* <Container maxWidth="md" className={classes.footer}> */}
-      <Box borderTop={1} borderColor="grey.500" p={1}>
-        <Typography className={classes.title} variant="subtitle2">
-          Síguenos en
-        </Typography>
-        <Box display="flex" justifyContent="center" alignItems="center" mt={1}>
-          <Box mr={3}>
-            <a href="#">
-              <FacebookIcon color="primary" style={{ fontSize: 30 }} />
-            </a>
-          </Box>
-          <Box>
-            <a href="#">
-              <InstagramIcon color="primary" style={{ fontSize: 30 }} />
-            </a>
-          </Box>
-        </Box>
-      </Box>
+      <FollowIcons />
       <Box
         borderTop={1}
         borderColor="grey.500"

@@ -4,7 +4,6 @@ import { Link as RouterLink } from "react-router-dom";
 
 // import Button from '../Button/Button';
 import { auth, createDocumentUserDb } from "../../FireBase/FireBaseUtil";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 import { signInWithGoogle } from "../../FireBase/FireBaseUtil";
 
@@ -12,17 +11,16 @@ import {
   makeStyles,
   Container,
   CssBaseline,
-  Avatar,
   Typography,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Button,
-  Link,
   Grid,
+  CircularProgress,
   Box,
   FormControl,
 } from "@material-ui/core";
+
+import { Alert, AlertTitle } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -57,6 +55,8 @@ const SignUp = (props) => {
     lastname: "",
   });
 
+  const [errorFirebase, setErrorFirebase] = useState("");
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({
     name: "",
     email: "",
@@ -81,7 +81,7 @@ const SignUp = (props) => {
         : { valid: true, message: "" };
     }
 
-    return true;
+    return { valid: true, message: "" };
   };
 
   const validateForm = () => {
@@ -109,6 +109,7 @@ const SignUp = (props) => {
   const handleInputs = (e) => {
     const { name, value } = e.target;
     const statusInput = validInput(name, value);
+    console.log(name, " ", value);
     if (statusInput.valid) {
       setUserRegister({ ...userRegister, [name]: value });
       setErrors({ ...errors, [name]: statusInput.message });
@@ -120,20 +121,29 @@ const SignUp = (props) => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     if (validateForm()) {
       console.log("register user", validateForm());
-    }
-    //   const { user } = await auth.createUserWithEmailAndPassword(
-    //     email,
-    //     password
-    //   );
+      try {
+        const { user } = await auth.createUserWithEmailAndPassword(
+          userRegister.email,
+          userRegister.password
+        );
 
-    //   createDocumentUserDb(user, {
-    //     displayName,
-    //     isAdmin: true,
-    //     tienda: "Lulu",
-    //   });
+        createDocumentUserDb(user, {
+          name: userRegister.name,
+          lastName: userRegister.lastname,
+          // isAdmin: true,
+        });
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setErrorFirebase("Debe tener minimo 6 caracteres la contraseña");
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
+    }
   };
 
   return (
@@ -206,12 +216,12 @@ const SignUp = (props) => {
                 <Grid item xs={12}>
                   <TextField
                     onChange={handleInputs}
-                    autoComplete="lastName"
-                    name="lastName"
+                    autoComplete="lastname"
+                    name="lastname"
                     variant="outlined"
                     fullWidth
-                    id="lastName"
-                    label="Appelidos"
+                    id="lastname"
+                    label="Apellidos"
                   />
                 </Grid>
 
@@ -232,6 +242,14 @@ const SignUp = (props) => {
                 </Grid>
               </Grid>
             </FormControl>
+
+            {errorFirebase && (
+              <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                {errorFirebase}
+              </Alert>
+            )}
+            <Box mt={1}>{loading ? <CircularProgress /> : null}</Box>
             <Button
               onClick={handleSignIn}
               fullWidth

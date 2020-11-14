@@ -12,17 +12,14 @@ import { ThemeProvider, createMuiTheme } from "@material-ui/core";
 
 //components
 import MiniDrawer from "./components/Admin-components/mini-drawer/MiniDrawer";
-// import ProductHome from './components/Admin-components/products/ProductHomePage.component'
-// import ListPrendas from './components/Admin-components/prendas/ListPrendas'
+
 import Nav from "./components/Navegation/Nav";
-// import NavAdmin from './components/Admin-components/NavAdmin/NavAdmin.component';
 // import HomePage from "./pages/homepage/HomePage";
 import ShopPage from "./pages/ShopPage/ShopPage";
 import CheckoutPage from "./pages/CheckoutPage/checkout.component";
-import SignInComponent from "./components/SignInComponent/SignInComponent";
 import SignInAndUpPage from "./pages/SignInAndUpPage/SignInAndUpPage";
-import SignUp from "./components/SignUpComponent/SignUp";
 import Footer from "./components/Footer/Footer";
+import SavedList from "./pages/savedList/SavedList";
 
 //react-router
 import {
@@ -56,7 +53,6 @@ const App = ({ setCurrentUser, currentUser }) => {
         const userRef = createDocumentUserDb(user);
         const currentUserRef = await userRef;
         currentUserRef.onSnapshot((docSnapshot) => {
-          // console.log(docSnapshot);
           setCurrentUser({
             id: docSnapshot.id,
             ...docSnapshot.data(),
@@ -110,9 +106,18 @@ const App = ({ setCurrentUser, currentUser }) => {
                 exact
                 path="/identity"
                 render={() =>
-                  currentUser ? <Redirect to="/" /> : <SignInAndUpPage />
+                  currentUser ? <Redirect to="/mujer" /> : <SignInAndUpPage />
                 }
               />
+              <Route
+                exact
+                path="/saved-lists"
+                // render={() =>
+                //   currentUser ? <Redirect to="/mujer" /> : <SignInAndUpPage />
+                // }
+              >
+                <SavedList />
+              </Route>
               {/* <Route
                 exact
                 path="/signin"

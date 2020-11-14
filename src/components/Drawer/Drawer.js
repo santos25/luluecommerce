@@ -52,6 +52,8 @@ const Drawer = ({ anchor, toggleDrawer, categories }) => {
       case 0:
         return (
           <DrawerCategory
+            anchor={anchor}
+            toggleDrawer={toggleDrawer}
             categories={categories}
             getCollections={getCollections}
           />

@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+
+import clsx from "clsx";
+
+//components
 import SignInComponent from "../../components/SignInComponent/SignInComponent";
 import SignUp from "../../components/SignUpComponent/SignUp";
 
@@ -21,11 +25,12 @@ const useStyles = makeStyles((theme) => ({
   background: {
     backgroundColor: "#eee",
   },
-  tab: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    //   backgroundColor: theme.palette.common.white,
-    //   color: theme.palette.common.black,
+  tabs: {
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.common.black,
+  },
+  indicatorColor: {
+    color: theme.palette.common.black,
   },
   root: {
     flexGrow: 1,
@@ -82,7 +87,7 @@ const SignInAndUpPage = () => {
         <div className={classes.root}>
           <AppBar position="static">
             <Tabs
-              //   className={classes.tab}
+              // className={clsx(classes.tabs, classes.indicatorColor)}
               value={value}
               onChange={handleChange}
               aria-label="identity"
@@ -91,12 +96,11 @@ const SignInAndUpPage = () => {
                 value="register"
                 label="¿ES TU PRIMERA VEZ EN LULU?"
                 wrapped
-                // className={classes.tab}
                 {...a11yProps("register")}
               />
               <Tab
-                // className={classes.tab}
                 value="login"
+                wrapped
                 label="¿YA TE HAS REGISTRADO?"
                 {...a11yProps("login")}
               />
