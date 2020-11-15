@@ -4,7 +4,7 @@ const selectSaved = (state) => state.savedList;
 
 export const savedListSelector = createSelector(
   [selectSaved],
-  (saveList) => saveList.savedListItems
+  (saveList) => saveList.savedItems
 );
 
 // export const itemTotaValueSelector = createSelector([selectCart], (cart) =>

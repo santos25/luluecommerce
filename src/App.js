@@ -109,27 +109,9 @@ const App = ({ setCurrentUser, currentUser }) => {
                   currentUser ? <Redirect to="/mujer" /> : <SignInAndUpPage />
                 }
               />
-              <Route
-                exact
-                path="/saved-lists"
-                // render={() =>
-                //   currentUser ? <Redirect to="/mujer" /> : <SignInAndUpPage />
-                // }
-              >
+              <Route exact path="/saved-lists">
                 <SavedList />
               </Route>
-              {/* <Route
-                exact
-                path="/signin"
-                render={() =>
-                  currentUser ? <Redirect to="/" /> : <SignInComponent />
-                }
-              />
-              <Route
-                exact
-                path="/signup"
-                render={() => (currentUser ? <Redirect to="/" /> : <SignUp />)}
-              /> */}
               <Route exact path="/checkout">
                 <CheckoutPage />
               </Route>

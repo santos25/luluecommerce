@@ -7,6 +7,7 @@ export const toggleSavedList = () => {
 };
 
 export const addItemsToSavedList = (item) => {
+  console.log(item);
   return {
     type: SavedType.ADDITEMS_TO_SAVED_LIST,
     payload: item,

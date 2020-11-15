@@ -13,7 +13,7 @@ export default makeStyles((theme) => ({
 
     [theme.breakpoints.down("sm")]: {
       display: "block",
-      fontSize: theme.spacing(3.5),
+      fontSize: theme.spacing(3),
       color: theme.palette.common.white,
       textDecoration: "none",
     },

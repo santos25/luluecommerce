@@ -1,9 +1,9 @@
 import SavedType from "./saved.types";
-// import { addUniqueitemTocart, clearItemfromCart } from "./car-utils";
+import { addUniqueitemToList } from "./saved-utils";
 
 const INITIAL_SATE = {
   hidden: true,
-  savedListItems: [],
+  savedItems: [],
 };
 
 const SavedReducer = (state = INITIAL_SATE, action) => {
@@ -17,12 +17,12 @@ const SavedReducer = (state = INITIAL_SATE, action) => {
       return {
         ...state,
         // cartitems: addUniqueitemTocart(state.cartitems, action.payload),
-        cartitems: action.payload,
+        savedItems: addUniqueitemToList(state.savedItems, action.payload),
       };
     case SavedType.REMOVE_ITEM:
       return {
         ...state,
-        savedListItems: action.payload,
+        savedItems: action.payload,
 
         // cartitems: clearItemfromCart(state.cartitems, action.payload),
       };

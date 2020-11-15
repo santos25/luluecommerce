@@ -60,7 +60,7 @@ const CardImages = ({
 
   const { tagid } = match.params;
 
-  const { vertical, horizontal, open } = state;
+  const { open } = state;
 
   const handleClick = () => () => {
     setState({ open: true });
@@ -71,6 +71,7 @@ const CardImages = ({
   };
 
   const AddSavedList = (item) => {
+    console.log(item);
     additemToSavedList(item);
     handleClick();
   };
@@ -107,8 +108,8 @@ const CardImages = ({
                   <IconButton
                     // edge="start"
                     color="inherit"
-                    aria-label="wish list"
-                    onClick={(item) => AddSavedList(item)}
+                    aria-label="save list"
+                    onClick={() => AddSavedList(item)}
                   >
                     <FavoriteBorder className={classes.icon} />
                   </IconButton>
@@ -153,7 +154,9 @@ const mapDispatchToState = (dispatch) => ({
   addItemsToCart: (item) => {
     dispatch(addItemsToCart(item));
   },
-  additemToSavedList: (item) => dispatch(addItemsToSavedList(item)),
+  additemToSavedList: (item) => {
+    dispatch(addItemsToSavedList(item));
+  },
 });
 
 export default connect(null, mapDispatchToState)(CardImages);
