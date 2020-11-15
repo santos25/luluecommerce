@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/luluecommerce/precache-manifest.a81e9adc1d11553e49e301ceaf4d21f3.js"
+  "/luluecommerce/precache-manifest.1aee633b3a34788012386a9d3c4df603.js"
 );
 
 self.addEventListener('message', (event) => {
