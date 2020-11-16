@@ -4,7 +4,10 @@ import { auth, createDocumentUserDb } from "./FireBase/FireBaseUtil";
 
 //redux
 import { connect } from "react-redux";
+//actions
 import { setCurrentUser } from "./Redux/user/user.actions";
+import { fetchingCollectionsOverViewAsync } from "./Redux/shop/shop.actions";
+//selectors
 import { currentUserSelector } from "./Redux/user/user-selectors";
 
 //Material UI
@@ -43,10 +46,14 @@ const theme = createMuiTheme({
   },
 });
 
-const App = ({ setCurrentUser, currentUser }) => {
+const App = ({ setCurrentUser, currentUser, fetchCollectionsOverView }) => {
+  useEffect(() => {
+    fetchCollectionsOverView("mujer");
+  }, [fetchCollectionsOverView]);
+
   useEffect(() => {
     // const { setCurrentUser } = props;
-    console.log("APP home");
+    console.log("UseEffect User");
 
     auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -135,5 +142,7 @@ const mapDispatchToState = (dispatch) => ({
   setCurrentUser: (user) => {
     dispatch(setCurrentUser(user));
   },
+  fetchCollectionsOverView: (genre) =>
+    dispatch(fetchingCollectionsOverViewAsync(genre)),
 });
 export default connect(mapSateToProps, mapDispatchToState)(App);

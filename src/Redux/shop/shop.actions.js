@@ -63,8 +63,6 @@ export const fetchingCollectionsOverViewAsync = (genre) => {
 };
 
 async function fetchCollections(genre, collectionId) {
-  let objectResult = {};
-
   const collecRef = firestore
     .collection("collections")
     .where("genre", "==", genre);
@@ -74,9 +72,9 @@ async function fetchCollections(genre, collectionId) {
     .where("name", "==", collectionId);
 
   const snapshotProduct = await collCategRef.get();
-  // console.log(snapshotProduct.docs[0].data());
   return snapshotProduct.docs[0].data();
 }
+
 export const fetchingCollectionsAsync = (genre, collectionId) => {
   return async (dispatch) => {
     console.log("fetching collections Async");

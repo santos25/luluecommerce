@@ -81,9 +81,13 @@ const CollectionOverview = ({
           // borderRadius={16}
           // width={}
         >
-          <WhatsappIcon fontSize="large" />
-          <Button variant="contained" size="small" color="primary">
-            <Typography variant="button"> Ventas Whatsapp </Typography>
+          <Button
+            startIcon={<WhatsappIcon fontSize="large" />}
+            variant="contained"
+            size="large"
+            color="primary"
+          >
+            Ventas Whatsapp
           </Button>
         </Box>
       </Box>

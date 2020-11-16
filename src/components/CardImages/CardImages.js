@@ -3,7 +3,10 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 //actions
 import { addItemsToCart } from "../../Redux/Cart/cart.action";
-import { addItemsToSavedList } from "../../Redux/savedList/saved.action";
+import {
+  addItemsToSavedList,
+  removeItem,
+} from "../../Redux/savedList/saved.action";
 
 //routers
 import { useHistory, useRouteMatch } from "react-router-dom";
@@ -16,7 +19,6 @@ import {
   Typography,
   CardMedia,
   CardContent,
-  makeStyles,
   Box,
   CardActions,
   Button,
@@ -26,18 +28,7 @@ import {
 
 import MuiAlert from "@material-ui/lab/Alert";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 545,
-    margin: theme.spacing(0.5),
-  },
-  media: {
-    height: 340,
-  },
-  icon: {
-    fontSize: 26,
-  },
-}));
+import useStyles from "./Styles";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -50,6 +41,9 @@ const CardImages = ({
   iconFav,
   renderActions,
   additemToSavedList,
+  removeItemSaved,
+  renderRemoveSaved,
+  genreid,
 }) => {
   const [state, setState] = useState({
     open: false,
@@ -62,7 +56,7 @@ const CardImages = ({
 
   const { open } = state;
 
-  const handleClick = () => () => {
+  const handleClick = () => {
     setState({ open: true });
   };
 
@@ -70,9 +64,9 @@ const CardImages = ({
     setState({ ...state, open: false });
   };
 
-  const AddSavedList = (item) => {
-    console.log(item);
-    additemToSavedList(item);
+  const AddSavedList = (item, tagid, typeCollection) => {
+    console.log(item, tagid, typeCollection);
+    additemToSavedList({ ...item, tagid, typeCollection });
     handleClick();
   };
 
@@ -89,7 +83,9 @@ const CardImages = ({
             image={`http://${item.images[0]}`}
             onClick={() =>
               history.push(
-                encodeURI(`/${tagid}/${typeCollection}/${item.name}`)
+                encodeURI(
+                  `/${tagid ? tagid : genreid}/${typeCollection}/${item.name}`
+                )
               )
             }
           />
@@ -109,7 +105,7 @@ const CardImages = ({
                     // edge="start"
                     color="inherit"
                     aria-label="save list"
-                    onClick={() => AddSavedList(item)}
+                    onClick={() => AddSavedList(item, tagid, typeCollection)}
                   >
                     <FavoriteBorder className={classes.icon} />
                   </IconButton>
@@ -132,20 +128,26 @@ const CardImages = ({
             </Button>
           </CardActions>
         )}
+        {renderRemoveSaved && (
+          <CardActions>
+            <Button
+              onClick={() => {
+                removeItemSaved(item);
+              }}
+              variant="contained"
+              size="small"
+              color="primary"
+            >
+              Eliminar
+            </Button>
+          </CardActions>
+        )}
       </Card>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
           Guardado!
         </Alert>
       </Snackbar>
-      {/* <Snackbar
-        severity="success"
-        anchorOrigin={{ vertical, horizontal }}
-        open={open}
-        onClose={handleClose}
-        message="I love snacks"
-        key={vertical + horizontal}
-      /> */}
     </Box>
   );
 };
@@ -156,6 +158,9 @@ const mapDispatchToState = (dispatch) => ({
   },
   additemToSavedList: (item) => {
     dispatch(addItemsToSavedList(item));
+  },
+  removeItemSaved: (item) => {
+    dispatch(removeItem(item));
   },
 });
 

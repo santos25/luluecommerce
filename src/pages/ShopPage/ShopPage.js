@@ -30,20 +30,20 @@ const ShopPage = ({ isLoading, fetchCollectionsOverView }) => {
   let match = useRouteMatch();
   let { tagid } = match.params;
 
-  useEffect(() => {
-    console.log("rendering ShopPage");
-    fetchCollectionsOverView(tagid);
+  // useEffect(() => {
+  //   console.log("rendering ShopPage");
+  //   // fetchCollectionsOverView(tagid);
 
-    // if (categories.length > 0) {
-    //   const pickedCategory =
-    //     categories[Math.floor(Math.random() * categories.length)];
-    //   const pickedProduct =
-    //     pickedCategory[Math.floor(Math.random() * pickedCategory.length)];
-    //   fetchSuggestedCollections(tagid, pickedProduct.name);
-    // } else {
-    //   console.log("null categories");
-    // }
-  }, [tagid, fetchCollectionsOverView]);
+  //   // if (categories.length > 0) {
+  //   //   const pickedCategory =
+  //   //     categories[Math.floor(Math.random() * categories.length)];
+  //   //   const pickedProduct =
+  //   //     pickedCategory[Math.floor(Math.random() * pickedCategory.length)];
+  //   //   fetchSuggestedCollections(tagid, pickedProduct.name);
+  //   // } else {
+  //   //   console.log("null categories");
+  //   // }
+  // }, [tagid, fetchCollectionsOverView]);
 
   return (
     <Switch>

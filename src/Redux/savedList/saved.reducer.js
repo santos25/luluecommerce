@@ -22,7 +22,9 @@ const SavedReducer = (state = INITIAL_SATE, action) => {
     case SavedType.REMOVE_ITEM:
       return {
         ...state,
-        savedItems: action.payload,
+        savedItems: state.savedItems.filter(
+          (item) => item.name !== action.payload.name
+        ),
 
         // cartitems: clearItemfromCart(state.cartitems, action.payload),
       };

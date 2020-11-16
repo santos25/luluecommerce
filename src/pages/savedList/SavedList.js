@@ -31,9 +31,11 @@ const SavedList = ({ savedListProducts }) => {
           <CardImages
             key={i}
             item={item}
-            typeCollection="saved"
+            typeCollection={item.typeCollection}
+            genreid={item.tagid}
             renderActions={false}
             iconFav={false}
+            renderRemoveSaved={true}
           />
         </Grid>
       ))}

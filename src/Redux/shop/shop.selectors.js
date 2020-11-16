@@ -1,4 +1,5 @@
 import { createSelector } from "reselect";
+import { firestore } from "../../FireBase/FireBaseUtil";
 
 const data = (state) => state.shop;
 
@@ -10,7 +11,6 @@ export const landscapeImageSelector = () =>
 
 export const categoriesSelector = () =>
   createSelector([data], (data) => {
-    // console.log(data.categories.categorias);
     return data.categories.categorias;
     // return Object.keys(data.categories.categorias).map((key) => {
     //   return data.categories.categorias[key];
@@ -29,21 +29,23 @@ export const dataSuggestedCollectionSelector = () =>
 
 export const dataProductDetailSelector = (productId) =>
   createSelector([data], (data) => {
-    let product;
-    // console.log(data.collections.products);
+    let product = null;
+    console.log("product detail");
+
     if (typeof data.collections.products !== "undefined") {
-      product = data.collections.products.find((item) => {
+      return (product = data.collections.products.find((item) => {
         return item.name.toLowerCase() === productId.toLowerCase();
-      });
+      }));
     }
 
-    if (typeof product === "undefined") {
-      // console.log("undefined");
-      product = data.suggestedCollections.products.find((item) => {
-        return item.name.toLowerCase() === productId.toLowerCase();
-      });
-    }
     return product;
+
+    // if (typeof product === "undefined") {
+    //   // console.log("undefined");
+    //   product = data.suggestedCollections.products.find((item) => {
+    //     return item.name.toLowerCase() === productId.toLowerCase();
+    //   });
+    // }
   });
 
 export const isLoadingOverView = createSelector(

@@ -13,11 +13,30 @@ import {
 import CheckOutItems from "../../components/checkoutitems/checkOutItems";
 
 //material
-import { Box, Container, Grid, Typography } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import { LocalMallOutlined as MallIcon } from "@material-ui/icons";
+import {
+  WhatsApp as WhatsappIcon,
+  GetApp as DownloadIcon,
+} from "@material-ui/icons";
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    backgroundColor: "#018849",
+    color: theme.palette.common.white,
+  },
+}));
 
 const CheckOutPage = ({ cartitems = [], totalprice }) => {
   console.log(cartitems);
+  const classes = useStyles();
 
   return (
     <Container maxWidth="sm">
@@ -43,6 +62,38 @@ const CheckOutPage = ({ cartitems = [], totalprice }) => {
           >
             <Typography variant="h6"> TOTAL: ${totalprice}</Typography>
           </Grid>
+          <Grid
+            xs={12}
+            component={Box}
+            // display="flex"
+            // justifyContent="center"
+
+            item
+          >
+            <Box m={1}>
+              <Button
+                startIcon={<DownloadIcon />}
+                variant="contained"
+                className={classes.button}
+                size="small"
+                fullWidth
+                // onClick={() => addToTheCart(product)}
+              >
+                Descargar Orden de compra
+              </Button>
+            </Box>
+            <Box m={1}>
+              <Button
+                startIcon={<WhatsappIcon />}
+                variant="contained"
+                size="small"
+                className={classes.button}
+                fullWidth
+              >
+                Whatsapp
+              </Button>
+            </Box>
+          </Grid>
         </Grid>
       ) : (
         <Grid component={Box} mt={2} container>
@@ -55,27 +106,6 @@ const CheckOutPage = ({ cartitems = [], totalprice }) => {
         </Grid>
       )}
     </Container>
-    // <div className='checkout-page'>
-    //     <div className='checkout-header'>
-    //         <div className='header-block'>
-    //             <span>Product</span>
-    //         </div>
-    //         <div className='header-block'>
-    //             <span>Description</span>
-    //         </div>
-    //         <div className='header-block'>
-    //             <span>Quantity</span>
-    //         </div>
-    //         <div className='header-block'>
-    //             <span>Price</span>
-    //         </div>
-    //         <div className='header-block'>
-    //             <span>Remove</span>
-    //         </div>
-    //     </div>
-    //
-
-    // </div>
   );
 };
 
