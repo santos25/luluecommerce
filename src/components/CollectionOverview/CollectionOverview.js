@@ -53,6 +53,14 @@ const CollectionOverview = ({
   }, []);
   const classes = useStyles();
 
+  const handleWhatsApp = () => {
+    const numero = "573163934994";
+    const message = "Hola, Quiero una Asesoría.";
+    const url = "https://wa.me/" + numero + "/?text=" + encodeURI(message);
+    // console.log(encodeURIComponent(url));
+    window.open(url, "_blank");
+  };
+
   return (
     <Box>
       <Header image={imageHeader} />
@@ -67,7 +75,7 @@ const CollectionOverview = ({
           <SlickCollectionWitSpinner
             isLoading={isLoading}
             collections={suggestedCollections}
-          />{" "}
+          />
         </Box>
       </Box>
       <Box mt={6} mb={4} px={1}>
@@ -86,6 +94,7 @@ const CollectionOverview = ({
             variant="contained"
             size="large"
             color="primary"
+            onClick={() => handleWhatsApp()}
           >
             Ventas Whatsapp
           </Button>

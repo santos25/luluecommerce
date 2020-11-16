@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import { connect } from "react-redux";
 
-import "./checkout.styles.css";
+// import "./checkout.styles.css";
 import { createStructuredSelector } from "reselect";
+//react-prints
+import ReactToPrint from "react-to-print";
 //selectors
 import {
   cartitemsSelector,
@@ -11,6 +13,7 @@ import {
 
 //components
 import CheckOutItems from "../../components/checkoutitems/checkOutItems";
+import PrintCart from "./PrintCart";
 
 //material
 import {
@@ -32,12 +35,23 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#018849",
     color: theme.palette.common.white,
   },
+  print: {
+    visibility: "hidden",
+  },
 }));
 
 const CheckOutPage = ({ cartitems = [], totalprice }) => {
   console.log(cartitems);
   const classes = useStyles();
+  const componentRef = useRef();
 
+  const handleWhatsApp = () => {
+    const numero = "573163934994";
+    const message = "Hola, Esta es mi orden de compra.";
+    const url = "https://wa.me/" + numero + "/?text=" + encodeURI(message);
+    // console.log(encodeURIComponent(url));
+    window.open(url, "_blank");
+  };
   return (
     <Container maxWidth="sm">
       {cartitems.length ? (
@@ -71,16 +85,21 @@ const CheckOutPage = ({ cartitems = [], totalprice }) => {
             item
           >
             <Box m={1}>
-              <Button
-                startIcon={<DownloadIcon />}
-                variant="contained"
-                className={classes.button}
-                size="small"
-                fullWidth
-                // onClick={() => addToTheCart(product)}
-              >
-                Descargar Orden de compra
-              </Button>
+              <ReactToPrint
+                trigger={() => (
+                  <Button
+                    startIcon={<DownloadIcon />}
+                    variant="contained"
+                    className={classes.button}
+                    size="small"
+                    fullWidth
+                    // onClick={() => addToTheCart(product)}
+                  >
+                    Descargar Orden de compra
+                  </Button>
+                )}
+                content={() => componentRef.current}
+              />
             </Box>
             <Box m={1}>
               <Button
@@ -89,6 +108,7 @@ const CheckOutPage = ({ cartitems = [], totalprice }) => {
                 size="small"
                 className={classes.button}
                 fullWidth
+                onClick={() => handleWhatsApp()}
               >
                 Whatsapp
               </Button>
@@ -96,14 +116,19 @@ const CheckOutPage = ({ cartitems = [], totalprice }) => {
           </Grid>
         </Grid>
       ) : (
-        <Grid component={Box} mt={2} container>
-          <Grid xs={12} item>
-            <Box textAlign="center">
-              <MallIcon fontSize="large" />
-              <Typography variant="h6">To bolsa está vacia</Typography>
-            </Box>
+        <>
+          <Grid component={Box} mt={2} container>
+            <Grid xs={12} item>
+              <Box textAlign="center">
+                <MallIcon fontSize="large" />
+                <Typography variant="h6">To bolsa está vacia</Typography>
+              </Box>
+            </Grid>
           </Grid>
-        </Grid>
+          {/* <Box className={classes.print}>
+            <PrintCart printRef={componentRef} />
+          </Box> */}
+        </>
       )}
     </Container>
   );
