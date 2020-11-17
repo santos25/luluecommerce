@@ -17,7 +17,7 @@ import { ShoppingCart } from "@material-ui/icons";
 
 import { IconButton, Badge } from "@material-ui/core";
 
-const CartIconComponent = ({ toggleCart, itemCount }) => {
+const CartIconComponent = ({ toggleCart, itemCountCart }) => {
   let history = useHistory();
 
   return (
@@ -26,7 +26,7 @@ const CartIconComponent = ({ toggleCart, itemCount }) => {
       aria-label="show products"
       color="inherit"
     >
-      <Badge badgeContent={itemCount} color="error">
+      <Badge badgeContent={itemCountCart} color="error">
         <ShoppingCart />
       </Badge>
     </IconButton>
@@ -40,7 +40,7 @@ const mapDispatchToState = (dispatch) => ({
 });
 
 const mapStateToProps = createStructuredSelector({
-  itemCount: itemCountSelector,
+  itemCountCart: itemCountSelector,
 });
 
 export default connect(mapStateToProps, mapDispatchToState)(CartIconComponent);

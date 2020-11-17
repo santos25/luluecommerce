@@ -26,10 +26,10 @@ const TableCheck = ({ cartitems }) => {
         <TableHead>
           <TableRow>
             <TableCell>Imagen</TableCell>
-            <TableCell align="right">Nombre</TableCell>
-            <TableCell align="right">Cantidad</TableCell>
-            <TableCell align="right">Precio</TableCell>
-            <TableCell align="right">Talla</TableCell>
+            <TableCell align="center">Nombre</TableCell>
+            <TableCell align="center">Cantidad</TableCell>
+            <TableCell align="center">Precio</TableCell>
+            <TableCell align="center">Talla</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -38,15 +38,15 @@ const TableCheck = ({ cartitems }) => {
               <TableRow key={key}>
                 <TableCell component="th" scope="row">
                   <img
-                    // className={classes.img}
+                    className="productImage"
                     alt="complex"
                     src={`http://${item.images[0]}`}
                   />
                 </TableCell>
-                <TableCell align="right">{item.name}</TableCell>
-                <TableCell align="right">{item.quantity}</TableCell>
-                <TableCell align="right">{item.price.current.text}</TableCell>
-                <TableCell align="right">{item.selectedTalla}</TableCell>
+                <TableCell align="center">{item.name}</TableCell>
+                <TableCell align="center">{item.quantity}</TableCell>
+                <TableCell align="center">{item.price.current.text}</TableCell>
+                <TableCell align="center">{item.selectedTalla}</TableCell>
               </TableRow>
             );
           })}

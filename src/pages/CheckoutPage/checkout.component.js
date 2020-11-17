@@ -1,7 +1,9 @@
 import React, { useRef } from "react";
 import { connect } from "react-redux";
 
-// import "./checkout.styles.css";
+//routers
+import { Link as RouterLink } from "react-router-dom";
+
 import { createStructuredSelector } from "reselect";
 //react-prints
 import ReactToPrint from "react-to-print";
@@ -14,7 +16,7 @@ import { currentUserSelector } from "../../Redux/user/user-selectors";
 
 //components
 import CheckOutItems from "../../components/checkoutitems/checkOutItems";
-import PrintCart from "./PrintCart";
+import PrintCart from "./CartPrint/PrintCart";
 
 //material
 import {
@@ -84,8 +86,23 @@ const CheckOutPage = ({ cartitems = [], totalprice, currentUser }) => {
               </Typography>
             </Box>
             <Box m={1}>
-              <ReactToPrint
-                trigger={() => (
+              {currentUser ? (
+                <ReactToPrint
+                  trigger={() => (
+                    <Button
+                      startIcon={<DownloadIcon />}
+                      variant="contained"
+                      className={classes.button}
+                      size="small"
+                      fullWidth
+                    >
+                      Descargar Orden de compra
+                    </Button>
+                  )}
+                  content={() => componentRef.current}
+                />
+              ) : (
+                <RouterLink style={{ textDecoration: "none" }} to="/identity">
                   <Button
                     startIcon={<DownloadIcon />}
                     variant="contained"
@@ -93,11 +110,11 @@ const CheckOutPage = ({ cartitems = [], totalprice, currentUser }) => {
                     size="small"
                     fullWidth
                   >
-                    Descargar Orden de compra
+                    Accede para Descargar Orden de compra
                   </Button>
-                )}
-                content={() => componentRef.current}
-              />
+                </RouterLink>
+              )}
+
               {currentUser && (
                 <Box className={classes.print}>
                   <PrintCart

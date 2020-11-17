@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
-import { auth } from "../../FireBase/FireBaseUtil";
+// import { auth } from "../../FireBase/FireBaseUtil";
 
 import { connect } from "react-redux";
 
@@ -15,21 +15,15 @@ import { useHistory } from "react-router-dom";
 //components
 import CartIconComponent from "../Cart-Icon/Cart-icon.component";
 import Drawer from "../Drawer/Drawer";
+import FavoriteIcon from "../Favorite-Icon/FavoriteIcon";
 // import CartDropdown from "../Card-Dropdown/card-dropdown";
 
 //material
 import {
   Search as SearchIcon,
-  // AccountCircle,
   Menu as MenuIcon,
-  // Notifications as NotificationsIcon,
-  // Mail as MailIcon,
-  // More as MoreIcon,
   Person as PersonIcon,
-  FavoriteBorder as FavoriteBorderIcon,
 } from "@material-ui/icons";
-
-import { fade } from "@material-ui/core/styles";
 
 import {
   AppBar,
@@ -49,7 +43,7 @@ import {
 import UseStyles from "./Styles";
 
 const Nav = ({ currentUser, hidden }) => {
-  const [drawerState, setDrawerState] = React.useState({
+  const [drawerState, setDrawerState] = useState({
     left: false,
   });
 
@@ -113,13 +107,7 @@ const Nav = ({ currentUser, hidden }) => {
             >
               <PersonIcon />
             </IconButton>
-            <IconButton
-              aria-label="show 4 new mails"
-              color="inherit"
-              onClick={() => history.push("/saved-lists")}
-            >
-              <FavoriteBorderIcon />
-            </IconButton>
+            <FavoriteIcon />
             <CartIconComponent />
           </div>
         </Toolbar>

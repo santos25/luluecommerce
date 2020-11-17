@@ -7,6 +7,11 @@ export const savedListSelector = createSelector(
   (saveList) => saveList.savedItems
 );
 
+export const itemCountFavoriteSelector = createSelector(
+  [selectSaved],
+  (saveList) => saveList.savedItems.length
+);
+
 // export const itemTotaValueSelector = createSelector([selectCart], (cart) =>
 //   cart.cartitems.reduce(
 //     (acumulator, currentItem) =>

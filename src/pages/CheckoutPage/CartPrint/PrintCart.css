@@ -1,0 +1,22 @@
+#page {
+  width: 700px;
+  margin: 0 auto;
+}
+img {
+  width: 100%;
+}
+
+.productImage {
+  width: 70px;
+  height: 70px;
+}
+.currentUser,
+.title,
+.productTables {
+  margin: 10px 0 10px 0;
+}
+
+.total {
+  display: flex;
+  justify-content: flex-end;
+}

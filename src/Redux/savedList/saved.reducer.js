@@ -16,7 +16,6 @@ const SavedReducer = (state = INITIAL_SATE, action) => {
     case SavedType.ADDITEMS_TO_SAVED_LIST:
       return {
         ...state,
-        // cartitems: addUniqueitemTocart(state.cartitems, action.payload),
         savedItems: addUniqueitemToList(state.savedItems, action.payload),
       };
     case SavedType.REMOVE_ITEM:
@@ -25,8 +24,6 @@ const SavedReducer = (state = INITIAL_SATE, action) => {
         savedItems: state.savedItems.filter(
           (item) => item.name !== action.payload.name
         ),
-
-        // cartitems: clearItemfromCart(state.cartitems, action.payload),
       };
     default:
       return state;
