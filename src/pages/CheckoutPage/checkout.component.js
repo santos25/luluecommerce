@@ -10,6 +10,7 @@ import {
   cartitemsSelector,
   itemTotaValueSelector,
 } from "../../Redux/Cart/cart-selectors";
+import { currentUserSelector } from "../../Redux/user/user-selectors";
 
 //components
 import CheckOutItems from "../../components/checkoutitems/checkOutItems";
@@ -36,12 +37,12 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.common.white,
   },
   print: {
-    visibility: "hidden",
+    display: "none",
   },
 }));
 
-const CheckOutPage = ({ cartitems = [], totalprice }) => {
-  console.log(cartitems);
+const CheckOutPage = ({ cartitems = [], totalprice, currentUser }) => {
+  console.log(currentUser);
   const classes = useStyles();
   const componentRef = useRef();
 
@@ -76,14 +77,12 @@ const CheckOutPage = ({ cartitems = [], totalprice }) => {
           >
             <Typography variant="h6"> TOTAL: ${totalprice}</Typography>
           </Grid>
-          <Grid
-            xs={12}
-            component={Box}
-            // display="flex"
-            // justifyContent="center"
-
-            item
-          >
+          <Grid xs={12} component={Box} item>
+            <Box>
+              <Typography variant="caption">
+                Puede descargar la orden de compra y enviarla por WhatsApp.
+              </Typography>
+            </Box>
             <Box m={1}>
               <ReactToPrint
                 trigger={() => (
@@ -93,13 +92,22 @@ const CheckOutPage = ({ cartitems = [], totalprice }) => {
                     className={classes.button}
                     size="small"
                     fullWidth
-                    // onClick={() => addToTheCart(product)}
                   >
                     Descargar Orden de compra
                   </Button>
                 )}
                 content={() => componentRef.current}
               />
+              {currentUser && (
+                <Box className={classes.print}>
+                  <PrintCart
+                    printRef={componentRef}
+                    user={currentUser}
+                    cartitems={cartitems}
+                    totalprice={totalprice}
+                  />
+                </Box>
+              )}
             </Box>
             <Box m={1}>
               <Button
@@ -125,9 +133,6 @@ const CheckOutPage = ({ cartitems = [], totalprice }) => {
               </Box>
             </Grid>
           </Grid>
-          {/* <Box className={classes.print}>
-            <PrintCart printRef={componentRef} />
-          </Box> */}
         </>
       )}
     </Container>
@@ -137,5 +142,6 @@ const CheckOutPage = ({ cartitems = [], totalprice }) => {
 const mapStateToProps = createStructuredSelector({
   cartitems: cartitemsSelector,
   totalprice: itemTotaValueSelector,
+  currentUser: currentUserSelector,
 });
 export default connect(mapStateToProps)(CheckOutPage);
