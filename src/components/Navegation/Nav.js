@@ -16,6 +16,9 @@ import { useHistory } from "react-router-dom";
 import CartIconComponent from "../Cart-Icon/Cart-icon.component";
 import Drawer from "../Drawer/Drawer";
 import FavoriteIcon from "../Favorite-Icon/FavoriteIcon";
+import NavItem from "./NavItem/NavItem";
+import DropdownMenu from "./DropdownMenu/DropdownMenu";
+
 // import CartDropdown from "../Card-Dropdown/card-dropdown";
 
 //material
@@ -35,14 +38,24 @@ import {
   IconButton,
   MenuItem,
   SwipeableDrawer,
+  Box,
+  InputBase,
 } from "@material-ui/core";
 
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+
+//images
+import TitleImage from "../../assets/images/title.png";
 import UseStyles from "./Styles";
 
 const Nav = ({ currentUser, hidden }) => {
   const [drawerState, setDrawerState] = useState({
     left: false,
   });
+
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
 
   const classes = UseStyles();
   const history = useHistory();
@@ -64,49 +77,80 @@ const Nav = ({ currentUser, hidden }) => {
     <div className={classes.grow}>
       <AppBar position="fixed" color="primary">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-            onClick={toggleDrawer("left", true)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <SwipeableDrawer
-            anchor="left"
-            open={drawerState.left}
-            onClose={toggleDrawer("left", false)}
-            onOpen={toggleDrawer("left", true)}
-          >
-            {<Drawer anchor="left" toggleDrawer={toggleDrawer} />}
-          </SwipeableDrawer>
-          <Typography
-            component={RouterLink}
-            to="/mujer"
-            className={classes.title}
-            variant="h6"
-            noWrap
-          >
-            LULU
-          </Typography>
-
-          <div className={classes.grow} />
-
           <div className={classes.sectionMobile}>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="open drawer"
+              onClick={toggleDrawer("left", true)}
+            >
+              <MenuIcon />
+            </IconButton>
+            <SwipeableDrawer
+              anchor="left"
+              open={drawerState.left}
+              onClose={toggleDrawer("left", false)}
+              onOpen={toggleDrawer("left", true)}
+            >
+              {<Drawer anchor="left" toggleDrawer={toggleDrawer} />}
+            </SwipeableDrawer>
+          </div>
+
+          <RouterLink style={{ textDecoration: "none" }} to="/mujer">
+            <img className={classes.title} src={TitleImage} alt="Title" />
+          </RouterLink>
+
+          {matches && <div className={classes.grow} />}
+
+          <div className={classes.sectionDesktop}>
+            <Box
+              display="flex"
+              justifyContent="center"
+              ml={6}
+              borderRight={1}
+              borderColor="grey.300"
+              py={1}
+              px={2}
+            >
+              <ul className="">
+                <NavItem text="Mujer">
+                  {/* <DropdownMenu></DropdownMenu> */}
+                </NavItem>
+              </ul>
+            </Box>
+
+            <Box flexGrow={1}>
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Buscar…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{ "aria-label": "buscar" }}
+                />
+              </div>
+            </Box>
+          </div>
+          {matches && (
             <IconButton aria-label="show 4 new mails" color="inherit">
               <SearchIcon />
             </IconButton>
-            <IconButton
-              onClick={() => history.push("/identity")}
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <PersonIcon />
-            </IconButton>
-            <FavoriteIcon />
-            <CartIconComponent />
-          </div>
+          )}
+
+          <IconButton
+            onClick={() => history.push("/identity")}
+            aria-label="show 4 new mails"
+            color="inherit"
+          >
+            <PersonIcon />
+          </IconButton>
+          <FavoriteIcon />
+          <CartIconComponent />
         </Toolbar>
       </AppBar>
     </div>
