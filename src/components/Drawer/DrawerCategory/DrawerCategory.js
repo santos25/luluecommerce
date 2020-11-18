@@ -20,8 +20,6 @@ import {
   Typography,
 } from "@material-ui/core";
 
-import { Person as PersonIcon } from "@material-ui/icons";
-
 import FollowIcons from "../../Footer/FollowIcons";
 
 const useStyles = makeStyles((theme) => ({

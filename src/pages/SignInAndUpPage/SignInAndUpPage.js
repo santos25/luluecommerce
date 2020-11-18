@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import clsx from "clsx";
-
 //components
 import SignInComponent from "../../components/SignInComponent/SignInComponent";
 import SignUp from "../../components/SignUpComponent/SignUp";
@@ -15,7 +13,6 @@ import {
   Tabs,
   Tab,
 } from "@material-ui/core";
-import { TabPanel } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   title: {

@@ -1,18 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { connect } from "react-redux";
 
 //actions
-import {
-  fetchingCollectionsOverViewAsync,
-  fetchingSuggestedCollectionsAsync,
-} from "../../Redux/shop/shop.actions";
 
 //selectors
-import {
-  isLoadingOverView,
-  categoriesSelector,
-} from "../../Redux/shop/shop.selectors";
+import { isLoadingOverView } from "../../Redux/shop/shop.selectors";
 
 //components
 import CollectionOverview from "../../components/CollectionOverview/CollectionOverview";
@@ -26,24 +19,9 @@ const CollectionOverviewWitSpinner = WithSpinner(CollectionOverview);
 const CollectionPageWitSpinner = WithSpinner(CollectionPage);
 const ProductDetailWitSpinner = WithSpinner(ProductDetail);
 
-const ShopPage = ({ isLoading, fetchCollectionsOverView }) => {
+const ShopPage = ({ isLoading }) => {
   let match = useRouteMatch();
   let { tagid } = match.params;
-
-  // useEffect(() => {
-  //   console.log("rendering ShopPage");
-  //   // fetchCollectionsOverView(tagid);
-
-  //   // if (categories.length > 0) {
-  //   //   const pickedCategory =
-  //   //     categories[Math.floor(Math.random() * categories.length)];
-  //   //   const pickedProduct =
-  //   //     pickedCategory[Math.floor(Math.random() * pickedCategory.length)];
-  //   //   fetchSuggestedCollections(tagid, pickedProduct.name);
-  //   // } else {
-  //   //   console.log("null categories");
-  //   // }
-  // }, [tagid, fetchCollectionsOverView]);
 
   return (
     <Switch>
@@ -75,14 +53,8 @@ const ShopPage = ({ isLoading, fetchCollectionsOverView }) => {
   );
 };
 
-const mapDispatchToState = (dispatch) => ({
-  fetchCollectionsOverView: (genre) =>
-    dispatch(fetchingCollectionsOverViewAsync(genre)),
-});
-
 const mapStateToProps = (state) => ({
   isLoading: isLoadingOverView(state),
-  // categories: categoriesSelector()(state),
 });
 
-export default connect(mapStateToProps, mapDispatchToState)(ShopPage);
+export default connect(mapStateToProps)(ShopPage);

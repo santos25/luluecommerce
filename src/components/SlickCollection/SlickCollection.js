@@ -3,8 +3,7 @@ import Slider from "react-slick";
 import NextArrow from "../SlickArrows/NextArrow";
 import PreviewArrow from "../SlickArrows/PreviewArrow";
 import CardImages from "../CardImages/CardImages";
-
-import { Button, Container } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 
 const SlickCollection = ({ collections }) => {
   const settings = {

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 //firebase
-import { firestore } from "../../FireBase/FireBaseUtil";
 
 //selectors
 import {
@@ -50,7 +49,7 @@ const CollectionOverview = ({
       pickedCategory[Math.floor(Math.random() * pickedCategory.length)];
 
     fetchSuggestedCollections(tagId, pickedProduct.name);
-  }, []);
+  }, [tagId, fetchSuggestedCollections, categories]);
   const classes = useStyles();
 
   const handleWhatsApp = () => {
