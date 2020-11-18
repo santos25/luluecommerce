@@ -97,8 +97,6 @@ const App = ({ setCurrentUser, currentUser, fetchCollectionsOverView }) => {
 
   return (
     <div>
-      {/* <MiniDrawer /> */}
-
       <ThemeProvider theme={theme}>
         {currentUser && currentUser.isAdmin ? (
           <MiniDrawer />

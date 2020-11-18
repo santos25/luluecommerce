@@ -32,11 +32,9 @@ import {
   makeStyles,
   Button,
   Menu,
-  InputBase,
   Typography,
   IconButton,
   MenuItem,
-  Badge,
   SwipeableDrawer,
 } from "@material-ui/core";
 
