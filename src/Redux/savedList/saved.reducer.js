@@ -18,7 +18,7 @@ const SavedReducer = (state = INITIAL_SATE, action) => {
         ...state,
         savedItems: addUniqueitemToList(state.savedItems, action.payload),
       };
-    case SavedType.REMOVE_ITEM:
+    case SavedType.REMOVE_ITEM_SAVED_LIST:
       return {
         ...state,
         savedItems: state.savedItems.filter(

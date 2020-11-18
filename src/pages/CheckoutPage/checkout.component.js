@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CheckOutPage = ({ cartitems = [], totalprice, currentUser }) => {
-  console.log(currentUser);
+  // console.log(currentUser);
   const classes = useStyles();
   const componentRef = useRef();
 

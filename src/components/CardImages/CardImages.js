@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { addItemsToCart } from "../../Redux/Cart/cart.action";
 import {
   addItemsToSavedList,
-  removeItem,
+  removeItemSavedList,
 } from "../../Redux/savedList/saved.action";
 
 //routers
@@ -160,7 +160,7 @@ const mapDispatchToState = (dispatch) => ({
     dispatch(addItemsToSavedList(item));
   },
   removeItemSaved: (item) => {
-    dispatch(removeItem(item));
+    dispatch(removeItemSavedList(item));
   },
 });
 

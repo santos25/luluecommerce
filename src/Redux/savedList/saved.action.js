@@ -14,9 +14,9 @@ export const addItemsToSavedList = (item) => {
   };
 };
 
-export const removeItem = (itemToRemove) => {
+export const removeItemSavedList = (itemToRemove) => {
   return {
-    type: SavedType.REMOVE_ITEM,
+    type: SavedType.REMOVE_ITEM_SAVED_LIST,
     payload: itemToRemove,
   };
 };
