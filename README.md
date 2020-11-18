@@ -1,7 +1,6 @@
 ## LULU Ecommerce
 
-this is a personal project built in React, Redux, Material UI, firebase
-React-Router.
+Personal project built in React, Redux, Material UI, firebase, React-Router and hooks.
 
 features:
  - Admin Panel.
