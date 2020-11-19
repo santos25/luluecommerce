@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 //selectors
 import { currentUserSelector } from "../../Redux/user/user-selectors";
 import { hiddeCartSelector } from "../../Redux/Cart/cart-selectors";
+import { categoriesSelector } from "../../Redux/shop/shop.selectors";
 
 //react-router
 import { useHistory } from "react-router-dom";
@@ -18,8 +19,8 @@ import Drawer from "../Drawer/Drawer";
 import FavoriteIcon from "../Favorite-Icon/FavoriteIcon";
 import NavItem from "./NavItem/NavItem";
 import DropdownMenu from "./DropdownMenu/DropdownMenu";
-
-// import CartDropdown from "../Card-Dropdown/card-dropdown";
+import PopoverComponent from "../PopOverComponent/PopoverComponent";
+import CartDropdown from "../Card-Dropdown/card-dropdown";
 
 //material
 import {
@@ -40,6 +41,7 @@ import {
   SwipeableDrawer,
   Box,
   InputBase,
+  ClickAwayListener,
 } from "@material-ui/core";
 
 import { useTheme } from "@material-ui/core/styles";
@@ -48,14 +50,15 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 //images
 import TitleImage from "../../assets/images/title.png";
 import UseStyles from "./Styles";
+import PopoverUser from "./PopoverUser/PopoverUser";
 
-const Nav = ({ currentUser, hidden }) => {
+const Nav = ({ currentUser, hidden, categories }) => {
   const [drawerState, setDrawerState] = useState({
     left: false,
   });
 
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down("sm"));
+  const matches = useMediaQuery(theme.breakpoints.down("xs"));
 
   const classes = UseStyles();
   const history = useHistory();
@@ -106,16 +109,27 @@ const Nav = ({ currentUser, hidden }) => {
           <div className={classes.sectionDesktop}>
             <Box
               display="flex"
+              alignItems="center"
               justifyContent="center"
-              ml={6}
-              borderRight={1}
+              ml={8}
+              // borderRight={1}
               borderColor="grey.300"
-              py={1}
-              px={2}
+              // py={1}
+              // px={2}
             >
-              <ul className="">
-                <NavItem text="Mujer">
-                  {/* <DropdownMenu></DropdownMenu> */}
+              <ul className={classes.navBarItem}>
+                <NavItem
+                  renderElement={(handlePopoverOpen) => (
+                    <Typography
+                      onMouseEnter={handlePopoverOpen}
+                      className={classes.genre}
+                      variant="body1"
+                    >
+                      MUJER
+                    </Typography>
+                  )}
+                >
+                  <DropdownMenu datas={categories}></DropdownMenu>
                 </NavItem>
               </ul>
             </Box>
@@ -141,16 +155,64 @@ const Nav = ({ currentUser, hidden }) => {
               <SearchIcon />
             </IconButton>
           )}
-
-          <IconButton
-            onClick={() => history.push("/identity")}
-            aria-label="show 4 new mails"
-            color="inherit"
-          >
-            <PersonIcon />
-          </IconButton>
-          <FavoriteIcon />
-          <CartIconComponent />
+          <Box mr={4}>
+            <ul className={classes.navBarItem}>
+              <NavItem
+                renderElement={(handlePopoverOpen) => (
+                  <IconButton
+                    onMouseEnter={handlePopoverOpen}
+                    onClick={() => history.push("/identity")}
+                    aria-label="user"
+                    color="inherit"
+                  >
+                    <PersonIcon />
+                  </IconButton>
+                )}
+              >
+                <Box className={classes.popoverUserDesktop}>
+                  <PopoverComponent height="40px">
+                    <PopoverUser currentUser={currentUser} />
+                  </PopoverComponent>
+                </Box>
+              </NavItem>
+              <NavItem
+                renderElement={(handlePopoverOpen) => (
+                  <IconButton
+                    // onMouseEnter={handlePopoverOpen}
+                    // onClick={() => history.push("/identity")}
+                    aria-label="user"
+                    color="inherit"
+                  >
+                    <FavoriteIcon />
+                  </IconButton>
+                )}
+              ></NavItem>
+              <NavItem
+                renderElement={(handlePopoverOpen) => (
+                  <IconButton
+                    onMouseEnter={handlePopoverOpen}
+                    onClick={() => history.push("/checkout")}
+                    aria-label="user"
+                    color="inherit"
+                  >
+                    <CartIconComponent />
+                  </IconButton>
+                )}
+                state={true}
+              >
+                <Box className={classes.popoverUserDesktop}>
+                  <PopoverComponent
+                    height="auto"
+                    maxHeight="400px"
+                    padding="0"
+                    transform="translateX(-63%)"
+                  >
+                    <CartDropdown />
+                  </PopoverComponent>
+                </Box>
+              </NavItem>
+            </ul>
+          </Box>
         </Toolbar>
       </AppBar>
     </div>
@@ -160,6 +222,7 @@ const Nav = ({ currentUser, hidden }) => {
 const mapStatetoProps = (state) => ({
   currentUser: currentUserSelector(state),
   hidden: hiddeCartSelector(state),
+  categories: categoriesSelector()(state),
 });
 
 export default connect(mapStatetoProps)(Nav);

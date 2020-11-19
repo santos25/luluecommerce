@@ -1,30 +1,31 @@
 import React, { useState } from "react";
 
 //Material UI
-import { Typography } from "@material-ui/core";
+import { ClickAwayListener } from "@material-ui/core";
 
 import UseStyles from "./Styles";
 
 const NavItem = (props) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(props.state ? props.state : false);
   const classes = UseStyles();
 
+  const handlePopoverOpen = (event) => {
+    // setAnchorEl(event.currentTarget);
+    setOpen((prevState) => !prevState);
+  };
+
+  const handleClickAway = () => {
+    setOpen(false);
+  };
+
   return (
-    <li className="nav-item">
-      <Typography
-        onClick={() => console.log("click menu")}
-        className={classes.genre}
-        variant="body1"
-      >
-        MUJER
-      </Typography>
+    <ClickAwayListener onClickAway={handleClickAway}>
+      <li className={classes.navItem}>
+        {props.renderElement(handlePopoverOpen)}
 
-      {/* <a href="#" className="icon-button" onClick={() => setOpen(!open)}>
-        {props.text}
-      </a> */}
-
-      {open && props.children}
-    </li>
+        {open && props.children}
+      </li>
+    </ClickAwayListener>
   );
 };
 

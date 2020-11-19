@@ -57,13 +57,29 @@ export default makeStyles((theme) => ({
 
     [theme.breakpoints.up("sm")]: {
       display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
       flexGrow: 1,
     },
   },
-
+  popoverUserDesktop: {
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "flex",
+    },
+  },
   sectionMobile: {
     [theme.breakpoints.up("sm")]: {
       display: "none",
     },
+  },
+  navBarItem: {
+    display: "flex",
+    // justifyContent: "center",
+    alignItems: "center",
+  },
+  genre: {
+    fontWeight: "600",
+    cursor: "pointer",
   },
 }));

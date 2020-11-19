@@ -7,18 +7,11 @@ import { currentUserSelector } from "../../../Redux/user/user-selectors";
 //firebase
 import { auth } from "../../../FireBase/FireBaseUtil";
 
+//components
+import ListItemComponent from "../../ListItemComponent/ListItemComponent";
 //routers
 import { Link as RouterLink, useHistory } from "react-router-dom";
-import {
-  Avatar,
-  Box,
-  Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Box, List, makeStyles, Typography } from "@material-ui/core";
 
 import FollowIcons from "../../Footer/FollowIcons";
 
@@ -60,34 +53,17 @@ const DrawerCategory = ({
         <Typography variant="h6">MUJER</Typography>
       </Box>
       <List>
-        {Object.keys(categories).map((key) => {
-          return (
-            <>
-              <ListItem
-                key={key}
-                onClick={() => getCollections(key)}
-                button
-                alignItems="center"
-              >
-                <ListItemAvatar>
-                  <Avatar
-                    alt="ropa"
-                    variant="rounded"
-                    className={classes.large}
-                    src={`http://${categories[key][0].image}`}
-                    // "https://images.unsplash.com/photo-1572804013427-4d7ca7268217?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=401&q=80"
-                  />
-                </ListItemAvatar>
-                <Box display="flex" width="100%" justifyContent="center">
-                  <Typography className={classes.title} variant="body1">
-                    {key}
-                  </Typography>
-                </Box>
-              </ListItem>
-              <Divider />
-            </>
-          );
-        })}
+        {Object.keys(categories).map((key, index) => (
+          <ListItemComponent
+            key={index}
+            text={key}
+            getDataClick={() => getCollections(key)}
+            avatarClass={classes.large}
+            titleClass={classes.title}
+            image={categories[key][0].image}
+            variant="body1"
+          />
+        ))}
       </List>
       <Box mt={1}>
         <FollowIcons />
@@ -141,22 +117,6 @@ const DrawerCategory = ({
           </Box>
         )}
       </Box>
-      {/* <Box mt={1} px={1} color="black">
-        <RouterLink
-          to="/identity"
-          onClick={() => toggleDrawer(anchor, false)()}
-          className={classes.link}
-        >
-          <Box display="flex" justifyContent="flex-start">
-            <Box px={1}>
-              <PersonIcon />
-            </Box>
-            <Box>
-              <Typography variant="body1">Mi Cuenta</Typography>
-            </Box>
-          </Box>
-        </RouterLink>
-      </Box> */}
     </>
   );
 };
