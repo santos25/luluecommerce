@@ -7,6 +7,7 @@ import { makeStyles, Typography, Box } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   footer: {
     marginTop: theme.spacing(1),
+    backgroundColor: "#eee",
   },
   image: {
     width: theme.spacing(5),

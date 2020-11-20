@@ -9,6 +9,10 @@ import {
   makeStyles,
 } from "@material-ui/core";
 
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Height } from "@material-ui/icons";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -30,6 +34,11 @@ const useStyles = makeStyles((theme) => ({
   },
   imageList: {
     cursor: "pointer",
+    width: "100%",
+    height: "auto",
+    backgroundPosition: "center center",
+    backgroundSize: "cover",
+    objectFit: "cover",
   },
 }));
 
@@ -39,6 +48,8 @@ const Categories = ({ categories }) => {
   let history = useHistory();
   // console.log(data[0].image);
   // console.log(history);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <>
       <div className={classes.root}>
@@ -52,7 +63,7 @@ const Categories = ({ categories }) => {
               return category.map((item) => (
                 <GridListTile
                   key={item.name}
-                  rows={1.5}
+                  rows={matches ? 1.5 : 2}
                   onClick={() =>
                     history.push(`${match.url}/${encodeURI(item.name)}`)
                   }

@@ -24,6 +24,9 @@ import { Box, Button, makeStyles, Typography } from "@material-ui/core";
 
 import { WhatsApp as WhatsappIcon } from "@material-ui/icons";
 
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+
 const SlickCollectionWitSpinner = WithSpinner(SlickCollection);
 
 const useStyles = makeStyles((theme) => ({
@@ -41,6 +44,9 @@ const CollectionOverview = ({
   suggestedCollections,
   isLoading,
 }) => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
+
   useEffect(() => {
     const pickedCategory = Object.keys(categories).map(
       (key) => categories[key]
@@ -62,7 +68,12 @@ const CollectionOverview = ({
 
   return (
     <Box>
-      <Header image={imageHeader} />
+      {matches ? (
+        <Header images={imageHeader.imageMobil} />
+      ) : (
+        <Header images={imageHeader.imageDesktop} />
+      )}
+
       <Box mt={1}>
         <Categories categories={categories} />
       </Box>

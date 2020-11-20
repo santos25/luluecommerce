@@ -6,11 +6,12 @@ const useStyles = makeStyles((theme) => ({
   dropdown: {
     position: "absolute",
     top: "63px",
-    width: "300px",
+    width: "310px",
     transform: (props) =>
       props.transform ? props.transform : "translateX(-45%)",
-    border: "1px solid #474a4d",
-    borderRadius: "3px",
+    // border: "1px solid #474a4d",
+    borderRadius: 16,
+    boxShadow: "0 8px 16px 0 #BDC9D7",
     padding: (props) => (props.padding ? props.padding : "1rem"),
     overflow: "hidden",
     transition: "height var(500ms) ease",

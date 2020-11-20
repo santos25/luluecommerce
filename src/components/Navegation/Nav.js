@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
 
 // import { auth } from "../../FireBase/FireBaseUtil";
 
@@ -11,7 +10,7 @@ import { hiddeCartSelector } from "../../Redux/Cart/cart-selectors";
 import { categoriesSelector } from "../../Redux/shop/shop.selectors";
 
 //react-router
-import { useHistory } from "react-router-dom";
+import { useHistory, Link as RouterLink } from "react-router-dom";
 
 //components
 import CartIconComponent from "../Cart-Icon/Cart-icon.component";
@@ -198,12 +197,11 @@ const Nav = ({ currentUser, hidden, categories }) => {
                     <CartIconComponent />
                   </IconButton>
                 )}
-                state={true}
               >
                 <Box className={classes.popoverUserDesktop}>
                   <PopoverComponent
                     height="auto"
-                    maxHeight="400px"
+                    maxHeight="420px"
                     padding="0"
                     transform="translateX(-63%)"
                   >

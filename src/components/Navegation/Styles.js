@@ -3,6 +3,7 @@ import { makeStyles, fade } from "@material-ui/core";
 export default makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
+    maxWidth: "1170px",
     // marginLeft: theme.spacing(7),
   },
   menuButton: {

@@ -182,7 +182,7 @@ const SignUp = (props) => {
           <form className={classes.form}>
             <FormControl>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                   <TextField
                     onChange={handleInputs}
                     variant="outlined"
