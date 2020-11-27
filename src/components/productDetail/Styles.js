@@ -20,4 +20,12 @@ export default makeStyles((theme) => ({
   bold: {
     fontWeight: "bold",
   },
+  imagesSlides: {
+    display: "flex",
+    justifyContent: "center",
+  },
+  li: {
+    padding: theme.spacing(1),
+    cursor: "pointer",
+  },
 }));

@@ -120,8 +120,8 @@ const App = ({ setCurrentUser, currentUser, fetchCollectionsOverView }) => {
         ) : (
           <Router basename="/luluecommerce">
             <Nav />
-            <Switch>
-              <div className={classes.containerApp}>
+            <div className={classes.containerApp}>
+              <Switch>
                 <Route exact path="/">
                   <Redirect to="/mujer" />
                 </Route>
@@ -143,8 +143,8 @@ const App = ({ setCurrentUser, currentUser, fetchCollectionsOverView }) => {
                 <Route path="/:tagid">
                   <ShopPage />
                 </Route>
-              </div>
-            </Switch>
+              </Switch>
+            </div>
             <Footer />
           </Router>
         )}

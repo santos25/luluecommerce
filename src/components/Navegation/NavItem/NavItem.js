@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 //Material UI
-import { ClickAwayListener } from "@material-ui/core";
+import { Box, ClickAwayListener } from "@material-ui/core";
 
 import UseStyles from "./Styles";
 
@@ -20,11 +20,10 @@ const NavItem = (props) => {
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
-      <li className={classes.navItem}>
+      <Box>
         {props.renderElement(handlePopoverOpen)}
-
         {open && props.children}
-      </li>
+      </Box>
     </ClickAwayListener>
   );
 };

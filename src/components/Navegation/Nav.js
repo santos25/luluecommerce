@@ -77,7 +77,13 @@ const Nav = ({ currentUser, hidden, categories }) => {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="fixed" color="primary">
+      <AppBar
+        style={{
+          maxHeight: "64px",
+        }}
+        position="fixed"
+        color="primary"
+      >
         <Toolbar>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -154,62 +160,67 @@ const Nav = ({ currentUser, hidden, categories }) => {
               <SearchIcon />
             </IconButton>
           )}
-          <Box mr={4}>
-            <ul className={classes.navBarItem}>
-              <NavItem
-                renderElement={(handlePopoverOpen) => (
-                  <IconButton
-                    onMouseEnter={handlePopoverOpen}
-                    onClick={() => history.push("/identity")}
-                    aria-label="user"
-                    color="inherit"
-                  >
-                    <PersonIcon />
-                  </IconButton>
-                )}
-              >
-                <Box className={classes.popoverUserDesktop}>
-                  <PopoverComponent height="40px">
-                    <PopoverUser currentUser={currentUser} />
-                  </PopoverComponent>
-                </Box>
-              </NavItem>
-              <NavItem
-                renderElement={(handlePopoverOpen) => (
-                  <IconButton
-                    // onMouseEnter={handlePopoverOpen}
-                    // onClick={() => history.push("/identity")}
-                    aria-label="user"
-                    color="inherit"
-                  >
-                    <FavoriteIcon />
-                  </IconButton>
-                )}
-              ></NavItem>
-              <NavItem
-                renderElement={(handlePopoverOpen) => (
-                  <IconButton
-                    onMouseEnter={handlePopoverOpen}
-                    onClick={() => history.push("/checkout")}
-                    aria-label="user"
-                    color="inherit"
-                  >
-                    <CartIconComponent />
-                  </IconButton>
-                )}
-              >
-                <Box className={classes.popoverUserDesktop}>
-                  <PopoverComponent
-                    height="auto"
-                    maxHeight="420px"
-                    padding="0"
-                    transform="translateX(-63%)"
-                  >
-                    <CartDropdown />
-                  </PopoverComponent>
-                </Box>
-              </NavItem>
-            </ul>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mr={4}
+          >
+            {/* <ul className={classes.navBarItem}> */}
+            <NavItem
+              renderElement={(handlePopoverOpen) => (
+                <IconButton
+                  onMouseEnter={handlePopoverOpen}
+                  onClick={() => history.push("/identity")}
+                  aria-label="user"
+                  color="inherit"
+                >
+                  <PersonIcon />
+                </IconButton>
+              )}
+            >
+              <Box className={classes.popoverUserDesktop}>
+                <PopoverComponent height="40px">
+                  <PopoverUser currentUser={currentUser} />
+                </PopoverComponent>
+              </Box>
+            </NavItem>
+            <NavItem
+              renderElement={(handlePopoverOpen) => (
+                <IconButton
+                  // onMouseEnter={handlePopoverOpen}
+                  // onClick={() => history.push("/identity")}
+                  aria-label="user"
+                  color="inherit"
+                >
+                  <FavoriteIcon />
+                </IconButton>
+              )}
+            ></NavItem>
+            <NavItem
+              renderElement={(handlePopoverOpen) => (
+                <IconButton
+                  onMouseEnter={handlePopoverOpen}
+                  onClick={() => history.push("/checkout")}
+                  aria-label="user"
+                  color="inherit"
+                >
+                  <CartIconComponent />
+                </IconButton>
+              )}
+            >
+              <Box className={classes.popoverUserDesktop}>
+                <PopoverComponent
+                  height="auto"
+                  maxHeight="420px"
+                  padding="0"
+                  transform="translateX(-63%)"
+                >
+                  <CartDropdown />
+                </PopoverComponent>
+              </Box>
+            </NavItem>
+            {/* </ul> */}
           </Box>
         </Toolbar>
       </AppBar>

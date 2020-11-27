@@ -47,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
   print: {
     display: "none",
   },
+  fixedOnScroll: {
+    position: "fixed",
+  },
 }));
 
 const CheckOutPage = ({ cartitems = [], totalprice, currentUser }) => {
@@ -110,6 +113,7 @@ const CheckOutPage = ({ cartitems = [], totalprice, currentUser }) => {
                 height={matches ? "auto" : "20%"}
                 px={2}
                 bgcolor="white"
+                // className={matches ? null : classes.fixedOnScroll}
               >
                 <Grid xs={12} item>
                   {matches ? null : (

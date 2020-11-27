@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 
 //actions
@@ -50,6 +50,8 @@ import {
 } from "@material-ui/core";
 
 import MuiAlert from "@material-ui/lab/Alert";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import UseStyles from "./Styles";
 
@@ -75,11 +77,16 @@ const ProductDetail = ({
   const [state, setState] = useState({
     open: false,
   });
+  const [slideIndex, setSlideIndex] = useState(0);
+  const slickRef = useRef();
+
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
 
   const classes = UseStyles();
   let match = useRouteMatch();
-  console.log({ product });
-  console.log({ suggestedCollections });
+  // console.log({ product });
+  // console.log({ suggestedCollections });
   const { tagid, productId, collectionId } = match.params;
 
   // console.log(match.params);
@@ -117,28 +124,9 @@ const ProductDetail = ({
 
       fetchSuggestedCollections(tagid, pickedProduct.name);
     }
+
+    console.log(slickRef);
   });
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PreviewArrow />,
-  };
-
-  // const settingsSuggestions = {
-  //   dots: true,
-  //   infinite: true,
-  //   speed: 500,
-  //   slidesToShow: 2,
-  //   slidesToScroll: 1,
-  //   nextArrow: <NextArrow />,
-  //   prevArrow: <PreviewArrow />,
-  // };
-  // console.log(categories);
 
   const { open } = state;
 
@@ -175,89 +163,151 @@ const ProductDetail = ({
     handleClick();
   };
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    fade: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    nextArrow: <NextArrow />,
+    prevArrow: <PreviewArrow />,
+  };
+
+  const settingsDesktop = {
+    dots: true,
+    dotsClass: "slick-dots slick-thumb",
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    // variableWidth: true,
+    // adaptiveHeight: true,
+    // beforeChange: (current, next) => setSlideIndex(next),
+  };
+
   return (
     <Grid container>
       {product ? (
         <>
-          <Grid item xs={12} sm={8}>
-            <Slider {...settings}>
-              {product.images.map((url, indexColl) => (
-                <img key={indexColl} src={`http://${url}`} alt="" />
-              ))}
-            </Slider>
-          </Grid>
-          <Grid xs={12} item>
-            <Box mt={4} p={1} mb={1}>
-              <Typography variant="subtitle1">{product.name}</Typography>
-            </Box>
-          </Grid>
-          <Grid xs={12} component={Box} p={1} mb={1} item>
-            <Typography variant="h6">{product.price.current.text}</Typography>
-            <Box display="flex" flexDirection="row" justifyContent="flex-start">
-              <DoneIcon />
-              <Typography component="h6">Envio Gratis</Typography>
-            </Box>
-          </Grid>
-          <Grid xs={12} item>
-            <Box mt={2} p={1}>
-              <Typography variant="subtitle1">
-                <span className={classes.bold}> Color: </span> Negro
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid xs={12} item>
-            <Box mt={2} p={1}>
-              <Typography variant="subtitle1">
-                <span className={classes.bold}> Talla: </span>
-              </Typography>
-              <Box>
-                <FormControl required variant="filled" fullWidth>
-                  <InputLabel id="select-talla">Selecciona tu talla</InputLabel>
-                  <Select
-                    required
-                    labelId="select-talla"
-                    id="talla"
-                    value={talla}
-                    name="talla"
-                    onChange={handleTalla}
-                  >
-                    {product.sizes.map((size, index) => {
-                      return (
-                        <MenuItem key={index} value={size}>
-                          {size}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-                {tallaError && <Alert severity="error">{tallaError}</Alert>}
+          <Grid item xs={12} sm={7}>
+            {matches ? (
+              <Slider {...settings}>
+                {product.images.map((url, indexColl) => (
+                  <div>
+                    <img key={indexColl} src={`http://${url}`} alt="" />
+                  </div>
+                ))}
+              </Slider>
+            ) : (
+              <Box p={2}>
+                <Slider ref={slickRef} {...settingsDesktop}>
+                  {product.images.map((url, indexColl) => (
+                    <Box>
+                      <img
+                        style={{ height: "500px", width: "500px" }}
+                        key={indexColl}
+                        src={`http://${url}`}
+                        alt=""
+                      />
+                    </Box>
+                  ))}
+                </Slider>
+
+                <Box mt={2.5}>
+                  <ul className={classes.imagesSlides}>
+                    {product.images.map((url, indexColl) => (
+                      <li className={classes.li}>
+                        <img
+                          onClick={() => slickRef.current.slickGoTo(indexColl)}
+                          style={{ height: "90px", width: "90px" }}
+                          key={indexColl}
+                          src={`http://${url}`}
+                          alt=""
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </Box>
               </Box>
+            )}
+          </Grid>
+          <Grid xs={12} sm={5} item>
+            <Box px={3} py={2}>
+              <Box mt={4} p={1} mb={1}>
+                <Typography variant="subtitle1">{product.name}</Typography>
+              </Box>
+              <Box p={1} mb={1}>
+                <Typography variant="h6">
+                  {product.price.current.text}
+                </Typography>
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="flex-start"
+                >
+                  <DoneIcon />
+                  <Typography component="h6">Envio Gratis</Typography>
+                </Box>
+              </Box>
+              <Box mt={2} p={1}>
+                <Typography variant="subtitle1">
+                  <span className={classes.bold}> Color: </span> Negro
+                </Typography>
+              </Box>
+              <Box mt={2} p={1}>
+                <Typography variant="subtitle1">
+                  <span className={classes.bold}> Talla: </span>
+                </Typography>
+                <Box>
+                  <FormControl required variant="filled" fullWidth>
+                    <InputLabel id="select-talla">
+                      Selecciona tu talla
+                    </InputLabel>
+                    <Select
+                      required
+                      labelId="select-talla"
+                      id="talla"
+                      value={talla}
+                      name="talla"
+                      onChange={handleTalla}
+                    >
+                      {product.sizes.map((size, index) => {
+                        return (
+                          <MenuItem key={index} value={size}>
+                            {size}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                  {tallaError && <Alert severity="error">{tallaError}</Alert>}
+                </Box>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mt={2} p={1}>
+                <Button
+                  startIcon={<AddShopIcon />}
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  size="small"
+                  onClick={() => addToTheCart(product)}
+                >
+                  añadir a mi bolsa
+                </Button>
+                <IconButton
+                  onClick={() => AddSavedList(product, tagid, collectionId)}
+                  color="primary"
+                  aria-label="Favoritet"
+                >
+                  <FavoriteBorderIcon fontSize="large" />
+                </IconButton>
+              </Box>
+              {productAdded && <Alert severity="success">{productAdded}</Alert>}
             </Box>
           </Grid>
           <Grid xs={12} item>
-            <Box display="flex" justifyContent="space-between" mt={2} p={1}>
-              <Button
-                startIcon={<AddShopIcon />}
-                variant="contained"
-                color="primary"
-                fullWidth
-                size="small"
-                onClick={() => addToTheCart(product)}
-              >
-                añadir a mi bolsa
-              </Button>
-              <IconButton
-                onClick={() => AddSavedList(product, tagid, collectionId)}
-                color="primary"
-                aria-label="Favoritet"
-              >
-                <FavoriteBorderIcon fontSize="large" />
-              </IconButton>
-            </Box>
-            {productAdded && <Alert severity="success">{productAdded}</Alert>}
-          </Grid>
-          <Grid xs={12} item>
-            <Box mt={3} p={1}>
+            <Box mt={3} p={3}>
               <Typography variant="h6" className={classes.bold}>
                 DETALLES DEL PRODUCTO
               </Typography>
@@ -278,6 +328,7 @@ const ProductDetail = ({
             <SlickCollectionWitSpinner
               isLoading={isLoading}
               collections={suggestedCollections}
+              slidesToShow={matches ? 2 : 4}
             />
           </Box>
         </Box>

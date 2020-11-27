@@ -85,6 +85,7 @@ const CollectionOverview = ({
           <SlickCollectionWitSpinner
             isLoading={isLoading}
             collections={suggestedCollections}
+            slidesToShow={matches ? 2 : 4}
           />
         </Box>
       </Box>

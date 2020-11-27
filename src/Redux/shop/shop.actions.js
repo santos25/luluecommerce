@@ -67,6 +67,7 @@ async function fetchCollections(genre, collectionId) {
     .collection("collections")
     .where("genre", "==", genre);
   const snapshot = await collecRef.get();
+  console.log(snapshot.docs);
   const collCategRef = snapshot.docs[0].ref
     .collection("categories")
     .where("name", "==", collectionId);

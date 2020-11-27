@@ -5,13 +5,15 @@ export default makeStyles((theme) => ({
     position: "absolute",
     top: "60px",
     width: "300px",
+    minHeight: "400px",
+    maxHeight: "450px",
     transform: "translateX(-45%)",
     border: "1px solid #474a4d",
     borderRadius: "8px",
     padding: "1rem",
     overflow: "hidden",
     transition: "height var(500ms) ease",
-    backgroundColor: "#eee",
+    backgroundColor: "white",
     color: theme.palette.common.black,
   },
   menu: {
@@ -19,7 +21,7 @@ export default makeStyles((theme) => ({
   },
 
   menuItem: {
-    height: "50px",
+    height: "auto",
     display: "flex",
     alignItems: "center",
     borderRadius: "8px",

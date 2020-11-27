@@ -10,8 +10,8 @@ export default makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
-    // width: "60px",
-    // height: "60px",
+    // width: "40px",
+    // height: "40px",
     // marginRight: theme.spacing(5),
     [theme.breakpoints.up("sm")]: {
       // width: "70px",
