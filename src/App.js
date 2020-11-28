@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
   containerApp: {
     maxWidth: "1170px",
     margin: "0 auto",
+    minHeight: "calc(100vh - 64px - 218px)",
   },
 }));
 
@@ -136,7 +137,12 @@ const App = ({ setCurrentUser, currentUser, fetchCollectionsOverView }) => {
                   <SavedList />
                 </Route>
                 <Route exact path="/checkout">
-                  <Box mb={2} className={classes.bodyCheckout}>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    pb={2}
+                    className={classes.bodyCheckout}
+                  >
                     <CheckoutPage />
                   </Box>
                 </Route>

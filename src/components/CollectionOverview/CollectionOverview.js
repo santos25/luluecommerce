@@ -75,6 +75,11 @@ const CollectionOverview = ({
       )}
 
       <Box mt={1}>
+        <Box p={1} my={1}>
+          <Typography variant="h5" align="center">
+            Nuevas Colecciones
+          </Typography>
+        </Box>
         <Categories categories={categories} />
       </Box>
       <Box my={2} px={1}>

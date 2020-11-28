@@ -36,9 +36,9 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     width: "100%",
     height: "auto",
-    backgroundPosition: "center center",
-    backgroundSize: "cover",
-    objectFit: "cover",
+    // backgroundPosition: "center center",
+    // backgroundSize: "cover",
+    // objectFit: "cover",
   },
 }));
 
@@ -54,9 +54,6 @@ const Categories = ({ categories }) => {
     <>
       <div className={classes.root}>
         <GridList cellHeight={180} className={classes.gridList}>
-          {/* <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
-            <ListSubheader component="div">December</ListSubheader>
-          </GridListTile> */}
           {Object.keys(categories)
             .map((key) => categories[key])
             .map((category) => {

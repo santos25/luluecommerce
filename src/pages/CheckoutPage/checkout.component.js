@@ -190,7 +190,7 @@ const CheckOutPage = ({ cartitems = [], totalprice, currentUser }) => {
         </Box>
       ) : (
         <>
-          <Grid component={Box} mt={2} container>
+          <Grid component={Box} mt={2} flexGrow={1} container>
             <Grid xs={12} item>
               <Box textAlign="center">
                 <MallIcon fontSize="large" />
