@@ -77,7 +77,7 @@ const ProductDetail = ({
   const [state, setState] = useState({
     open: false,
   });
-  const [slideIndex, setSlideIndex] = useState(0);
+  // const [slideIndex, setSlideIndex] = useState(0);
   const slickRef = useRef();
 
   const theme = useTheme();
@@ -92,8 +92,11 @@ const ProductDetail = ({
   // console.log(match.params);
   useEffect(() => {
     console.log("PRODUCT DETAIL");
-    if (!product) {
+    window.scrollTo(0, 0);
+
+    if (!product || product.name.toLowerCase() !== productId.toLowerCase()) {
       console.log("Fetching");
+
       const fetchProductDetail = async () => {
         // console.log(match.params.collectionId);
         const colleRef = firestore
@@ -111,7 +114,7 @@ const ProductDetail = ({
       };
       fetchProductDetail();
     }
-  });
+  }, [collectionId, productId, product]);
 
   useEffect(() => {
     // console.log(suggestedCollectionsSelected);
@@ -126,7 +129,7 @@ const ProductDetail = ({
     }
 
     console.log(slickRef);
-  });
+  }, [suggestedCollections, fetchSuggestedCollections, categories, tagid]);
 
   const { open } = state;
 
@@ -194,7 +197,7 @@ const ProductDetail = ({
             {matches ? (
               <Slider {...settings}>
                 {product.images.map((url, indexColl) => (
-                  <div>
+                  <div key={indexColl}>
                     <img key={indexColl} src={`http://${url}`} alt="" />
                   </div>
                 ))}
@@ -203,7 +206,7 @@ const ProductDetail = ({
               <Box p={2}>
                 <Slider ref={slickRef} {...settingsDesktop}>
                   {product.images.map((url, indexColl) => (
-                    <Box>
+                    <Box key={indexColl}>
                       <img
                         style={{ height: "500px", width: "500px" }}
                         key={indexColl}
@@ -217,7 +220,7 @@ const ProductDetail = ({
                 <Box mt={2.5}>
                   <ul className={classes.imagesSlides}>
                     {product.images.map((url, indexColl) => (
-                      <li className={classes.li}>
+                      <li key={indexColl} className={classes.li}>
                         <img
                           onClick={() => slickRef.current.slickGoTo(indexColl)}
                           style={{ height: "90px", width: "90px" }}

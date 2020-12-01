@@ -39,7 +39,7 @@ const CollectionPage = ({
   const classes = useStyles();
 
   const { tagid, collectionId } = match.params;
-
+  console.log(collections);
   useEffect(() => {
     console.log("render new  Collection page");
     fetchCollections(tagid, collectionId);

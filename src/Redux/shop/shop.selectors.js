@@ -29,6 +29,8 @@ export const dataProductDetailSelector = (productId) =>
 
     if (typeof data.collections.products !== "undefined") {
       return (product = data.collections.products.find((item) => {
+        // console.log(productId.toLowerCase());
+
         return item.name.toLowerCase() === productId.toLowerCase();
       }));
     }

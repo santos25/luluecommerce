@@ -1,6 +1,6 @@
 import React from "react";
 import Slider from "react-slick";
-import { useHistory, useRouteMatch } from "react-router-dom";
+// import { useHistory, useRouteMatch } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
@@ -14,8 +14,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const Header = ({ images }) => {
-  const history = useHistory();
-  const match = useRouteMatch();
+  // const history = useHistory();
+  // const match = useRouteMatch();
   const classes = useStyles();
 
   const settings = {

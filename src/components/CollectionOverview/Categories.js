@@ -11,7 +11,6 @@ import {
 
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { Height } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -11,6 +11,7 @@ import { isLoadingOverView } from "../../Redux/shop/shop.selectors";
 import CollectionOverview from "../../components/CollectionOverview/CollectionOverview";
 import CollectionPage from "../CollectionPage/CollectionPage";
 import ProductDetail from "../../components/productDetail/ProductDetail";
+// import ScrollToTop from "../../components/ScrollToTop/ScrollToTop";
 
 //HOC
 import WithSpinner from "../../components/with-spinner/withSpinner";

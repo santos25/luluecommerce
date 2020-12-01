@@ -20,7 +20,6 @@ import {
 
 //components
 import MiniDrawer from "./components/Admin-components/mini-drawer/MiniDrawer";
-
 import Nav from "./components/Navegation/Nav";
 // import HomePage from "./pages/homepage/HomePage";
 import ShopPage from "./pages/ShopPage/ShopPage";

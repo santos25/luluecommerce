@@ -3,17 +3,12 @@ import "./cart-item.styles.css";
 
 import {
   makeStyles,
-  Box,
   Typography,
-  ButtonBase,
   Card,
   CardContent,
-  IconButton,
   CardMedia,
 } from "@material-ui/core";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import SkipNextIcon from "@material-ui/icons/SkipNext";
-import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",

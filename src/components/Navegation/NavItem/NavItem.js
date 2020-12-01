@@ -3,11 +3,10 @@ import React, { useState } from "react";
 //Material UI
 import { Box, ClickAwayListener } from "@material-ui/core";
 
-import UseStyles from "./Styles";
+// import UseStyles from "./Styles";
 
 const NavItem = (props) => {
   const [open, setOpen] = useState(props.state ? props.state : false);
-  const classes = UseStyles();
 
   const handlePopoverOpen = (event) => {
     // setAnchorEl(event.currentTarget);

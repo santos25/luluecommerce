@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 // import { auth } from "../../FireBase/FireBaseUtil";
-
 import { connect } from "react-redux";
 
 //selectors
@@ -20,6 +19,7 @@ import NavItem from "./NavItem/NavItem";
 import DropdownMenu from "./DropdownMenu/DropdownMenu";
 import PopoverComponent from "../PopOverComponent/PopoverComponent";
 import CartDropdown from "../Card-Dropdown/card-dropdown";
+import AutoCompleteSearch from "../AutoCompleteSearch/AutoCompleteSearch";
 
 //material
 import {
@@ -31,16 +31,11 @@ import {
 import {
   AppBar,
   Toolbar,
-  makeStyles,
-  Button,
-  Menu,
   Typography,
   IconButton,
-  MenuItem,
   SwipeableDrawer,
   Box,
   InputBase,
-  ClickAwayListener,
 } from "@material-ui/core";
 
 import { useTheme } from "@material-ui/core/styles";
@@ -144,14 +139,15 @@ const Nav = ({ currentUser, hidden, categories }) => {
                 <div className={classes.searchIcon}>
                   <SearchIcon />
                 </div>
-                <InputBase
+                <AutoCompleteSearch />
+                {/* <InputBase
                   placeholder="Buscar…"
                   classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput,
                   }}
                   inputProps={{ "aria-label": "buscar" }}
-                />
+                /> */}
               </div>
             </Box>
           </div>
