@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 //actions
-import { fetchingProductsAsync } from "../../../Redux/Admin/Products/product.actions";
+// import { fetchingProductsAsync } from "../../../Redux/Admin/Products/product.actions";
 
 //firestore
 import { removeItem } from "../../../FireBase/FireBaseUtil";
@@ -239,7 +239,8 @@ const ProductList = ({ products, fetchingProductsAsync }) => {
   );
 };
 
-const mapdispatchToState = (dispatch) => ({
-  fetchingProductsAsync: () => dispatch(fetchingProductsAsync()),
-});
-export default connect(null, mapdispatchToState)(ProductList);
+// const mapdispatchToState = (dispatch) => ({
+//   fetchingProductsAsync: () => dispatch(fetchingProductsAsync()),
+// });
+
+export default ProductList;

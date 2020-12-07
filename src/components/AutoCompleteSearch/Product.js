@@ -23,9 +23,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Product = ({ image, name, price }) => {
+const Product = ({ hit }) => {
   const classes = useStyles();
 
+  const { images, price } = hit;
   return (
     <Paper className={classes.paper}>
       <Grid container spacing={2}>
@@ -34,7 +35,7 @@ const Product = ({ image, name, price }) => {
             <img
               className={classes.img}
               alt="complex"
-              src={`http://${image}`}
+              src={`http://${images[0]}`}
             />
           </ButtonBase>
         </Grid>
@@ -42,7 +43,8 @@ const Product = ({ image, name, price }) => {
           <Grid item xs={12} container direction="column" spacing={2}>
             <Grid item xs>
               <Typography gutterBottom variant="subtitle1">
-                {name.substring(0, 20)}
+                {/* {name.substring(0, 20)} */}
+                <Highlight attribute="name" hit={hit} />
               </Typography>
               <Grid
                 item
@@ -51,7 +53,9 @@ const Product = ({ image, name, price }) => {
                 alignItems="center"
                 container
               >
-                <Typography variant="subtitle1">{price}</Typography>
+                <Typography variant="subtitle1">
+                  {price.current.text}
+                </Typography>
               </Grid>
             </Grid>
           </Grid>

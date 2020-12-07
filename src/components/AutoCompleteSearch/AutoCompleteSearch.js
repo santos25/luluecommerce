@@ -41,6 +41,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const getSuggestionSelected = (hit) => {
+  console.log(hit);
+};
+
 const AutoComplete = connectAutoComplete(
   ({ hits, currentRefinement, refine }) => {
     const classes = useStyles();
@@ -50,9 +54,10 @@ const AutoComplete = connectAutoComplete(
         suggestions={hits}
         onSuggestionsFetchRequested={({ value }) => refine(value)}
         onSuggestionsClearRequested={() => refine("")}
-        getSuggestionValue={(hit) => {
-          console.log(hit.name);
-        }}
+        // getSuggestionValue={(hit) => {
+        //   console.log(hit);
+        // }}
+        getSuggestionValue={getSuggestionSelected}
         renderSuggestion={(hit) => {
           return <ProductItem hit={hit} />;
         }}
@@ -72,9 +77,10 @@ const ProductItem = ({ hit }) => {
   // const image = `https://ecommerce-images.algolia.com/img/produit/nano/${hit.objectID}-1.jpg%3Falgolia`;
   return (
     <Product
-      name={hit.name}
-      image={hit.images[0]}
-      price={hit.price.current.text}
+      hit={hit}
+      // name={hit.name}
+      // image={hit.images[0]}
+      // price={hit.price.current.text}
     />
   );
 };
@@ -84,7 +90,7 @@ const AutoCompleteSearch = () => {
   return (
     <InstantSearch indexName="dev_products" searchClient={searchClient}>
       {/* <SearchBox /> */}
-      <Configure hitsPerPage={5} />
+      <Configure hitsPerPage={6} />
       {/* <div className={classes.containerSuggestions}> */}
       <AutoComplete />
       {/* </div> */}

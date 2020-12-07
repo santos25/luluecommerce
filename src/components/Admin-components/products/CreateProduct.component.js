@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // import { useHistory, useRouteMatch } from "react-router-dom";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 import {
   uploadImages,
   uploadProductDB,
@@ -8,13 +8,13 @@ import {
 } from "../../../FireBase/FireBaseUtil";
 
 //selectors
-import { isUploadinSelector } from "../../../Redux/Admin/Products/product.selectors";
+// import { isUploadinSelector } from "../../../Redux/Admin/Products/product.selectors";
 
 //actions
-import {
-  uploadProductsStart,
-  uploadProductAsync,
-} from "../../../Redux/Admin/Products/product.actions";
+// import {
+//   uploadProductsStart,
+//   uploadProductAsync,
+// } from "../../../Redux/Admin/Products/product.actions";
 
 import { CloudUpload } from "@material-ui/icons";
 
@@ -517,15 +517,16 @@ const CreateProduct = ({
   );
 };
 
-const mapDispatchToState = (dispatch) => ({
-  // addNewItems: (product) => dispatch(addNewItemsAsync(product)),
-  // addNewCategory: (product) => dispatch(addCategory(product)),
-  uploadStart: () => dispatch(uploadProductsStart()),
-  uploadSuccess: () => dispatch(uploadProductAsync()),
-});
+// const mapDispatchToState = (dispatch) => ({
+//   // addNewItems: (product) => dispatch(addNewItemsAsync(product)),
+//   // addNewCategory: (product) => dispatch(addCategory(product)),
+//   uploadStart: () => dispatch(uploadProductsStart()),
+//   uploadSuccess: () => dispatch(uploadProductAsync()),
+// });
 
-const mapStateToProps = (state) => ({
-  isUploading: isUploadinSelector(state),
-});
+// const mapStateToProps = (state) => ({
+//   isUploading: isUploadinSelector(state),
+// });
 
-export default connect(mapStateToProps, mapDispatchToState)(CreateProduct);
+// export default connect(mapStateToProps, mapDispatchToState)(CreateProduct);
+export default CreateProduct;
