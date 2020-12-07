@@ -100,9 +100,30 @@ footer {
   transform: translateX(0%);
   transition: all var(--speed) ease;
 }
-.menu-secondary-exit {
-}
+
 .menu-secondary-exit-active {
   transform: translateX(110%);
   transition: all var(--speed) ease;
+}
+
+/**
+ * Multi-index
+ */
+
+.index_hit_content {
+  padding: 5px 10px;
+}
+
+.index_hit_picture {
+  max-width: 128px;
+  max-height: 128px;
+}
+
+.index_hit {
+  max-width: auto;
+  display: flex;
+  background-color: white;
+  color: black;
+  max-height: 1000px;
+  overflow-y: scroll;
 }

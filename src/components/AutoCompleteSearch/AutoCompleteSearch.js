@@ -1,13 +1,14 @@
 import React from "react";
+import Autosuggest from "react-autosuggest";
+
+import Product from "./Product";
 
 //algolia Search Engine
 import algoliasearch from "algoliasearch/lite";
 import {
   connectAutoComplete,
   InstantSearch,
-  SearchBox,
-  Highlight,
-  Hits,
+  Configure,
 } from "react-instantsearch-dom";
 import { Box, InputBase, makeStyles } from "@material-ui/core";
 
@@ -17,6 +18,9 @@ const searchClient = algoliasearch(
 );
 
 const useStyles = makeStyles((theme) => ({
+  // containerSearch: {
+  //   position: "relative",
+  // },
   inputRoot: {
     color: "inherit",
   },
@@ -30,38 +34,65 @@ const useStyles = makeStyles((theme) => ({
       width: "20ch",
     },
   },
+  containerSuggestions: {
+    // position: "absolute",
+    // maxHeight: "500px",
+    // overflowY: "scroll",
+  },
 }));
 
-const AutoComplete = ({ hits, currentRefinement, refine }) => (
-  <Autosuggest
-    suggestions={hits}
-    multiSection={true}
-    onSuggestionsFetchRequested={({ value }) => refine(value)}
-    onSuggestionsClearRequested={() => refine("")}
-    getSuggestionValue={(hit) => hit.name}
-    renderSuggestion={(hit) =>
-      hit.brand ? <Product hit={hit} /> : <CategoryOrBrand hit={hit} />
-    }
-    inputProps={{
-      placeholder: "Search for a category, brand or product",
-      value: currentRefinement,
-      onChange: () => {},
-    }}
-    renderSectionTitle={(section) => section.index}
-    getSectionSuggestions={(section) => section.hits}
-  />
+const AutoComplete = connectAutoComplete(
+  ({ hits, currentRefinement, refine }) => {
+    const classes = useStyles();
+    console.log(hits);
+    return (
+      <Autosuggest
+        suggestions={hits}
+        onSuggestionsFetchRequested={({ value }) => refine(value)}
+        onSuggestionsClearRequested={() => refine("")}
+        getSuggestionValue={(hit) => {
+          console.log(hit.name);
+        }}
+        renderSuggestion={(hit) => {
+          return <ProductItem hit={hit} />;
+        }}
+        inputProps={{
+          placeholder: "Buscar Productos",
+          value: currentRefinement,
+          onChange: () => {},
+        }}
+        // renderSectionTitle={(section) => section.index}
+        // getSectionSuggestions={(section) => section.hits}
+      />
+    );
+  }
 );
 
+const ProductItem = ({ hit }) => {
+  // const image = `https://ecommerce-images.algolia.com/img/produit/nano/${hit.objectID}-1.jpg%3Falgolia`;
+  return (
+    <Product
+      name={hit.name}
+      image={hit.images[0]}
+      price={hit.price.current.text}
+    />
+  );
+};
+
 const AutoCompleteSearch = () => {
+  const classes = useStyles();
   return (
     <InstantSearch indexName="dev_products" searchClient={searchClient}>
       {/* <SearchBox /> */}
-      <CustomAutocomplete />
+      <Configure hitsPerPage={5} />
+      {/* <div className={classes.containerSuggestions}> */}
+      <AutoComplete />
+      {/* </div> */}
       {/* <Hits hitComponent={Hit} /> */}
     </InstantSearch>
   );
 };
 
-const CustomAutocomplete = connectAutoComplete(AutoComplete);
+// const CustomAutocomplete = connectAutoComplete(AutoComplete);
 
 export default AutoCompleteSearch;

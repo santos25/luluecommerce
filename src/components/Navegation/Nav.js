@@ -136,10 +136,12 @@ const Nav = ({ currentUser, hidden, categories }) => {
 
             <Box flexGrow={1}>
               <div className={classes.search}>
-                <div className={classes.searchIcon}>
+                {/* <div className={classes.searchIcon}>
                   <SearchIcon />
-                </div>
+                </div> */}
+
                 <AutoCompleteSearch />
+
                 {/* <InputBase
                   placeholder="Buscar…"
                   classes={{
