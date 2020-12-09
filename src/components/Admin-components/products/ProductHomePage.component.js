@@ -30,37 +30,63 @@ import {
 
 const ProductListWithSpinner = WithSpinner(ProductList);
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
-
 const ProductPage = () => {
   const [currentPage, setCurrentPage] = useState("home");
-  // const [products, setProducts] = useState([]);
-  // const [genre, setGenre] = useState("");
+  const [colelctionSelected, setCollectionSelected] = useState({
+    category: "",
+    collection: "",
+  });
+  const [categories, setCategories] = useState([]);
+  const [collections, setCollections] = useState([]);
+  const [products, setProducts] = useState([]);
 
-  const classes = useStyles();
-  // console.log(products);
   useEffect(() => {
     console.log("fetching Products");
-
-    // fetchProductsAsync();
+    const refCollec = firestore.collection("genre").doc("mujer");
+    refCollec.get().then((document) => {
+      console.log(document.data());
+      setCategories(document.data().categorias);
+    });
   }, []);
 
-  const handleGenre = (e) => {
-    setGenre(e.target.value);
+  const handleCurrentPage = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleSelectInputs = (e) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    setCollectionSelected({ ...colelctionSelected, [name]: value });
+    if (name === "collection") {
+      const collectionRef = firestore
+        .collection("collections")
+        .doc("kZzILXWTxyZYglE6IDLx")
+        .collection("categories")
+        .where("name", "==", value);
+
+      collectionRef.get().then((snapshot) => {
+        const data = snapshot.docs[0].data();
+        console.log(data.products);
+        setProducts(data.products);
+      });
+    } else {
+      setCollections(categories[value]);
+    }
   };
 
   const renderPage = () => {
     switch (currentPage) {
       case "home":
-        return <ProductList />;
+        return (
+          <ProductList
+            handleSelectInputs={handleSelectInputs}
+            colelctionSelected={colelctionSelected}
+            categories={Object.keys(categories)}
+            collections={collections}
+            products={products}
+            handleCurrentPage={handleCurrentPage}
+          />
+        );
       case "edit":
         return <EditProduct />;
       case "create":

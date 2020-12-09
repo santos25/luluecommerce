@@ -17,6 +17,7 @@ import {
 // } from "../../../Redux/Admin/Products/product.actions";
 
 import { CloudUpload } from "@material-ui/icons";
+import SelectInput from "../Utils/SelectInput";
 
 import {
   CircularProgress,
@@ -95,12 +96,7 @@ function getStyles(name, personName, theme) {
   };
 }
 
-const CreateProduct = ({
-  uploadStart,
-  uploadSuccess,
-  isUploading,
-  handleClose,
-}) => {
+const CreateProduct = ({}) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -108,6 +104,7 @@ const CreateProduct = ({
     brand: "",
     category: "",
     genre: "",
+    collection: "",
     itemsQuantity: 1,
   });
   let [items, setItems] = useState([
@@ -115,7 +112,9 @@ const CreateProduct = ({
   ]);
   let [itemschips, setItemsChip] = useState([{ chips: [] }]);
   const [categories, setCategories] = useState([]);
+  const [collections, setCollections] = useState([]);
   const [tallas, setTallas] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     // if (productEdit.category) {
@@ -162,26 +161,28 @@ const CreateProduct = ({
     // fetchCategoriesByGenre(value)
     const prendasRef = firestore.collection("genre").doc(value);
     prendasRef.get().then((doc) => {
-      const { prendas } = doc.data();
-      const valuesPrendas = Object.keys(prendas).map((prenda) => ({
-        name: prendas[prenda].name,
-        talla: prendas[prenda].talla,
-      }));
+      const { categorias } = doc.data();
+      // const valuesPrendas = Object.keys(categorias).map((prenda) => ({
+      //   name: prendas[prenda].name,
+      //   talla: prendas[prenda].talla,
+      // }));
+      // const valuesPrendas = Object.keys(categorias);
+      // console.log(valuesPrendas);
 
-      console.log(valuesPrendas);
-
-      setCategories(valuesPrendas);
+      setCategories(categorias);
     });
     setProduct({ ...product, [name]: value });
   };
 
   const handleSelectCategory = (e) => {
     const { name, value } = e.target;
-    const categoryObjectSelected = categories.find(
-      (category) => category.name.toLowerCase() === value
-    );
-    console.log(categoryObjectSelected);
-    setTallas(categoryObjectSelected.talla);
+    const collections = categories[value];
+    // const categoryObjectSelected = categories.find(
+    //   (category) => category.name.toLowerCase() === value
+    // );
+    console.log(collections);
+    // setTallas(categoryObjectSelected.talla);
+    setCollections(collections);
     setProduct({ ...product, [name]: value });
   };
 
@@ -215,33 +216,50 @@ const CreateProduct = ({
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    uploadStart();
+    // uploadStart();
+    setIsUploading(true);
     console.log({ product });
     console.log({ items });
     const collectionRef = firestore
       .collection("collections")
-      .where("genre", "==", product.genre)
-      .where("brand", "==", product.brand);
+      .where("genre", "==", product.genre);
+    // .where("brand", "==", product.brand);
 
     collectionRef.get().then((snapshot) => {
       snapshot.docs.forEach(async (document) => {
         if (document.exists) {
-          // const DocData = { id: document.id, ...document.data() }
-          const uploadedItemsImages = await uploadImages(
-            items,
-            product.category,
-            product.genre
-          );
-          console.log(uploadedItemsImages);
-          const result = await uploadProductDB(
-            document,
-            product,
-            uploadedItemsImages
-          );
-          console.log(result);
-          uploadSuccess();
-          handleClose();
+          const docuRef = document.ref
+            .collection("categories")
+            .where("name", "==", product.collection);
+
+          docuRef.get().then((snapshot) => {
+            if (snapshot.empty) {
+              console.log("NO EXISTE DOCUMENTO");
+              const newDoc = document.ref.collection("categories").doc();
+              // const uploadedItemsImages = await uploadImages(
+              //   items,
+              //   product.category,
+              //   product.genre
+              // );
+              // console.log(uploadedItemsImages);
+              // const result = await uploadProductDB(
+              //   document,
+              //   product,
+              //   uploadedItemsImages
+              // );
+              // console.log(result);
+              setIsUploading(false);
+            } else {
+              const refDocExist = snapshot.docs[0].ref;
+
+              setIsUploading(false);
+            }
+          });
+
+          // uploadSuccess();
+          // handleClose();
         } else {
+          setIsUploading(false);
           console.log("No Brand || No Genre");
         }
       });
@@ -283,50 +301,34 @@ const CreateProduct = ({
                     value={product.genre}
                     name="genre"
                     onChange={handleSelectGenre}
-                    // defaultValue={productEdit ? productEdit.genre : null}
                   >
-                    <MenuItem value="hombre">Hombre</MenuItem>
+                    {/* <MenuItem value="hombre">Hombre</MenuItem> */}
                     <MenuItem value="mujer">Mujer</MenuItem>
-
-                    {/* {geners.map((genre, i) => (
-                                            <MenuItem key={i} value={genre.id}>{genre.value}</MenuItem>
-                                        ))} */}
                   </Select>
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={4}>
-                <FormControl fullWidth>
-                  <InputLabel id={`select-category`}> Cateogria</InputLabel>
-                  <Select
-                    labelId={`select-category`}
-                    id={`category`}
-                    // value={product.category}
-                    value={product.category}
-                    name="category"
-                    onChange={handleSelectCategory}
-                  >
-                    {categories.map((category, i) => (
-                      <MenuItem key={i} value={category.name.toLowerCase()}>
-                        {category.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <SelectInput
+                  label="category"
+                  name="category"
+                  value={product.category}
+                  handleSelect={handleSelectCategory}
+                  options={Object.keys(categories).map((item) => ({
+                    value: item,
+                    name: item,
+                  }))}
+                />
               </Grid>
               <Grid item xs={12} sm={4}>
-                <TextField
-                  onChange={handleInputs}
-                  // autoComplete="fname"
-                  name="brand"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="brand"
-                  label="Tienda"
-                  value={product.brand}
-                  // defaultValue={productEdit ? productEdit.brand : null}
-
-                  // autoFocus
+                <SelectInput
+                  label="colleccion"
+                  name="collection"
+                  value={product.collection}
+                  handleSelect={handleInputs}
+                  options={collections.map((item) => ({
+                    value: item.name,
+                    name: item.name,
+                  }))}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -351,7 +353,6 @@ const CreateProduct = ({
           </form>
         </div>
       </Container>
-
       <Container component="main" maxWidth="lg">
         <div className={classes.paper}>
           {items.map((item, index) => {
@@ -479,38 +480,6 @@ const CreateProduct = ({
           >
             Registrar Productos
           </Button>
-          {/* {productEdit ? (
-                        <Button
-                            onClick={handleAddNewItems}
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Agregar Items
-                        </Button>
-                    ) : (
-                            <Button
-                                onClick={handleRegister}
-                                // fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                            >
-                                Registrar Productos
-                            </Button>
-                        )
-
-                    } */}
-          {/* <Button
-                        onClick={backStep}
-                        // fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Regresar
-                     </Button> */}
         </div>
       </Container>
     </div>

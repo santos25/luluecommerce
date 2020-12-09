@@ -33,12 +33,12 @@ const TableList = ({ datas, columns, renderButtons }) => {
   const classes = useStyles();
 
   const handleChangePage = (event, newPage) => {
-    console.log(event);
+    // console.log(event);
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setRowsPerPage(parseInt(event.target.value));
   };
 
@@ -80,14 +80,11 @@ const TableList = ({ datas, columns, renderButtons }) => {
                       </TableCell>
                     )
                   )}
-                  {
-                    renderButtons && (
+                  {renderButtons && (
                     <TableCell>
-                    <Box>{renderButtons(index)}</Box>
-                  </TableCell>
-                    )
-                  }
-                  
+                      <Box>{renderButtons(index)}</Box>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>

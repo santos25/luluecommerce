@@ -63,11 +63,13 @@ export const fetchingCollectionsOverViewAsync = (genre) => {
 };
 
 async function fetchCollections(genre, collectionId) {
+  console.log(genre);
+  console.log(collectionId);
   const collecRef = firestore
     .collection("collections")
     .where("genre", "==", genre);
   const snapshot = await collecRef.get();
-  // console.log(snapshot.docs);
+
   const collCategRef = snapshot.docs[0].ref
     .collection("categories")
     .where("name", "==", collectionId);
@@ -95,15 +97,15 @@ export const fetchingCollectionsAsync = (genre, collectionId) => {
 export const fetchingSuggestedCollectionsAsync = (genre, collectionId) => {
   return async (dispatch) => {
     console.log("fetching Suggested collections Async");
-    dispatch(fetchingSuggestedCategoriesStart());
-
-    const result = await fetchCollections(genre, collectionId);
-
-    dispatch(
-      fetchingSuggestedCollectionsSucces({
-        type: result.name,
-        products: result.products,
-      })
-    );
+    if (genre === "mujer" || genre === "hombre") {
+      dispatch(fetchingSuggestedCategoriesStart());
+      const result = await fetchCollections(genre, collectionId);
+      dispatch(
+        fetchingSuggestedCollectionsSucces({
+          type: result.name,
+          products: result.products,
+        })
+      );
+    }
   };
 };
