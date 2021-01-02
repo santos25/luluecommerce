@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-// import FirmInput from '../FormInput/InputField';
-import { Link as RouterLink } from "react-router-dom";
 
-// import Button from '../Button/Button';
 import { auth, createDocumentUserDb } from "../../FireBase/FireBaseUtil";
 
 import { signInWithGoogle } from "../../FireBase/FireBaseUtil";
@@ -185,7 +182,7 @@ const SignUp = (props) => {
           <form className={classes.form}>
             <FormControl>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                   <TextField
                     onChange={handleInputs}
                     variant="outlined"

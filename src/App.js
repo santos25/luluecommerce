@@ -11,11 +11,15 @@ import { fetchingCollectionsOverViewAsync } from "./Redux/shop/shop.actions";
 import { currentUserSelector } from "./Redux/user/user-selectors";
 
 //Material UI
-import { ThemeProvider, createMuiTheme } from "@material-ui/core";
+import {
+  ThemeProvider,
+  createMuiTheme,
+  Box,
+  makeStyles,
+} from "@material-ui/core";
 
 //components
 import MiniDrawer from "./components/Admin-components/mini-drawer/MiniDrawer";
-
 import Nav from "./components/Navegation/Nav";
 // import HomePage from "./pages/homepage/HomePage";
 import ShopPage from "./pages/ShopPage/ShopPage";
@@ -46,7 +50,20 @@ const theme = createMuiTheme({
   },
 });
 
+const useStyles = makeStyles((theme) => ({
+  bodyCheckout: {
+    backgroundColor: "#eee",
+  },
+  containerApp: {
+    maxWidth: "1170px",
+    margin: "0 auto",
+    minHeight: "calc(100vh - 64px - 218px)",
+  },
+}));
+
 const App = ({ setCurrentUser, currentUser, fetchCollectionsOverView }) => {
+  const classes = useStyles();
+
   useEffect(() => {
     fetchCollectionsOverView("mujer");
   }, [fetchCollectionsOverView]);
@@ -103,27 +120,36 @@ const App = ({ setCurrentUser, currentUser, fetchCollectionsOverView }) => {
         ) : (
           <Router basename="/luluecommerce">
             <Nav />
-            <Switch>
-              <Route exact path="/">
-                <Redirect to="/mujer" />
-              </Route>
-              <Route
-                exact
-                path="/identity"
-                render={() =>
-                  currentUser ? <Redirect to="/mujer" /> : <SignInAndUpPage />
-                }
-              />
-              <Route exact path="/saved-lists">
-                <SavedList />
-              </Route>
-              <Route exact path="/checkout">
-                <CheckoutPage />
-              </Route>
-              <Route path="/:tagid">
-                <ShopPage />
-              </Route>
-            </Switch>
+            <div className={classes.containerApp}>
+              <Switch>
+                <Route exact path="/">
+                  <Redirect to="/mujer" />
+                </Route>
+                <Route
+                  exact
+                  path="/identity"
+                  render={() =>
+                    currentUser ? <Redirect to="/mujer" /> : <SignInAndUpPage />
+                  }
+                />
+                <Route exact path="/saved-lists">
+                  <SavedList />
+                </Route>
+                <Route exact path="/checkout">
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    pb={2}
+                    className={classes.bodyCheckout}
+                  >
+                    <CheckoutPage />
+                  </Box>
+                </Route>
+                <Route path="/:tagid">
+                  <ShopPage />
+                </Route>
+              </Switch>
+            </div>
             <Footer />
           </Router>
         )}

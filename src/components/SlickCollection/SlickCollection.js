@@ -3,21 +3,20 @@ import Slider from "react-slick";
 import NextArrow from "../SlickArrows/NextArrow";
 import PreviewArrow from "../SlickArrows/PreviewArrow";
 import CardImages from "../CardImages/CardImages";
+import { Container } from "@material-ui/core";
 
-import { Button, Container } from "@material-ui/core";
-
-const SlickCollection = ({ collections }) => {
+const SlickCollection = ({ collections, slidesToShow }) => {
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 2,
+    slidesToShow: slidesToShow,
     slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PreviewArrow />,
   };
 
-  console.log(collections);
+  // console.log(collections);
   return (
     <Container>
       <Slider {...settings}>

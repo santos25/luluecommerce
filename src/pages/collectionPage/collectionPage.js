@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+
+//selectors
 import {
   dataCollectionSelector,
   isLoadingCollections,
-  categoriesSelector,
 } from "../../Redux/shop/shop.selectors";
-import {
-  fetchingCollectionsAsync,
-  fetchingSuggestedCollectionsAsync,
-} from "../../Redux/shop/shop.actions";
+
+//actions
+import { fetchingCollectionsAsync } from "../../Redux/shop/shop.actions";
+
+//components
 import CardImages from "../../components/CardImages/CardImages";
 
 //firebase
-import { firestore } from "../../FireBase/FireBaseUtil";
 
+//material UI
 import {
   Box,
   Grid,
@@ -34,24 +36,15 @@ const CollectionPage = ({
   match,
   fetchCollections,
 }) => {
-  // const [collections, setCollections] = useState([]);
   const classes = useStyles();
 
   const { tagid, collectionId } = match.params;
-  console.log("collection Page");
+  console.log(collections);
   useEffect(() => {
     console.log("render new  Collection page");
-    // const pickedCategory =
-    //   categories[Math.floor(Math.random() * categories.length)];
-    // const pickedProduct =
-    //   pickedCategory[Math.floor(Math.random() * pickedCategory.length)];
-
     fetchCollections(tagid, collectionId);
-    // fetchSuggestedCollections(tagid, pickedProduct.name);
-  }, [tagid, collectionId]);
+  }, [tagid, collectionId, fetchCollections]);
 
-  // console.log(collections);
-  // console.log(isLoading);
   return (
     <Grid>
       <Grid component={Box} textAlign="center" xs={12} py={1} item>

@@ -4,7 +4,7 @@ import clsx from "clsx";
 //components
 import NavAdmin from "../NavAdmin/NavAdmin.component";
 import ProductHomePage from "../products/ProductHomePage.component";
-import ListPrendasComponent from "../prendas/ListPrendas";
+import ListPrendasComponent from "../prendas/HomePrendas";
 import UserHome from "../Users/UserHome";
 // import OrderList from "../Orders/OrderList";
 import { Image } from "../../../assets/images/logo.jpeg";

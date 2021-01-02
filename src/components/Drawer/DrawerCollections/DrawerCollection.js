@@ -1,15 +1,13 @@
 import React from "react";
 
+import ListItemComponent from "../../ListItemComponent/ListItemComponent";
+
 import {
   Box,
   Typography,
   makeStyles,
   IconButton,
-  ListItem,
   List,
-  ListItemAvatar,
-  Avatar,
-  Divider,
 } from "@material-ui/core";
 import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
 
@@ -63,34 +61,16 @@ const DrawerCollection = ({
       </Box>
       <Box>
         <List>
-          {collections.map((collection, index) => {
-            return (
-              <>
-                <ListItem
-                  key={index}
-                  onClick={() => redirectCollections(collection.name)}
-                  button
-                  alignItems="center"
-                >
-                  <ListItemAvatar>
-                    <Avatar
-                      alt="ropa"
-                      variant="circle"
-                      className={classes.large}
-                      src={`http://${collection.image}`}
-                      // "https://images.unsplash.com/photo-1572804013427-4d7ca7268217?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=401&q=80"
-                    />
-                  </ListItemAvatar>
-                  <Box display="flex" width="100%" justifyContent="center">
-                    <Typography variant="subtitle1">
-                      {collection.name}
-                    </Typography>
-                  </Box>
-                </ListItem>
-                <Divider />
-              </>
-            );
-          })}
+          {collections.map((collection, index) => (
+            <ListItemComponent
+              key={index}
+              text={collection.name}
+              getDataClick={() => redirectCollections(collection.name)}
+              avatarClass={classes.large}
+              image={collection.image}
+              variant="subtitle1"
+            />
+          ))}
         </List>
       </Box>
     </>

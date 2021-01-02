@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
-import clsx from "clsx";
-
 //components
 import SignInComponent from "../../components/SignInComponent/SignInComponent";
 import SignUp from "../../components/SignUpComponent/SignUp";
+
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import {
   Box,
@@ -14,8 +15,8 @@ import {
   AppBar,
   Tabs,
   Tab,
+  Container,
 } from "@material-ui/core";
-import { TabPanel } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -68,6 +69,8 @@ const SignInAndUpPage = () => {
     setValue(newValue);
   };
   const classes = useStyles();
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Grid container>
@@ -83,37 +86,46 @@ const SignInAndUpPage = () => {
           LULU
         </Typography>
       </Grid>
-      <Grid xs={12} item>
-        <div className={classes.root}>
-          <AppBar position="static">
-            <Tabs
-              // className={clsx(classes.tabs, classes.indicatorColor)}
-              value={value}
-              onChange={handleChange}
-              aria-label="identity"
-            >
-              <Tab
-                value="register"
-                label="¿ES TU PRIMERA VEZ EN LULU?"
-                wrapped
-                {...a11yProps("register")}
-              />
-              <Tab
-                value="login"
-                wrapped
-                label="¿YA TE HAS REGISTRADO?"
-                {...a11yProps("login")}
-              />
-            </Tabs>
-          </AppBar>
-          <TabPanelRender value={value} index="register">
-            <SignUp />
-          </TabPanelRender>
-          <TabPanelRender value={value} index="login">
-            <SignInComponent />
-          </TabPanelRender>
-        </div>
-      </Grid>
+      <Container maxWidth={matches ? "lg" : "sm"}>
+        <Grid xs={12} item>
+          <div className={classes.root}>
+            <AppBar position="static">
+              <Tabs
+                // className={clsx(classes.tabs, classes.indicatorColor)}
+                value={value}
+                centered
+                textColor="primary"
+                indicatorColor="primary"
+                onChange={handleChange}
+                style={{
+                  backgroundColor: "white",
+                }}
+                aria-label="identity"
+                variant="fullWidth"
+              >
+                <Tab
+                  value="register"
+                  label="¿ES TU PRIMERA VEZ EN LULU?"
+                  wrapped
+                  {...a11yProps("register")}
+                />
+                <Tab
+                  value="login"
+                  wrapped
+                  label="¿YA TE HAS REGISTRADO?"
+                  {...a11yProps("login")}
+                />
+              </Tabs>
+            </AppBar>
+            <TabPanelRender value={value} index="register">
+              <SignUp />
+            </TabPanelRender>
+            <TabPanelRender value={value} index="login">
+              <SignInComponent />
+            </TabPanelRender>
+          </div>
+        </Grid>
+      </Container>
     </Grid>
   );
 };

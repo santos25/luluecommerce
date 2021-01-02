@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
-import { Link as RouterLink } from "react-router-dom";
-
 import { signInWithGoogle, auth } from "../../FireBase/FireBaseUtil";
+import { Alert, AlertTitle } from "@material-ui/lab";
 
 import {
   makeStyles,
@@ -34,6 +33,7 @@ const SignInComponent = (props) => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
+  const [errorFirebase, setErrorFirebase] = useState("");
 
   const validInput = (name, value) => {
     if (name === "email") {
@@ -88,9 +88,15 @@ const SignInComponent = (props) => {
     setLoading(true);
     if (validateForm()) {
       console.log("register user", validateForm());
-      auth.signInWithEmailAndPassword(user.email, user.password);
-      setUser({ username: "", password: "" });
-      setLoading(false);
+      try {
+        auth.signInWithEmailAndPassword(user.email, user.password);
+        setUser({ username: "", password: "" });
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setErrorFirebase("Usuario o Contraseña Incorrectos");
+        setLoading(false);
+      }
     } else {
       setLoading(false);
     }
@@ -108,7 +114,7 @@ const SignInComponent = (props) => {
         <Grid xs={12} component={Box} item>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   onChange={handleInputs}
                   variant="outlined"
@@ -138,6 +144,12 @@ const SignInComponent = (props) => {
                 />
               </Grid>
             </Grid>
+            {errorFirebase && (
+              <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                {errorFirebase}
+              </Alert>
+            )}
             <Box mt={1}>{loading ? <CircularProgress /> : null}</Box>
             <Button
               onClick={handleSignIn}

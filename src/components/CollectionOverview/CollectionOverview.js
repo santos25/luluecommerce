@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 //firebase
-import { firestore } from "../../FireBase/FireBaseUtil";
 
 //selectors
 import {
@@ -25,6 +24,9 @@ import { Box, Button, makeStyles, Typography } from "@material-ui/core";
 
 import { WhatsApp as WhatsappIcon } from "@material-ui/icons";
 
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+
 const SlickCollectionWitSpinner = WithSpinner(SlickCollection);
 
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +44,9 @@ const CollectionOverview = ({
   suggestedCollections,
   isLoading,
 }) => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
+
   useEffect(() => {
     const pickedCategory = Object.keys(categories).map(
       (key) => categories[key]
@@ -50,7 +55,7 @@ const CollectionOverview = ({
       pickedCategory[Math.floor(Math.random() * pickedCategory.length)];
 
     fetchSuggestedCollections(tagId, pickedProduct.name);
-  }, []);
+  }, [tagId, fetchSuggestedCollections, categories]);
   const classes = useStyles();
 
   const handleWhatsApp = () => {
@@ -63,8 +68,18 @@ const CollectionOverview = ({
 
   return (
     <Box>
-      <Header image={imageHeader} />
+      {matches ? (
+        <Header images={imageHeader.imageMobil} />
+      ) : (
+        <Header images={imageHeader.imageDesktop} />
+      )}
+
       <Box mt={1}>
+        <Box p={1} my={1}>
+          <Typography variant="h5" align="center">
+            Nuevas Colecciones
+          </Typography>
+        </Box>
         <Categories categories={categories} />
       </Box>
       <Box my={2} px={1}>
@@ -75,6 +90,7 @@ const CollectionOverview = ({
           <SlickCollectionWitSpinner
             isLoading={isLoading}
             collections={suggestedCollections}
+            slidesToShow={matches ? 2 : 4}
           />
         </Box>
       </Box>

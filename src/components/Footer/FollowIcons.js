@@ -23,7 +23,11 @@ const FollowIcons = () => {
       </Typography>
       <Box display="flex" justifyContent="center" alignItems="center" mt={1}>
         <Box mr={3}>
-          <a href="https://www.facebook.com/lulucartagen" target="_blank">
+          <a
+            href="https://www.facebook.com/lulucartagen"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FacebookIcon
               color="primary"
               style={{ fontSize: 30, color: "#3b5998" }}
@@ -31,7 +35,11 @@ const FollowIcons = () => {
           </a>
         </Box>
         <Box>
-          <a href="https://www.instagram.com/lulucartagena/" target="_blank">
+          <a
+            href="https://www.instagram.com/lulucartagena/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <InstagramIcon
               color="primary"
               style={{ fontSize: 30, color: "#833AB4" }}

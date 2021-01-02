@@ -1,16 +1,21 @@
 import React from "react";
 import Slider from "react-slick";
-import { useHistory, useRouteMatch } from "react-router-dom";
+// import { useHistory, useRouteMatch } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   header: {
     cursor: "pointer",
   },
+  landscape: {
+    // maxWidth: "1170px",
+    margin: "0 auto 40px",
+    maxHeight: "1170px",
+  },
 }));
-const Header = ({ image }) => {
-  const history = useHistory();
-  const match = useRouteMatch();
+const Header = ({ images }) => {
+  // const history = useHistory();
+  // const match = useRouteMatch();
   const classes = useStyles();
 
   const settings = {
@@ -26,14 +31,19 @@ const Header = ({ image }) => {
   };
 
   return (
-    <div>
+    <div className={classes.landscape}>
       <Slider {...settings}>
-        <div
-          className={classes.header}
-          onClick={() => history.push(`${match.url}/${image.link}`)}
-        >
-          <img src={image.image} alt="" />
-        </div>
+        {images.map((image, index) => {
+          return (
+            <div
+              key={index}
+              className={classes.header}
+              // onClick={() => history.push(`${match.url}/${image.link}`)}
+            >
+              <img src={image} alt="" />
+            </div>
+          );
+        })}
       </Slider>
     </div>
   );

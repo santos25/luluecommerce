@@ -8,12 +8,12 @@ import {
 } from "../../../FireBase/FireBaseUtil";
 
 //actions
-import {
-  uploadProductsStart,
-  uploadProductAsync,
-} from "../../../Redux/Admin/Products/product.actions";
+// import {
+//   uploadProductsStart,
+//   uploadProductAsync,
+// } from "../../../Redux/Admin/Products/product.actions";
 
-import { isUploadinSelector } from "../../../Redux/Admin/Products/product.selectors";
+// import { isUploadinSelector } from "../../../Redux/Admin/Products/product.selectors";
 
 import {
   CircularProgress,
@@ -325,12 +325,14 @@ const EditProduct = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  isUploading: isUploadinSelector(state),
-});
+// const mapStateToProps = (state) => ({
+//   isUploading: isUploadinSelector(state),
+// });
 
-const mapDispatchToState = (dispatch) => ({
-  updateStart: () => dispatch(uploadProductsStart()),
-  updateSuccess: () => dispatch(uploadProductAsync()),
-});
-export default connect(mapStateToProps, mapDispatchToState)(EditProduct);
+// const mapDispatchToState = (dispatch) => ({
+//   updateStart: () => dispatch(uploadProductsStart()),
+//   updateSuccess: () => dispatch(uploadProductAsync()),
+// });
+
+// export default connect(mapStateToProps, mapDispatchToState)(EditProduct);
+export default EditProduct;
