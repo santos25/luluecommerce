@@ -38,11 +38,7 @@ const CheckOutItems = ({ cartItem, removeItem, addItem, clearItem }) => {
         <Grid container spacing={2}>
           <Grid xs={4} item>
             <ButtonBase className={classes.image}>
-              <img
-                className={classes.img}
-                alt="complex"
-                src={`http://${images[0]}`}
-              />
+              <img className={classes.img} alt="complex" src={`${images[0]}`} />
             </ButtonBase>
           </Grid>
           <Grid item xs={8} sm container>

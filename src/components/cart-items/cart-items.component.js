@@ -44,7 +44,7 @@ const CardItems = ({ image, name, price, talla, quantity }) => {
     <Card className={classes.root}>
       <CardMedia
         className={classes.cover}
-        image={`http://${image}`}
+        image={`${image}`}
         title="Live from space album cover"
       />
       <div className={classes.details}>
