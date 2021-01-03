@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "122c71f0d84ede372ca2f2263e970f8b",
+    "revision": "0586f8864511a963697f903c34cb52e3",
     "url": "/luluecommerce/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/luluecommerce/static/css/2.111bb465.chunk.css"
   },
   {
-    "revision": "8e0499fff4d2539ddd16",
+    "revision": "9069edd7cbcc6d8cbce2",
     "url": "/luluecommerce/static/css/main.8118b2fe.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/luluecommerce/static/js/2.8a501c85.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "8e0499fff4d2539ddd16",
-    "url": "/luluecommerce/static/js/main.ce45256e.chunk.js"
+    "revision": "9069edd7cbcc6d8cbce2",
+    "url": "/luluecommerce/static/js/main.7a93f671.chunk.js"
   },
   {
     "revision": "fc51da0d0638e029db25",
