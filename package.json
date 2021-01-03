@@ -18,6 +18,8 @@
     "clsx": "^1.1.1",
     "firebase": "^7.14.4",
     "react": "^16.13.1",
+    "react-admin": "^3.11.1",
+    "react-admin-firebase": "^3.2.17",
     "react-autosuggest": "^10.0.4",
     "react-dom": "^16.13.1",
     "react-instantsearch-dom": "^6.8.2",

@@ -26,6 +26,7 @@ const HandleRegisterPrenda = ({
   handleCategory,
 }) => {
   console.log(categorias);
+
   const handleInputs = (e) => {
     const { name, value } = e.target;
 
@@ -87,7 +88,7 @@ const HandleRegisterPrenda = ({
         return (
           //   <Box display="flex" key={index} m={2}>
           <Grid key={index} spacing={3} container>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <TextField
                 onChange={(e) => handleItems(e, index)}
                 // autoComplete="fname"
@@ -101,7 +102,7 @@ const HandleRegisterPrenda = ({
                 // autoFocus
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <FormControl>
                 <InputLabel id={`select-type-talla_${index}`}>Talla</InputLabel>
                 <Select
@@ -118,6 +119,17 @@ const HandleRegisterPrenda = ({
                   ))}
                 </Select>
               </FormControl>
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                onChange={(e) => handleItems(e, index)}
+                // autoComplete="fname"
+                name="image"
+                variant="outlined"
+                required
+                id={`image_${index}`}
+                label="Imagen URL"
+              />
             </Grid>
           </Grid>
         );

@@ -93,28 +93,58 @@ export const convertCollectionsToObjects = (collection) => {
   return convertedDataObjects;
 };
 
-export const uploadProductDB = async (document, product, items) => {
+export const uploadProductDB = async (document, product, items, exist) => {
   let itemTotal = 0;
-  if (document.data().categories.hasOwnProperty(product.category))
-    itemTotal = Object.keys(document.data().categories[product.category])
-      .length;
+  let itemsDB = [];
+  let result;
+  // if (document.data().categories.hasOwnProperty(product.category))
+  //   itemTotal = Object.keys(document.data().categories[product.category])
+  //     .length;
 
-  let objItems = {};
+  // let objItems = {};
 
-  console.log(items);
-  items.forEach((item, i) => {
-    objItems[`item_${itemTotal}`] = { ...item, createdt: new Date() };
-    itemTotal++;
-  });
+  console.log(product);
 
-  const result = await document.ref.set(
-    {
-      categories: {
-        [product.category.toLowerCase()]: objItems,
+  // items.forEach((item, i) => {
+  //   objItems[`item_${itemTotal}`] = { ...item, createdt: new Date() };
+  //   itemTotal++;
+  // });
+
+  const itemsSave = items.map((item) => ({
+    description: item.detail,
+    images: item.image,
+    name: item.name,
+    price: {
+      current: {
+        text: item.price,
       },
     },
-    { merge: true }
-  );
+    sizes: ["S", "M", "L", "XL"],
+  }));
+
+  console.log(itemsSave);
+  // const result = await document.ref.set(
+  //   {
+  //     categories: {
+  //       [product.category.toLowerCase()]: objItems,
+  //     },
+  //   },
+  //   { merge: true }
+  // );
+  if (exist) {
+    itemsDB = document.data().products;
+    result = await document.ref.set({
+      image: itemsSave[0].images[0],
+      name: product.collection,
+      products: [...itemsDB, ...itemsSave],
+    });
+  } else {
+    result = await document.set({
+      image: itemsSave[0].images[0],
+      name: product.collection,
+      products: itemsSave,
+    });
+  }
 
   return result;
 };

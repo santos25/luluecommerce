@@ -210,7 +210,7 @@ const ProductDetail = ({
                       <img
                         style={{ height: "500px", width: "500px" }}
                         key={indexColl}
-                        src={`http://${url}`}
+                        src={`${url}`}
                         alt=""
                       />
                     </Box>
@@ -225,7 +225,7 @@ const ProductDetail = ({
                           onClick={() => slickRef.current.slickGoTo(indexColl)}
                           style={{ height: "90px", width: "90px" }}
                           key={indexColl}
-                          src={`http://${url}`}
+                          src={`${url}`}
                           alt=""
                         />
                       </li>

@@ -66,7 +66,7 @@ const Categories = ({ categories }) => {
                 >
                   <img
                     className={classes.imageList}
-                    src={`http://${item.image}`}
+                    src={`${item.image}`}
                     alt=""
                   />
                   <GridListTileBar

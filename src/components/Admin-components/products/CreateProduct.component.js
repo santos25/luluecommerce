@@ -232,26 +232,39 @@ const CreateProduct = ({}) => {
             .collection("categories")
             .where("name", "==", product.collection);
 
-          docuRef.get().then((snapshot) => {
+          docuRef.get().then(async (snapshot) => {
             if (snapshot.empty) {
               console.log("NO EXISTE DOCUMENTO");
               const newDoc = document.ref.collection("categories").doc();
-              // const uploadedItemsImages = await uploadImages(
-              //   items,
-              //   product.category,
-              //   product.genre
-              // );
-              // console.log(uploadedItemsImages);
-              // const result = await uploadProductDB(
-              //   document,
-              //   product,
-              //   uploadedItemsImages
-              // );
+              const uploadedItemsImages = await uploadImages(
+                items,
+                product.category,
+                product.genre
+              );
+              console.log(uploadedItemsImages);
+              const result = await uploadProductDB(
+                newDoc,
+                product,
+                uploadedItemsImages,
+                false
+              );
               // console.log(result);
               setIsUploading(false);
             } else {
-              const refDocExist = snapshot.docs[0].ref;
-
+              const refDocExist = snapshot.docs[0];
+              const uploadedItemsImages = await uploadImages(
+                items,
+                product.category,
+                product.genre
+              );
+              console.log(uploadedItemsImages);
+              const result = await uploadProductDB(
+                refDocExist,
+                product,
+                uploadedItemsImages,
+                true
+              );
+              console.log("DOc Exist");
               setIsUploading(false);
             }
           });
@@ -415,7 +428,7 @@ const CreateProduct = ({}) => {
                     </Box>
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={2}>
+                {/* <Grid item xs={12} sm={2}>
                   <FormControl className={classes.formControl}>
                     <InputLabel id={`select-talla_${index}`}>Talla</InputLabel>
                     <Select
@@ -451,7 +464,7 @@ const CreateProduct = ({}) => {
                       ))}
                     </Select>
                   </FormControl>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12} sm={2}>
                   <TextField
                     onChange={(e) => handleItems(e, index)}

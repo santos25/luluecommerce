@@ -11,7 +11,9 @@ const CreatePrendas = ({ categorias }) => {
   const [step, setSteps] = useState(0);
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState(1);
-  let [prendasitems, setPrendasItems] = useState([{ name: "", typetalla: "" }]);
+  let [prendasitems, setPrendasItems] = useState([
+    { name: "", typetalla: "", image: "" },
+  ]);
   const [tallas, setTallas] = useState([]);
 
   useEffect(() => {

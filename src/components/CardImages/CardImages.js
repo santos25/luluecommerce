@@ -80,7 +80,7 @@ const CardImages = ({
         >
           <CardMedia
             className={classes.media}
-            image={`http://${item.images[0]}`}
+            image={`${item.images[0]}`}
             onClick={() =>
               history.push(
                 encodeURI(

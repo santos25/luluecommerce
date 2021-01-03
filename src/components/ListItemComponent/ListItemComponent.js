@@ -25,7 +25,7 @@ const ListItemComponent = ({
             alt={text}
             variant="rounded"
             className={avatarClass}
-            src={`http://${image}`}
+            src={`${image}`}
           />
         </ListItemAvatar>
         <Box display="flex" width="100%" justifyContent="center">

@@ -48,7 +48,7 @@ export const createProducts = async (products = []) => {
           rating,
           variants,
         } = data;
-        const imagesSave = images.map((image) => image.url);
+        const imagesSave = images.map((image) => "https://" + image.url);
         const sizes = variants.map((variant) => variant.brandSize);
 
         allFormatProducts.push({
@@ -70,7 +70,7 @@ export const createProducts = async (products = []) => {
     .collection("collections")
     .doc("kZzILXWTxyZYglE6IDLx")
     .collection("categories")
-    .doc("ipm1P5yFug7xs1NubFoj");
+    .doc("wVj8El3cq3ICbv8z0MAy");
 
   return await refDoc.set(
     {

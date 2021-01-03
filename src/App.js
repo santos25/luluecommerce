@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { auth, createDocumentUserDb } from "./FireBase/FireBaseUtil";
-// import { createProducts, createCategories } from "./FireBase/ApiAsos";
+import { createProducts, createCategories } from "./FireBase/ApiAsos";
+
+//firebase
+import { firestore } from "./FireBase/FireBaseUtil";
 
 //redux
 import { connect } from "react-redux";
@@ -20,6 +23,8 @@ import {
 
 //components
 import MiniDrawer from "./components/Admin-components/mini-drawer/MiniDrawer";
+import AdminPanel from "./components/Admin-components/React-Admin/Index";
+
 import Nav from "./components/Navegation/Nav";
 // import HomePage from "./pages/homepage/HomePage";
 import ShopPage from "./pages/ShopPage/ShopPage";
@@ -58,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "1170px",
     margin: "0 auto",
     minHeight: "calc(100vh - 64px - 218px)",
+    // padding: "56px 0 0 0",
   },
 }));
 
@@ -87,8 +93,12 @@ const App = ({ setCurrentUser, currentUser, fetchCollectionsOverView }) => {
       }
     });
 
+    // 8799 vestidos
+    // 4545 gafas de sol
+    // 8730 bolsos
+
     // fetch(
-    //   "https://asos2.p.rapidapi.com/products/v2/list?country=US&currency=USD&sort=freshness&lang=en-US&sizeSchema=US&offset=0&categoryId=6459&limit=30&store=US",
+    //   "https://asos2.p.rapidapi.com/products/v2/list?country=US&currency=USD&sort=freshness&lang=en-US&sizeSchema=US&offset=0&categoryId=8730&limit=20&store=US",
     //   {
     //     method: "GET",
     //     headers: {
@@ -104,7 +114,7 @@ const App = ({ setCurrentUser, currentUser, fetchCollectionsOverView }) => {
     //   .then(async (data) => {
     //     const { products } = data;
 
-    //     // const insert = await createProducts(products);
+    //     const insert = await createProducts(products);
     //     // console.log(insert);
     //   })
     //   .catch((err) => {
@@ -118,6 +128,7 @@ const App = ({ setCurrentUser, currentUser, fetchCollectionsOverView }) => {
         {currentUser && currentUser.isAdmin ? (
           <MiniDrawer />
         ) : (
+          // <AdminPanel />
           <Router basename="/luluecommerce">
             <Nav />
             <div className={classes.containerApp}>

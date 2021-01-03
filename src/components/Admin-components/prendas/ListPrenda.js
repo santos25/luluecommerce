@@ -75,7 +75,20 @@ const ListPrenda = ({ rowsDataTable, columnsDataTable, handleCurrentPage }) => {
           />
         </Grid>
         <Grid xs={12} item>
-          <TableList datas={rowsDataTable} columns={columnsDataTable} />
+          <TableList
+            datas={rowsDataTable}
+            columns={columnsDataTable}
+            // renderButtons={(index) => (
+            //     <Box display="flex" justifyContent="flex-end">
+            //       <IconButton
+            //         onClick={() => HandleOrderFromClient(index)}
+            //         aria-label="delete"
+            //       >
+            //         <GridOnOutlined />
+            //       </IconButton>
+            //     </Box>
+            //   )}
+          />
         </Grid>
       </Grid>
     </Box>
